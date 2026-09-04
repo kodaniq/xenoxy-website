@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#7c3aed">
+  <title>Xenoxy — Discord Bot</title>
+  <meta name="description" content="Xenoxy is an all-in-one Discord bot with 100 slash commands, tickets, moderation and server control.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav><a class="brand" href="#top"><span>X</span> XENOXY</a><div><a href="#features">Features</a><a href="#commands">Commands</a><a href="#setup">Setup</a></div></nav>
+  <main id="top">
+    <section class="hero">
+      <p class="badge">● ONLINE • V7 MAXIMUM</p>
+      <h1>Your server.<br><em>Maximum Xenoxy.</em></h1>
+      <p class="lead">100 slash commands. Tickets. Moderation. Welcome systems. Button roles. Server control. One purple robot doing way too much.</p>
+      <div class="actions"><a class="primary" href="#commands">Explore commands</a><a class="secondary" href="#setup">Setup guide</a></div>
+      <div class="stats"><article><b>100</b><small>Slash commands</small></article><article><b>24/7</b><small>Hosted</small></article><article><b>V7</b><small>Maximum</small></article></div>
+    </section>
+
+    <section id="features">
+      <p class="eyebrow">SERVER CONTROL</p><h2>Built like a real community bot.</h2>
+      <div class="cards">
+        <article><i>🎫</i><h3>Tickets</h3><p>Create, claim, rename, add users and close private support tickets.</p></article>
+        <article><i>🛡️</i><h3>Moderation</h3><p>Ban, kick, timeout, warnings, locks, purge tools, logs and anti-spam.</p></article>
+        <article><i>⚙️</i><h3>/setup</h3><p>Control welcome, logging, anti-spam, anti-links and welcome DMs.</p></article>
+        <article><i>🎭</i><h3>Roles</h3><p>Autoroles and clickable button-role panels for members.</p></article>
+        <article><i>👋</i><h3>Welcome 2.0</h3><p>Welcome and goodbye channels plus optional welcome DM.</p></article>
+        <article><i>🎮</i><h3>Fun + Utility</h3><p>Games, polls, reminders, server info, random tools and more.</p></article>
+      </div>
+    </section>
+
+    <section id="commands">
+      <p class="eyebrow">100 / 100</p><h2>Every global slash-command slot used.</h2>
+      <p class="muted">Search below. Click any command to copy it.</p>
+      <input id="search" placeholder="Search commands… e.g. ticket, ban, avatar">
+      <div id="commandGrid" class="command-grid"></div>
+    </section>
+
+    <section id="setup" class="setup">
+      <div><p class="eyebrow">QUICK START</p><h2>Get Xenoxy configured.</h2><p class="muted">After the bot is online, start in Discord with <code>/setup</code>. Then configure your channels and roles.</p></div>
+      <pre><span>/setup</span>\n/welcome-channel\n/goodbye-channel\n/log-channel\n/autorole\n/ticket-setup\n/ticket-panel\n/button-role</pre>
+    </section>
+  </main>
+  <footer><span>XENOXY V7 • MAXIMUM</span><span>Built with Python + discord.py 💜</span></footer>
+  <div id="toast">Copied!</div>
+  <script src="script.js"></script>
+</body>
+</html>
