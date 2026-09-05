@@ -9,7 +9,7 @@
     const section = document.createElement('section');
     section.id = 'terminal';
     section.className = 'x-terminal-section';
-    section.innerHTML = `<div class="sectionhead"><p class="eyebrow">// LOCAL CONTROL TERMINAL</p><h2>Talk to Xenoxy.<br><span>Control Platform shell.</span></h2><p class="muted">Safe local terminal with live telemetry, history and autocomplete. Public moderation actions are never executed.</p></div><div class="x-terminal-shell"><div class="x-terminal-top"><div class="x-terminal-brand"><span class="x-terminal-dots"><i></i><i></i><i></i></span>XENOXY // CONTROL PLATFORM</div><span class="x-terminal-badge">SAFE DEMO</span></div><div class="x-terminal-output" id="xTerminalOutput"></div><div class="x-terminal-inputrow"><span class="x-terminal-prompt">xenoxy@web:~$</span><input class="x-terminal-input" id="xTerminalInput" autocomplete="off" spellcheck="false" placeholder="type help and press Enter"></div><div class="x-terminal-hint">TAB autocomplete • ↑ ↓ history • try: status, ping, gng, whoami, sudo, matrix</div></div>`;
+    section.innerHTML = `<div class="sectionhead"><p class="eyebrow">// LOCAL CONTROL TERMINAL</p><h2>Talk to Xenoxy.<br><span>Command QA shell.</span></h2><p class="muted">Safe local terminal with live telemetry, history and autocomplete. Public moderation actions are never executed.</p></div><div class="x-terminal-shell"><div class="x-terminal-top"><div class="x-terminal-brand"><span class="x-terminal-dots"><i></i><i></i><i></i></span>XENOXY // V10.1 COMMAND QA ENGINE</div><span class="x-terminal-badge">SAFE DEMO</span></div><div class="x-terminal-output" id="xTerminalOutput"></div><div class="x-terminal-inputrow"><span class="x-terminal-prompt">xenoxy@web:~$</span><input class="x-terminal-input" id="xTerminalInput" autocomplete="off" spellcheck="false" placeholder="type help and press Enter"></div><div class="x-terminal-hint">TAB autocomplete • ↑ ↓ history • try: status, ping, gng, whoami, sudo, matrix</div></div>`;
     commandsSection.insertAdjacentElement('afterend', section);
   }
 
@@ -38,30 +38,30 @@
     const o = audioCtx.createOscillator(), g = audioCtx.createGain(), now = audioCtx.currentTime;
     const map = { click:[420,.025,.035], ok:[720,.04,.05], term:[560,.02,.028], secret:[880,.08,.04] };
     const [f,d,v] = map[type] || map.click;
-    o.type = 'sine'; o.frequency.setValueAtTime(f, now); g.gain.setValueAtTime(v, now); g.gain.exponentialRampToValueAtTime(.0001, now + d);
-    o.connect(g); g.connect(audioCtx.destination); o.start(now); o.stop(now + d);
+    o.type='sine'; o.frequency.setValueAtTime(f,now); g.gain.setValueAtTime(v,now); g.gain.exponentialRampToValueAtTime(.0001,now+d);
+    o.connect(g); g.connect(audioCtx.destination); o.start(now); o.stop(now+d);
   }
 
-  sound.onclick = () => { soundOn = !soundOn; localStorage.setItem('xenoxySound', soundOn ? 'on' : 'off'); syncSound(); if (soundOn) tone('ok'); };
-  document.addEventListener('click', e => { if (soundOn && e.target.closest('button,a') && e.target !== sound) tone('click'); }, { passive:true });
+  sound.onclick = () => { soundOn=!soundOn; localStorage.setItem('xenoxySound',soundOn?'on':'off'); syncSound(); if(soundOn) tone('ok'); };
+  document.addEventListener('click', e => { if(soundOn && e.target.closest('button,a') && e.target!==sound) tone('click'); }, {passive:true});
 
-  const out = document.getElementById('xTerminalOutput'), input = document.getElementById('xTerminalInput');
-  if (!out || !input) return;
-  const history = [], known = ['help','status','ping','uptime','servers','members','commands','version','about','clear','whoami','gng','sudo','matrix','date'];
-  let h = -1;
-  const print = (text, cls='') => { const d=document.createElement('div'); d.className=`x-line ${cls}`; d.textContent=text; out.appendChild(d); out.scrollTop=out.scrollHeight; };
-  const val = id => document.getElementById(id)?.textContent?.trim() || '—';
+  const out=document.getElementById('xTerminalOutput'), input=document.getElementById('xTerminalInput');
+  if(!out || !input) return;
+  const history=[], known=['help','status','ping','uptime','servers','members','commands','version','about','clear','whoami','gng','sudo','matrix','date'];
+  let h=-1;
+  const print=(text,cls='')=>{const d=document.createElement('div');d.className=`x-line ${cls}`;d.textContent=text;out.appendChild(d);out.scrollTop=out.scrollHeight;};
+  const val=id=>document.getElementById(id)?.textContent?.trim()||'—';
 
-  print('Xenoxy V10.0 Control Platform shell initialized.', 'ok');
-  print('Type help. TAB completes commands.', 'dim');
+  print('Xenoxy V10.1 Command QA Engine shell initialized.','ok');
+  print('100 / 100 commands verified. Type help.','dim');
 
-  function run(raw) {
-    const cmd = raw.trim().replace(/^\//,'').toLowerCase();
-    if (!cmd) return;
-    print(`xenoxy@web:~$ ${raw}`, 'command'); tone('term');
-    if (cmd === 'clear') { out.innerHTML=''; return; }
-    if (/^(ban|kick|timeout|purge|role-add|role-remove)\b/.test(cmd)) { print('ACCESS DENIED // public shell cannot execute moderation actions.','dim'); return; }
-    const replies = {
+  function run(raw){
+    const cmd=raw.trim().replace(/^\//,'').toLowerCase();
+    if(!cmd)return;
+    print(`xenoxy@web:~$ ${raw}`,'command'); tone('term');
+    if(cmd==='clear'){out.innerHTML='';return;}
+    if(/^(ban|kick|timeout|purge|role-add|role-remove)\b/.test(cmd)){print('ACCESS DENIED // public shell cannot execute moderation actions.','dim');return;}
+    const replies={
       help:'COMMANDS // help status ping uptime servers members commands version about date clear\nSECRETS  // whoami gng sudo matrix',
       status:()=>`XENOXY ${val('liveVersion')} // ${document.getElementById('liveStatusBadge')?.textContent?.trim()||'UNKNOWN'}\nPING ${val('liveLatency')} // UPTIME ${val('liveUptime')} // SERVERS ${val('liveGuilds')} // MEMBERS ${val('liveMembers')}`,
       ping:()=>`Discord gateway latency: ${val('liveLatency')}`,
@@ -69,24 +69,24 @@
       servers:()=>`Connected servers: ${val('liveGuilds')}`,
       members:()=>`Visible members: ${val('liveMembers')}`,
       commands:()=>`Loaded slash commands: ${val('liveCommands')}`,
-      version:()=>`${val('liveVersion')} // CONTROL PLATFORM`,
-      about:'Xenoxy // Discord Control Platform. 100 commands, OAuth, SQLite persistence, Member Ops, Automod, Incident Center, Server Analytics and runtime telemetry.',
+      version:()=>`${val('liveVersion')} // COMMAND QA ENGINE`,
+      about:'Xenoxy // Discord Control Platform. 100 verified commands, shared response layer, OAuth, SQLite, Member Ops, Automod, Incident Center, Server Analytics and runtime telemetry.',
       date:()=>new Date().toLocaleString(),
       whoami:'kodaniq // XENOXY OPERATOR // clearance: GNG',
       gng:'GÄÄÄÄÄNG MODE ENABLED 😭🔥',
       sudo:'nice try gng 💀 you are not getting root from GitHub Pages',
       matrix:'01011000 01000101 01001110 01001111 01011000 01011001 // wake up, gng.'
     };
-    const r = replies[cmd], secret = ['whoami','gng','sudo','matrix'].includes(cmd);
-    print(typeof r === 'function' ? r() : r || `Unknown command: ${cmd}. Try help.`, r ? (secret ? 'secret' : 'ok') : 'dim');
-    if (secret) tone('secret');
-    if (!reduceMotion) { out.classList.remove('x-terminal-flash'); requestAnimationFrame(() => out.classList.add('x-terminal-flash')); }
+    const r=replies[cmd], secret=['whoami','gng','sudo','matrix'].includes(cmd);
+    print(typeof r==='function'?r():r||`Unknown command: ${cmd}. Try help.`,r?(secret?'secret':'ok'):'dim');
+    if(secret)tone('secret');
+    if(!reduceMotion){out.classList.remove('x-terminal-flash');requestAnimationFrame(()=>out.classList.add('x-terminal-flash'));}
   }
 
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Enter') { const v=input.value; if (v.trim()) { history.unshift(v); h=-1; run(v); } input.value=''; }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); if (history.length) { h=Math.min(history.length-1,h+1); input.value=history[h]; } }
-    else if (e.key === 'ArrowDown') { e.preventDefault(); h=Math.max(-1,h-1); input.value=h===-1?'':history[h]; }
-    else if (e.key === 'Tab') { e.preventDefault(); const q=input.value.trim().toLowerCase().replace(/^\//,''); const matches=known.filter(x=>x.startsWith(q)); if (matches.length===1) input.value=matches[0]; else if (matches.length>1) print(`matches: ${matches.join('  ')}`,'dim'); }
+  input.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){const v=input.value;if(v.trim()){history.unshift(v);h=-1;run(v);}input.value='';}
+    else if(e.key==='ArrowUp'){e.preventDefault();if(history.length){h=Math.min(history.length-1,h+1);input.value=history[h];}}
+    else if(e.key==='ArrowDown'){e.preventDefault();h=Math.max(-1,h-1);input.value=h===-1?'':history[h];}
+    else if(e.key==='Tab'){e.preventDefault();const q=input.value.trim().toLowerCase().replace(/^\//,'');const matches=known.filter(x=>x.startsWith(q));if(matches.length===1)input.value=matches[0];else if(matches.length>1)print(`matches: ${matches.join('  ')}`,'dim');}
   });
 })();
