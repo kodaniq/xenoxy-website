@@ -1,149 +1,149 @@
-# XENOXY V7.8 // COMMUNITY CORE
+# XENOXY V8.1 // FULL CONTROL CORE
 
-Xenoxy on Pythoni ja `discord.py` peal ehitatud Discord bot, mille eesmärk on ühendada moderation, community tools, welcome süsteemid, role'id, activity stats ja server control üheks botiks.
+Xenoxy on Pythoni ja `discord.py` peal ehitatud Discord management bot/platform.
 
-Praegune build: **V7.8 // COMMUNITY CORE**  
-Slash commande: **100 / 100**
+Praegune build: **V8.1 // FULL CONTROL CORE**  
+Slash commande: **100 / 100**  
+Persistence: **SQLite (`xenoxy.db`)**  
+Dashboard: **Discord OAuth + authenticated control API**
 
 Website: https://kodaniq.github.io/xenoxy-website/
 
 ---
 
-## Kuidas Xenoxy töötab?
+## Mis V8.1-s uut on?
 
-Kõige lihtsamalt:
+V8.1 ühendab Discord boti ja web dashboardi üheks süsteemiks.
 
 ```text
-Discord user
+Discord admin
     ↓
-Slash command / button / reaction / event
+Login with Discord (OAuth2)
     ↓
-discord.py
+Server select
+    ↓
+Xenoxy Web Dashboard
+    ↓
+Authenticated Control API
     ↓
 Xenoxy bot.py
     ↓
-permission check + server settings + command logic
+xenoxy.db
     ↓
-Discord response
-    ↓
-xenoxy_data.json salvestab vajaliku persistent data
+Discord server behavior changes
 ```
 
-### 1. Discord saadab interactioni
+Dashboard saab V8.1 bot API-st päris serveri channelid, role'id, settingsid ja server-health info. Kui admin vajutab **Save Changes**, saadab dashboard uued settingud tagasi botile ning bot salvestab need samasse `xenoxy.db` faili, mida Discord eventid ja slash-commandod kasutavad.
 
-Näiteks kasutaja kirjutab:
+### V8.1 dashboard controls
+
+- Welcome channel
+- Welcome system ON/OFF
+- Welcome message
+- Welcome DM ON/OFF
+- Welcome DM message
+- Goodbye channel
+- Goodbye system ON/OFF
+- Goodbye message
+- Suggestion channel
+- Confession channel
+- Autorole
+- Verification channel
+- Verification role
+- Log channel
+- Rules channel
+- Server-health overview
+
+---
+
+# Kuidas Xenoxy töötab?
+
+## 1. Discord bot
+
+`bot.py` kasutab `discord.py`-d ning sisaldab Xenoxy 100 slash-commandi, evente, persistent Discord UI-d ja guild-põhiseid settinguid.
+
+Presence V8.1-s:
 
 ```text
-/server-health
+Watching /help • Xenoxy V8.1
 ```
 
-Discord saadab selle Xenoxy protsessile interactionina.
+## 2. SQLite database
 
-### 2. `discord.py` leiab õige commandi
-
-Xenoxy kasutab slash-commandide jaoks `app_commands.CommandTree` süsteemi.
-
-Näiteks lihtsustatud command näeb välja nii:
-
-```python
-@tree.command(name="ping", description="Kontrollib kas bot töötab.")
-async def ping(interaction: discord.Interaction):
-    await interaction.response.send_message("Pong!")
-```
-
-### 3. Xenoxy kontrollib õigusi
-
-Admin-commandidele saab lisada permission checki:
-
-```python
-@app_commands.checks.has_permissions(manage_guild=True)
-```
-
-See tähendab, et tavaline member ei saa serveri setupi muuta.
-
-### 4. Igal serveril on eraldi settings
-
-Xenoxy ei kasuta kõigi serverite jaoks samu channel ID-sid või role ID-sid.
-
-Settings hoitakse serveri ID järgi, näiteks:
-
-```json
-{
-  "settings": {
-    "123456789": {
-      "welcome_channel": 111111111,
-      "suggestion_channel": 222222222,
-      "verification_role": 333333333
-    }
-  }
-}
-```
-
-Seega võib Xenoxy olla mitmes Discord serveris ja iga server saab enda setupi.
-
-### 5. Persistent data
-
-Xenoxy salvestab vajaliku data faili:
+V8.0-st alates kasutab Xenoxy persistent data jaoks SQLite'i:
 
 ```text
-xenoxy_data.json
+xenoxy.db
 ```
 
-Seal võivad olla näiteks:
+Esimesel launchil saab vana `xenoxy_data.json` olemasolul data automaatselt SQLite'i migreerida. Vana JSON fail jäetakse fallbackiks alles.
 
-- server settings
+Database'is säilivad näiteks:
+
+- guild settings
 - birthdays
 - reaction-role mappings
 - activity stats
 - server backup data
 - community-system config
 
-See tähendab, et bot ei unusta kõike kohe pärast restarti.
+## 3. Discord OAuth dashboard
 
-### 6. Events töötavad taustal
+Dashboard kasutab OAuth2 scope'e:
 
-Kõik ei ole slash-command.
-
-Xenoxy kuulab ka Discord evente, näiteks:
-
-```python
-@bot.event
-async def on_member_join(member):
-    ...
+```text
+identify
+guilds
 ```
 
-või:
+See tähendab, et dashboard saab teada, kes sisse logis ja milliseid servereid kasutaja haldab. Dashboard näitab ainult servereid, kus kasutajal on Owner, Administrator või Manage Server õigus.
 
-```python
-@bot.event
-async def on_message(message):
-    ...
+## 4. V8.1 Control API
+
+Bot sisaldab authenticated API-t:
+
+```text
+GET /api/health
+GET /api/guilds/<guild_id>
+PUT /api/guilds/<guild_id>/settings
 ```
 
-Nii saavad töötada welcome message'id, activity tracking, sticky messages ja muud automaatsed süsteemid.
+API secret peab olema environment variable'is ja seda ei tohi frontendile ega GitHubi panna.
 
-### 7. Persistent Discord UI
+Bot env:
 
-Xenoxy kasutab ka:
+```env
+DISCORD_TOKEN=...
+GUILD_ID=148532329956326440
+XENOXY_API_HOST=0.0.0.0
+XENOXY_API_PORT=8080
+XENOXY_API_SECRET=LONG_RANDOM_SECRET
+```
 
-- Buttons
-- Select menus
-- Modals
-- Embeds
+Dashboard env:
 
-Näiteks verification ja role-menu saavad töötada UI kaudu ilma, et kasutaja peaks iga kord uut slash-commandi kirjutama.
+```env
+DISCORD_CLIENT_ID=...
+DISCORD_CLIENT_SECRET=...
+DISCORD_REDIRECT_URI=http://localhost:8000/callback
+SESSION_SECRET=LONG_RANDOM_SESSION_SECRET
+XENOXY_API_URL=https://YOUR-BOT-API-ADDRESS
+XENOXY_API_SECRET=SAME_SECRET_AS_BOT
+```
+
+**Bot tokenit, Discord Client Secreti ega Xenoxy API Secreti ei tohi GitHubi commitida.**
 
 ---
 
-# Xenoxy V7.8 süsteemid
+# Xenoxy V8.1 süsteemid
 
-Praeguses V7.8 buildis on muu hulgas:
+Praeguses buildis on muu hulgas:
 
 - moderation
 - welcome / goodbye system
-- private DM Configurator
+- welcome DM configurator
 - suggestions + suggestion management
-- anonymous confessions + confession channel setup
+- anonymous confessions
 - birthdays
 - activity stats
 - member stats
@@ -159,110 +159,55 @@ Praeguses V7.8 buildis on muu hulgas:
 - autorole
 - logs
 - polls ja utility commands
+- SQLite persistence
+- Discord OAuth dashboard
+- authenticated web control API
 
-Website'i command database sisaldab kõiki **100 praegust slash-commandi**.
+Website'i command database sisaldab kõiki **100 slash-commandi**.
 
 ---
 
-# Kuidas teha enda Discord bot?
-
-Allpool on beginner setup Windowsi jaoks.
+# Beginner: kuidas teha enda Discord bot?
 
 ## 1. Installi Python
-
-Installi Python ja kontrolli terminalis:
 
 ```powershell
 py --version
 ```
 
-Kui saad Python versioni tagasi, oled valmis.
-
----
-
 ## 2. Tee Discord application
 
-Mine Discord Developer Portalisse:
+Discord Developer Portal → New Application → Bot.
 
-https://discord.com/developers/applications
-
-Seejärel:
-
-1. Vajuta **New Application**.
-2. Pane botile nimi.
-3. Ava vasakult **Bot**.
-4. Loo bot user.
-5. Vajadusel lülita sisse vajalikud Gateway Intents.
-
-Ära lülita kõiki intents lihtsalt igaks juhuks sisse. Kasuta ainult neid, mida sinu bot päriselt vajab.
-
----
-
-## 3. ÄRA jaga bot tokenit
-
-Bot token on sisuliselt boti parool.
-
-Ära:
-
-- saada seda Discordi
-- pane screenshotile
-- commit'i GitHubi
-- kirjuta seda otse public source code'i
-
-Kasuta `.env` faili.
-
-Loo projekti kausta:
+Slash-commandidega bot vajab installimisel vähemalt:
 
 ```text
-.env
+bot
+applications.commands
 ```
 
-ja pane sinna:
+## 3. Hoia token `.env` failis
 
 ```env
-DISCORD_TOKEN=SIIA_SINU_TOKEN
+DISCORD_TOKEN=SINU_TOKEN
 ```
 
----
-
-## 4. Tee `.gitignore`
-
-Loo fail:
-
-```text
-.gitignore
-```
-
-ja pane sinna vähemalt:
+`.gitignore`:
 
 ```gitignore
 .env
 __pycache__/
 *.pyc
+*.db
 ```
 
-Nii ei lähe token kogemata GitHubi.
-
----
-
-## 5. Installi vajalikud package'id
-
-VS Code terminalis:
+## 4. Installi package'id
 
 ```powershell
 py -m pip install discord.py python-dotenv
 ```
 
-Soovi korral tee ka `requirements.txt`:
-
-```txt
-discord.py>=2.5.0
-python-dotenv>=1.0.0
-```
-
----
-
-## 6. Tee esimene `bot.py`
+## 5. Minimal bot
 
 ```python
 import os
@@ -273,58 +218,24 @@ from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 
-
 class MyBot(discord.Client):
     def __init__(self):
-        intents = discord.Intents.default()
-        super().__init__(intents=intents)
+        super().__init__(intents=discord.Intents.default())
         self.tree = app_commands.CommandTree(self)
 
     async def setup_hook(self):
         await self.tree.sync()
 
-
 bot = MyBot()
 
-
-@bot.event
-async def on_ready():
-    print(f"Online: {bot.user}")
-
-
-@bot.tree.command(name="ping", description="Test command")
+@bot.tree.command(name="ping")
 async def ping(interaction: discord.Interaction):
     await interaction.response.send_message("Pong! 🏓")
-
 
 bot.run(TOKEN)
 ```
 
----
-
-## 7. Käivita bot
-
-Windowsis:
-
-```powershell
-py bot.py
-```
-
-Kui terminalis on Python prompt:
-
-```text
->>>
-```
-
-siis oled kogemata Python REPL-is.
-
-Kirjuta:
-
-```python
-exit()
-```
-
-ja alles tavalises terminalis käivita:
+Käivita:
 
 ```powershell
 py bot.py
@@ -332,253 +243,21 @@ py bot.py
 
 ---
 
-## 8. Invite bot serverisse
-
-Discord Developer Portal -> sinu application -> **Installation** või OAuth2.
-
-Slash-commandidega bot vajab vähemalt scope'e:
+# Xenoxy progression
 
 ```text
-bot
-applications.commands
+V1       basic slash commands
+V3       welcome / logs / XP
+V5       83 commands
+V6       98 commands
+V7       100 commands
+V7.5     DM configurator
+V7.8     Community Core
+V8.0     SQLite Database Core
+V8.1     Full Control Core
 ```
 
-Vali ainult vajalikud permissions.
-
-Beginner testserveris võib alguses olla lihtsam anda rohkem õigusi, aga päris public botis tasub permissions võimalikult täpselt paika panna.
-
----
-
-## 9. Miks slash-command kohe ei ilmu?
-
-Global command sync võib mõnikord aega võtta.
-
-Arendamisel saad syncida commandi kindlasse testserverisse, et muudatused kiiremini ilmuksid.
-
-Näiteks:
-
-```python
-GUILD_ID = 123456789012345678
-
-async def setup_hook(self):
-    await self.tree.sync()
-
-    guild = discord.Object(id=GUILD_ID)
-    self.tree.copy_global_to(guild=guild)
-    await self.tree.sync(guild=guild)
-```
-
-Asenda ID enda testserveri ID-ga.
-
----
-
-# Kuidas minna ühest `/ping` commandist Xenoxy-tüüpi botini?
-
-Ära proovi kohe teha 100 commandi.
-
-Hea järjekord on:
-
-### Stage 1 — basics
-
-```text
-/ping
-/userinfo
-/serverinfo
-```
-
-Õpi:
-
-- interactions
-- embeds
-- command parameters
-
-### Stage 2 — moderation
-
-```text
-/clear
-/kick
-/ban
-/timeout
-```
-
-Õpi:
-
-- Discord permissions
-- Member objektid
-- error handling
-
-### Stage 3 — settings
-
-Lisa serveripõhine config:
-
-```text
-welcome_channel
-log_channel
-autorole
-```
-
-Alguses sobib JSON.
-
-Suurema boti puhul tasub hiljem minna SQLite või muu database'i peale.
-
-### Stage 4 — events
-
-Lisa:
-
-```python
-on_member_join
-on_member_remove
-on_message
-```
-
-Nüüd saab bot teha asju automaatselt.
-
-### Stage 5 — Discord UI
-
-Õpi:
-
-```text
-Buttons
-Views
-Select menus
-Modals
-```
-
-Siit hakkavad tulema verification, role-menu ja configurator tüüpi süsteemid.
-
-### Stage 6 — persistence
-
-Veendu, et:
-
-- settings säilivad restartide vahel
-- UI töötab pärast restarti
-- vanad channel/role ID-d ei crash'i botti
-- deleted roles/channels on turvaliselt handled
-
-### Stage 7 — hosting
-
-Kui bot töötab lokaalselt, saad selle hostida serveris või Discord-boti hostingus.
-
-Host vajab tavaliselt:
-
-```text
-bot.py
-requirements.txt
-.env või hosting environment variables
-```
-
-Hostingus pane token environment variable'iks, mitte source code'i.
-
----
-
-# Projekti soovituslik struktuur
-
-Väikese boti jaoks:
-
-```text
-my-discord-bot/
-├── bot.py
-├── requirements.txt
-├── .env
-└── .gitignore
-```
-
-Kui projekt kasvab:
-
-```text
-my-discord-bot/
-├── bot.py
-├── cogs/
-│   ├── moderation.py
-│   ├── community.py
-│   └── utility.py
-├── data/
-├── requirements.txt
-├── .env
-└── .gitignore
-```
-
-Xenoxy-suuruse projekti puhul on commandide jagamine eraldi failidesse või cogs'idesse tulevikus palju lihtsam hallata kui üks hiiglaslik fail.
-
----
-
-# Levinud vead
-
-## `ModuleNotFoundError: No module named 'discord'`
-
-Installi package:
-
-```powershell
-py -m pip install discord.py
-```
-
-## Bot on online, aga slash-command puudub
-
-Kontrolli:
-
-- kas command sync toimus
-- kas bot invite sisaldab `applications.commands`
-- kas käivitad õiget `bot.py` faili
-- kas hostis on uusim build
-
-## `PrivilegedIntentsRequired`
-
-Sinu kood kasutab intenti, mida Developer Portalis pole botile lubatud.
-
-## `Missing Permissions`
-
-Bot proovib teha midagi, mille jaoks tal puudub Discord permission või tema role on target role'ist madalam.
-
-Näiteks role'i andmiseks peab boti enda role olema sellest role'ist kõrgemal.
-
-## Token leaked
-
-Kui token kunagi avalikuks läheb, ära lihtsalt kustuta seda GitHubist ja looda parimat.
-
-Developer Portalis **reset/regenerate token** ja uuenda `.env` / hosting environment variable.
-
----
-
-# GitHub workflow beginnerile
-
-Repo loomisel pane source code GitHubi, aga mitte `.env` faili.
-
-Tavaline workflow:
-
-```powershell
-git add .
-git commit -m "Add new bot feature"
-git push
-```
-
-Enne push'i kontrolli alati:
-
-```powershell
-git status
-```
-
-ja veendu, et `.env` ei oleks commititavate failide seas.
-
----
-
-# Kõige olulisem lesson Xenoxy tegemisest
-
-Töötav suur bot ei sünni ühe korraga.
-
-Ehita üks töötav süsteem korraga:
-
-```text
-command
-→ test
-→ error
-→ fix
-→ test again
-→ alles siis järgmine feature
-```
-
-100 katkist commandi on palju kehvem kui 10 commandi, mis töötavad korralikult.
-
-Xenoxy V7.8 enda cleanup läks sama põhimõtte järgi: vähem filler-command'e ja rohkem päriselt kasutatavaid community süsteeme.
+V8.1 eesmärk on teha Xenoxy server settings hallatavaks nii Discordis kui ka web dashboardis, kasutades sama live konfiguratsiooni.
 
 ---
 
@@ -586,10 +265,12 @@ Xenoxy V7.8 enda cleanup läks sama põhimõtte järgi: vähem filler-command'e 
 
 - Python
 - discord.py
-- python-dotenv
+- aiohttp
+- Flask
+- Discord OAuth2
+- SQLite
 - Discord Interactions / Slash Commands
 - Discord UI Views
-- JSON persistence
-- GitHub Pages website
+- GitHub Pages
 
 Built by **@kodaniq**.
