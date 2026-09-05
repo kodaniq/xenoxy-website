@@ -12,6 +12,27 @@
 
   const normalizeCore = value => String(value || FALLBACK_CORE).trim().toUpperCase();
 
+  function syncStaticPlatformCopy() {
+    const setText = (selector, value) => { const el = document.querySelector(selector); if (el) el.textContent = value; };
+    setText('.hero .kicker', 'DISCORD CONTROL PLATFORM');
+    setText('.console-brand', 'XENOXY CONTROL PLATFORM');
+    setText('.console-grid article:first-child span', 'Control Platform');
+    setText('main > .metric-strip article:first-child span', 'Control Platform');
+    setText('#systems .eyebrow', '// CONTROL PLATFORM SYSTEMS');
+    setText('#architecture .eyebrow', '// V10.0 ARCHITECTURE');
+    setText('footer span:first-child', 'XENOXY // V10.0 // CONTROL PLATFORM');
+    set('liveVersion', 'V10.0');
+
+    const architectureTitle = document.querySelector('#architecture h2');
+    if (architectureTitle) architectureTitle.innerHTML = 'Discord → Control Platform → <span>Xenoxy.</span>';
+
+    const lead = document.querySelector('.hero .lead');
+    if (lead) lead.textContent = '100 slash commands, Discord OAuth, restart-safe SQLite, Member Ops, Automod, Incident Center, server analytics and platform diagnostics — unified in Xenoxy.';
+
+    const systemsCopy = document.querySelector('#systems .sectionhead .muted');
+    if (systemsCopy) systemsCopy.textContent = 'Xenoxy unifies Discord configuration, Member Ops, Automod, incident workflows, analytics and persistent platform state in one hosted control surface.';
+  }
+
   function formatUptime(total) {
     total = Math.max(0, Math.floor(total || 0));
     const d = Math.floor(total / 86400); total %= 86400;
@@ -85,7 +106,9 @@
     if (cards[2]?.querySelector('b') && finite(data.latency_ms)) cards[2].querySelector('b').textContent = `${data.latency_ms} ms`;
     if (cards[3]?.querySelector('b')) cards[3].querySelector('b').textContent = uptimeBase !== null ? formatUptime(uptimeBase) : (data.uptime || '—');
 
-    document.querySelectorAll('[data-xenoxy-core]').forEach(el => { el.textContent = core; });
+    const topMetric = document.querySelector('main > .metric-strip article:first-child b');
+    if (topMetric) topMetric.textContent = `V${version}`;
+    set('liveVersion', `V${version}`);
     syncDemo(data);
   }
 
@@ -145,6 +168,7 @@
     if (cards[3]?.querySelector('b')) cards[3].querySelector('b').textContent = formatUptime(current);
   }, 1000);
 
+  syncStaticPlatformCopy();
   syncPageIdentity();
   refreshStatus();
   setInterval(refreshStatus, 30000);
