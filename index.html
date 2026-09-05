@@ -3,47 +3,91 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#7c3aed">
-  <title>Xenoxy — Discord Bot</title>
-  <meta name="description" content="Xenoxy is an all-in-one Discord bot with 100 slash commands, tickets, moderation and server control.">
+  <meta name="theme-color" content="#8b5cf6">
+  <title>Xenoxy // System Online</title>
+  <meta name="description" content="Xenoxy is an all-in-one Discord automation system with 100 slash commands, moderation, tickets, welcome systems, logs and more.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <nav><a class="brand" href="#top"><span>X</span> XENOXY</a><div><a href="#features">Features</a><a href="#commands">Commands</a><a href="#setup">Setup</a></div></nav>
+  <div class="aurora"></div>
+  <div class="gridfx"></div>
+
+  <nav>
+    <a class="brand" href="#top"><span class="logo">X</span><span>XENOXY</span></a>
+    <div class="navlinks"><a href="#features">Systems</a><a href="#commands">Commands</a><a href="#welcome">Welcome DM</a><a href="#setup">Setup</a></div>
+  </nav>
+
   <main id="top">
     <section class="hero">
-      <p class="badge">● ONLINE • V7 MAXIMUM</p>
-      <h1>Your server.<br><em>Maximum Xenoxy.</em></h1>
-      <p class="lead">100 slash commands. Tickets. Moderation. Welcome systems. Button roles. Server control. One purple robot doing way too much.</p>
-      <div class="actions"><a class="primary" href="#commands">Explore commands</a><a class="secondary" href="#setup">Setup guide</a></div>
-      <div class="stats"><article><b>100</b><small>Slash commands</small></article><article><b>24/7</b><small>Hosted</small></article><article><b>V7</b><small>Maximum</small></article></div>
+      <div class="status"><span class="pulse"></span> SYSTEM ONLINE <b>// V7.2</b></div>
+      <p class="kicker">DISCORD AUTOMATION // SERVER CONTROL</p>
+      <h1>X E N O X Y<br><em>built to evolve.</em></h1>
+      <p class="lead">One system for moderation, tickets, welcomes, logs, roles, utility and community tools. Fast. Clean. Zero clutter.</p>
+      <div class="actions">
+        <a class="primary" href="#commands">Explore 100 commands <span>↗</span></a>
+        <a class="secondary" href="#setup">Open setup guide</a>
+      </div>
+      <div class="stats">
+        <article><b>100</b><small>GLOBAL COMMANDS</small></article>
+        <article><b>24/7</b><small>SYSTEM UPTIME</small></article>
+        <article><b>V7.2</b><small>DYNAMIC WELCOME</small></article>
+        <article><b>1</b><small>CONTROL SYSTEM</small></article>
+      </div>
     </section>
 
     <section id="features">
-      <p class="eyebrow">SERVER CONTROL</p><h2>Built like a real community bot.</h2>
+      <div class="sectionhead"><p class="eyebrow">// CORE SYSTEMS</p><h2>Everything your server needs.<br><span>Nothing it doesn't.</span></h2></div>
       <div class="cards">
-        <article><i>🎫</i><h3>Tickets</h3><p>Create, claim, rename, add users and close private support tickets.</p></article>
-        <article><i>🛡️</i><h3>Moderation</h3><p>Ban, kick, timeout, warnings, locks, purge tools, logs and anti-spam.</p></article>
-        <article><i>⚙️</i><h3>/setup</h3><p>Control welcome, logging, anti-spam, anti-links and welcome DMs.</p></article>
-        <article><i>🎭</i><h3>Roles</h3><p>Autoroles and clickable button-role panels for members.</p></article>
-        <article><i>👋</i><h3>Welcome 2.0</h3><p>Welcome and goodbye channels plus optional welcome DM.</p></article>
-        <article><i>🎮</i><h3>Fun + Utility</h3><p>Games, polls, reminders, server info, random tools and more.</p></article>
+        <article><div class="icon">🎫</div><p class="tag">SUPPORT</p><h3>Ticket System</h3><p>Create private tickets, claim them, rename them, add members and close them cleanly.</p></article>
+        <article><div class="icon">🛡️</div><p class="tag">PROTECTION</p><h3>Moderation</h3><p>Bans, kicks, timeouts, warnings, locks, purge tools, logs, anti-spam and anti-links.</p></article>
+        <article><div class="icon">⚙️</div><p class="tag">CONTROL</p><h3>/setup Dashboard</h3><p>Configure Xenoxy from Discord with buttons for status, protection, logs and welcome systems.</p></article>
+        <article><div class="icon">🎭</div><p class="tag">IDENTITY</p><h3>Roles</h3><p>Autoroles plus clickable button-role panels your members can control themselves.</p></article>
+        <article><div class="icon">👋</div><p class="tag">V7.2</p><h3>Dynamic Welcome</h3><p>Xenoxy detects the exact server a member joined and builds a personalized DM using that server's name, icon and member count.</p></article>
+        <article><div class="icon">🎮</div><p class="tag">COMMUNITY</p><h3>Fun + Utility</h3><p>Games, polls, reminders, server info, random tools and dozens of everyday commands.</p></article>
+      </div>
+    </section>
+
+    <section id="welcome" class="welcome">
+      <div>
+        <p class="eyebrow">// DYNAMIC WELCOME DM</p>
+        <h2>Every server gets<br><span>its own identity.</span></h2>
+        <p class="muted">Welcome DM is no longer hardcoded. Xenoxy reads the server the member actually joined and automatically uses that server's real name, icon and current member count.</p>
+        <div class="chips"><span>SERVER NAME</span><span>SERVER ICON</span><span>MEMBER COUNT</span><span>SERVER ID</span></div>
+      </div>
+      <div class="dmcard">
+        <div class="dmbar"><span class="avatar">X</span><div><b>Xenoxy</b><small>APP • SYSTEM ONLINE</small></div></div>
+        <div class="embedline"></div>
+        <div class="dmbody">
+          <p class="dmeyebrow">✦ WELCOME TO YOUR SERVER ✦</p>
+          <h3>Hey username 👋</h3>
+          <p>Sa liitusid serveriga <b>Your Server</b>.</p>
+          <div class="dmmeta"><span>👥 Members <b>88</b></span><span>🆔 Server ID <b>dynamic</b></span></div>
+          <p class="powered">🤖 Powered by <b>Xenoxy</b><br>💜 Enjoy your stay.</p>
+          <small>Xenoxy // Your Server // SYSTEM ONLINE</small>
+        </div>
       </div>
     </section>
 
     <section id="commands">
-      <p class="eyebrow">100 / 100</p><h2>Every global slash-command slot used.</h2>
-      <p class="muted">Search below. Click any command to copy it.</p>
-      <input id="search" placeholder="Search commands… e.g. ticket, ban, avatar">
+      <div class="sectionhead"><p class="eyebrow">// COMMAND DATABASE</p><h2>100 commands.<br><span>Zero hunting around.</span></h2></div>
+      <div class="searchwrap"><span>⌕</span><input id="search" placeholder="Search commands — ticket, ban, avatar, setup..."></div>
       <div id="commandGrid" class="command-grid"></div>
     </section>
 
     <section id="setup" class="setup">
-      <div><p class="eyebrow">QUICK START</p><h2>Get Xenoxy configured.</h2><p class="muted">After the bot is online, start in Discord with <code>/setup</code>. Then configure your channels and roles.</p></div>
-      <pre><span>/setup</span>\n/welcome-channel\n/goodbye-channel\n/log-channel\n/autorole\n/ticket-setup\n/ticket-panel\n/button-role</pre>
+      <div><p class="eyebrow">// QUICK START</p><h2>Boot the system.</h2><p class="muted">Once Xenoxy is online, start with <code>/setup</code>. The dashboard gives you fast access to server control and protection settings.</p></div>
+      <div class="terminal"><div class="terminalbar"><span></span><span></span><span></span><b>XENOXY // COMMAND CENTER</b></div><pre><strong>/setup</strong>
+/welcome-channel
+/goodbye-channel
+/log-channel
+/autorole
+/ticket-setup
+/ticket-panel
+/button-role</pre></div>
     </section>
   </main>
-  <footer><span>XENOXY V7 • MAXIMUM</span><span>Built with Python + discord.py 💜</span></footer>
+
+  <footer><span>XENOXY // V7.2 // SYSTEM ONLINE</span><span>100 commands • Python + discord.py • 💜</span></footer>
   <div id="toast">Copied!</div>
   <script src="script.js"></script>
 </body>
