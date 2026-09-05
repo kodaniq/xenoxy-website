@@ -1,11 +1,11 @@
-# XENOXY V8.5 // NEXUS INTERFACE
+# XENOXY V9.0 // CONTROL OS
 
 Xenoxy on Pythoni ja `discord.py` peal ehitatud Discord management bot/platform.
 
-Praegune build: **V8.5 // NEXUS INTERFACE**  
+Praegune build: **V9.0 // CONTROL OS**  
 Slash commande: **100 / 100**  
 Persistence: **SQLite (`xenoxy.db`)**  
-Dashboard: **Discord OAuth + public hosted control center**  
+Dashboard: **Discord OAuth + public hosted Control OS**  
 Login: **30-day persistent SQLite sessions**
 
 Website: https://kodaniq.github.io/xenoxy-website/
@@ -14,52 +14,51 @@ Public dashboard: https://4jeo6afdee.apps.bot-hosting.cloud/
 
 ---
 
-## Mis V8.5-s uut on?
+## V9.0 Control OS
 
-V8.5 teeb Xenoxy web layeri palju rohkem päris control-center feeliga süsteemiks.
+V9 ühendab Xenoxy boti, OAuth dashboardi ja SQLite persistence'i üheks control surface'iks.
 
 ```text
-Browser
-    ↓
-Public Xenoxy HTTPS domain
-    ↓
+Discord
+  ↓
 Discord OAuth2
-    ↓
-Persistent SQLite session
-    ↓
-Server select
-    ↓
-Xenoxy V8.5 Nexus Interface
-    ↓
-Xenoxy bot.py
-    ↓
+  ↓
+30-day persistent session
+  ↓
+Xenoxy Control OS
+  ↓
+bot.py + 100 slash commands
+  ↓
 xenoxy.db
-    ↓
-Discord server behavior changes
+  ↓
+Live Discord server behavior
 ```
 
-### V8.5 upgrades
+### V9 upgrades
 
-- 30-day persistent login sessions
+- Control OS branding and dashboard interface
+- 100 slash commands preserved
+- working Save Changes flow preserved
+- visible Saving / successful-sync feedback
+- unsaved-changes dashboard state
+- 30-day persistent OAuth sessions
 - sessions survive bot restarts
-- new Xenoxy Nexus logo
-- improved dashboard UI
-- visible `Changes saved successfully` confirmation banner + toast
-- hosted public dashboard, no localhost needed
-- Suggestions + Confessions dashboard controls
-- Sticky Messages dashboard controls
+- hosted HTTPS dashboard; no localhost required
+- Suggestions + Confessions controls
+- Sticky Messages controls
 - Birthdays overview/removal
 - Activity rankings
 - Welcome / Goodbye / Welcome DM controls
 - Autorole + Verification controls
 - Logs + Rules + moderation toggles
 - SQLite remains the live source of truth
+- refreshed Xenoxy website and Control OS branding
 
 ---
 
 ## Architecture
 
-`bot.py` runs:
+`bot.py` runs the Discord bot and hosted control layer in the same process:
 
 - 100 slash commands
 - Discord events
@@ -70,11 +69,7 @@ Discord server behavior changes
 - Discord OAuth callback flow
 - persistent web sessions
 
-```text
-Discord → OAuth → Nexus Dashboard → Xenoxy → SQLite → Discord
-```
-
-API endpoints remain protected by Bearer auth. Public dashboard routes use Discord OAuth sessions and only show servers where the user has Owner, Administrator or Manage Server permission and where Xenoxy is installed.
+API endpoints remain protected by Bearer auth. Public dashboard routes use Discord OAuth sessions and expose only servers where the user has Owner, Administrator or Manage Server permission and Xenoxy is installed.
 
 ### Bot-host environment variables
 
@@ -89,25 +84,11 @@ DISCORD_CLIENT_SECRET=...
 DISCORD_REDIRECT_URI=https://4jeo6afdee.apps.bot-hosting.cloud/callback
 ```
 
-Discord Developer Portal OAuth2 Redirects must contain:
-
-```text
-https://4jeo6afdee.apps.bot-hosting.cloud/callback
-```
-
-Never commit the bot token, Discord Client Secret or Xenoxy API Secret to GitHub.
+Never commit bot tokens, Discord Client Secrets or Xenoxy API Secrets to GitHub.
 
 ---
 
-## Xenoxy systems
-
-V8.5 includes moderation, welcome/goodbye, welcome DMs, suggestions, suggestion management, anonymous confessions, birthdays, activity/member stats, server health/age, role menu, reaction/button roles, verification, sticky messages, embed builder, backups, autorole, logs, polls/utilities, SQLite persistence, Discord OAuth dashboard and authenticated control API.
-
-Website command database contains all **100 slash commands**.
-
----
-
-## Xenoxy progression
+## Progression
 
 ```text
 V1       Basic Slash Commands
@@ -123,6 +104,7 @@ V8.2     Dashboard Expansion
 V8.3     Public Dashboard
 V8.4     Session Fortress
 V8.5     Nexus Interface
+V9.0     Control OS
 ```
 
 ## Tech
