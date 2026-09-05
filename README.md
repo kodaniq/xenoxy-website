@@ -1,11 +1,12 @@
-# XENOXY V8.3 // PUBLIC DASHBOARD
+# XENOXY V8.5 // NEXUS INTERFACE
 
 Xenoxy on Pythoni ja `discord.py` peal ehitatud Discord management bot/platform.
 
-Praegune build: **V8.3 // PUBLIC DASHBOARD**  
+Praegune build: **V8.5 // NEXUS INTERFACE**  
 Slash commande: **100 / 100**  
 Persistence: **SQLite (`xenoxy.db`)**  
-Dashboard: **Discord OAuth + public hosted control center**
+Dashboard: **Discord OAuth + public hosted control center**  
+Login: **30-day persistent SQLite sessions**
 
 Website: https://kodaniq.github.io/xenoxy-website/
 
@@ -13,11 +14,9 @@ Public dashboard: https://4jeo6afdee.apps.bot-hosting.cloud/
 
 ---
 
-## Mis V8.3-s uut on?
+## Mis V8.5-s uut on?
 
-V8.3 eemaldab localhost-only dashboard workflow.
-
-Dashboard jookseb nüüd samas hostitud Xenoxy protsessis, kus bot ja control API. See tähendab, et eraldi `py dashboard.py` protsessi pole enam vaja.
+V8.5 teeb Xenoxy web layeri palju rohkem päris control-center feeliga süsteemiks.
 
 ```text
 Browser
@@ -26,9 +25,11 @@ Public Xenoxy HTTPS domain
     ↓
 Discord OAuth2
     ↓
+Persistent SQLite session
+    ↓
 Server select
     ↓
-Xenoxy V8.3 Public Dashboard
+Xenoxy V8.5 Nexus Interface
     ↓
 Xenoxy bot.py
     ↓
@@ -37,47 +38,43 @@ xenoxy.db
 Discord server behavior changes
 ```
 
-Dashboard näitab ainult servereid, kus kasutajal on Owner, Administrator või Manage Server õigus ja kus Xenoxy bot on olemas.
+### V8.5 upgrades
 
-### Dashboard controls
-
-- Welcome channel + ON/OFF
-- Welcome message
-- Welcome thumbnail: Xenoxy / Server Icon / Off
-- Welcome DM + message
-- Goodbye channel + ON/OFF
-- Goodbye message
-- Suggestion channel
-- Confession channel
-- Autorole
-- Verification channel + role
-- Log channel
-- Rules channel
-- Anti-spam toggle
-- Anti-links toggle
-- Premium custom toggle UI
-- Public Discord OAuth login
-- Public server selector
+- 30-day persistent login sessions
+- sessions survive bot restarts
+- new Xenoxy Nexus logo
+- improved dashboard UI
+- visible `Changes saved successfully` confirmation banner + toast
+- hosted public dashboard, no localhost needed
+- Suggestions + Confessions dashboard controls
+- Sticky Messages dashboard controls
+- Birthdays overview/removal
+- Activity rankings
+- Welcome / Goodbye / Welcome DM controls
+- Autorole + Verification controls
+- Logs + Rules + moderation toggles
+- SQLite remains the live source of truth
 
 ---
 
-## V8.3 architecture
+## Architecture
 
-`bot.py` jooksutab nüüd korraga:
+`bot.py` runs:
 
-- 100 slash-commandi
-- Discord evente
-- persistent UI-d
-- SQLite storage'i
-- authenticated API-t
-- public dashboard web serverit
-- Discord OAuth callback flow'd
+- 100 slash commands
+- Discord events
+- persistent Discord UI
+- SQLite storage
+- authenticated API
+- public dashboard web server
+- Discord OAuth callback flow
+- persistent web sessions
 
 ```text
-Discord → OAuth → Hosted Dashboard → Xenoxy → SQLite → Discord
+Discord → OAuth → Nexus Dashboard → Xenoxy → SQLite → Discord
 ```
 
-API endpointid jäävad Bearer secretiga kaitstuks. Public web routes kasutavad Discord OAuth sessionit.
+API endpoints remain protected by Bearer auth. Public dashboard routes use Discord OAuth sessions and only show servers where the user has Owner, Administrator or Manage Server permission and where Xenoxy is installed.
 
 ### Bot-host environment variables
 
@@ -90,41 +87,42 @@ XENOXY_API_SECRET=...
 DISCORD_CLIENT_ID=...
 DISCORD_CLIENT_SECRET=...
 DISCORD_REDIRECT_URI=https://4jeo6afdee.apps.bot-hosting.cloud/callback
-XENOXY_WEB_SESSION_SECRET=...
 ```
 
-`XENOXY_WEB_SESSION_SECRET` võib olla suvaline pikk random secret. Seda ei tohi frontendile ega GitHubi commitida.
-
-Discord Developer Portal OAuth2 Redirects peab sisaldama täpselt:
+Discord Developer Portal OAuth2 Redirects must contain:
 
 ```text
 https://4jeo6afdee.apps.bot-hosting.cloud/callback
 ```
 
+Never commit the bot token, Discord Client Secret or Xenoxy API Secret to GitHub.
+
 ---
 
 ## Xenoxy systems
 
-V8.3 sisaldab muu hulgas moderationit, welcome/goodbye süsteemi, welcome DM configuratorit, suggestions + managementi, anonymous confessions süsteemi, birthdays, activity/member stats, server health/age, role menu, reaction/button roles, verification, sticky messages, embed builderit, backups, autorole'i, logs, polls/utilities, SQLite persistence'i, Discord OAuth dashboardi ja authenticated control API-t.
+V8.5 includes moderation, welcome/goodbye, welcome DMs, suggestions, suggestion management, anonymous confessions, birthdays, activity/member stats, server health/age, role menu, reaction/button roles, verification, sticky messages, embed builder, backups, autorole, logs, polls/utilities, SQLite persistence, Discord OAuth dashboard and authenticated control API.
 
-Website'i command database sisaldab kõiki **100 slash-commandi**.
+Website command database contains all **100 slash commands**.
 
 ---
 
 ## Xenoxy progression
 
 ```text
-V1       basic slash commands
-V3       welcome / logs / XP
-V5       83 commands
-V6       98 commands
-V7       100 commands
-V7.5     DM configurator
+V1       Basic Slash Commands
+V3       Welcome / Logs / XP
+V5       83 Commands
+V6       98 Commands
+V7       100 Commands
+V7.5     DM Configurator
 V7.8     Community Core
 V8.0     SQLite Database Core
 V8.1     Full Control Core
 V8.2     Dashboard Expansion
 V8.3     Public Dashboard
+V8.4     Session Fortress
+V8.5     Nexus Interface
 ```
 
 ## Tech
