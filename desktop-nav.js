@@ -28,7 +28,8 @@
   const yFor = item => {
     const anchor = anchorFor(item);
     if (!anchor) return 0;
-    return Math.max(0, anchor.getBoundingClientRect().top + window.scrollY - 92);
+    const finalTop = item.hash === '#contact' ? 96 : 104;
+    return Math.max(0, anchor.getBoundingClientRect().top + window.scrollY - finalTop);
   };
 
   const updateActive = () => {
@@ -42,7 +43,7 @@
     let current = sections[0]?.hash || null;
     for (const item of sections) {
       const anchor = anchorFor(item);
-      if (anchor && anchor.offsetTop <= probe) current = item.hash;
+      if (anchor && anchor.getBoundingClientRect().top + window.scrollY <= probe) current = item.hash;
     }
     if (current) setActive(current);
   };
