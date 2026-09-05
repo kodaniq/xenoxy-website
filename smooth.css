@@ -1,7 +1,8 @@
-/* XENOXY // fully transparent floating navbar */
+/* XENOXY // top-only floating navigation */
 nav{
-  position:sticky;
+  position:absolute;
   top:0;
+  left:0;
   z-index:30;
   width:100%!important;
   max-width:none!important;
@@ -16,12 +17,30 @@ nav{
   backdrop-filter:none!important;
   -webkit-backdrop-filter:none!important;
   overflow:visible;
+  opacity:1;
+  transform:translateY(0);
+  transition:opacity .38s ease,transform .38s cubic-bezier(.22,.61,.36,1),filter .38s ease;
+  will-change:opacity,transform;
+}
+
+nav.nav-fading{
+  opacity:.18;
+  transform:translateY(-14px);
+  filter:blur(1.5px);
+  pointer-events:none;
+}
+
+nav.nav-hidden{
+  opacity:0;
+  transform:translateY(-26px);
+  filter:blur(3px);
+  pointer-events:none;
 }
 
 nav::before,nav::after{content:none!important;display:none!important}
 
 main#top{position:relative;margin-top:0}
-.hero.nexus-hero{position:relative}
+.hero.nexus-hero{position:relative;padding-top:138px!important}
 .hero.nexus-hero::before{
   content:"";
   position:absolute;
@@ -45,5 +64,10 @@ main#top{position:relative;margin-top:0}
 
 @media(max-width:760px){
   nav{padding-left:18px!important;padding-right:18px!important}
+  .hero.nexus-hero{padding-top:116px!important}
   .hero.nexus-hero::before{top:-120px;height:300px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  nav{transition:none!important}
 }
