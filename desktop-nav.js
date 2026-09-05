@@ -13,23 +13,36 @@
     }))
     .filter(x => x.el);
 
+  const anchorFor = item => {
+    if (!item?.el) return null;
+    if (item.hash === '#contact') return item.el.querySelector('.contact-shell') || item.el;
+    return item.el.querySelector('.sectionhead') || item.el;
+  };
+
   const setActive = hash => {
     links.forEach(link => {
       link.classList.toggle('section-active', link.getAttribute('href') === hash);
     });
   };
 
+  const yFor = item => {
+    const anchor = anchorFor(item);
+    if (!anchor) return 0;
+    return Math.max(0, anchor.getBoundingClientRect().top + window.scrollY - 92);
+  };
+
   const updateActive = () => {
-    const nearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 120;
+    const nearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100;
     if (nearBottom) {
       setActive('#contact');
       return;
     }
 
-    const probe = window.scrollY + 150;
+    const probe = window.scrollY + 130;
     let current = sections[0]?.hash || null;
     for (const item of sections) {
-      if (item.el.offsetTop <= probe) current = item.hash;
+      const anchor = anchorFor(item);
+      if (anchor && anchor.offsetTop <= probe) current = item.hash;
     }
     if (current) setActive(current);
   };
@@ -37,19 +50,26 @@
   links.forEach(link => {
     link.addEventListener('click', event => {
       const hash = link.getAttribute('href');
-      const target = document.querySelector(hash);
-      if (!target) return;
+      const item = sections.find(section => section.hash === hash);
+      if (!item) return;
 
       event.preventDefault();
       setActive(hash);
-
-      const targetY = target.getBoundingClientRect().top + window.scrollY - 96;
-      window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+      window.scrollTo({ top: yFor(item), behavior: 'smooth' });
       history.replaceState(null, '', hash);
     });
   });
 
+  const correctInitialHash = () => {
+    const item = sections.find(section => section.hash === window.location.hash);
+    if (!item) return;
+    setActive(item.hash);
+    window.scrollTo({ top: yFor(item), behavior: 'auto' });
+  };
+
   window.addEventListener('scroll', updateActive, { passive: true });
   window.addEventListener('resize', updateActive, { passive: true });
+
+  requestAnimationFrame(() => requestAnimationFrame(correctInitialHash));
   updateActive();
 })();
