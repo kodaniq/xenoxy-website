@@ -1,12 +1,14 @@
-# XENOXY V9.0 // CONTROL OS
+# XENOXY V9.2 // MEMBER CONTROL
 
-Xenoxy on Pythoni ja `discord.py` peal ehitatud Discord management bot/platform.
+Xenoxy is a Discord management bot/platform built with Python and `discord.py`, combining a 100-command Discord layer, hosted web control, Discord OAuth and SQLite persistence into one control surface.
 
-Praegune build: **V9.0 // CONTROL OS**  
-Slash commande: **100 / 100**  
-Persistence: **SQLite (`xenoxy.db`)**  
-Dashboard: **Discord OAuth + public hosted Control OS**  
-Login: **30-day persistent SQLite sessions**
+**Current build:** V9.2 // MEMBER CONTROL  
+**Slash commands:** 100 / 100  
+**Persistence:** SQLite (`xenoxy.db`)  
+**Dashboard:** hosted Xenoxy Member Control  
+**Authentication:** Discord OAuth2  
+**Web sessions:** restart-safe rolling 30-day SQLite sessions  
+**Hosting:** public HTTPS dashboard + 24/7 bot hosting
 
 Website: https://kodaniq.github.io/xenoxy-website/
 
@@ -14,62 +16,83 @@ Public dashboard: https://4jeo6afdee.apps.bot-hosting.cloud/
 
 ---
 
-## V9.0 Control OS
+## V9.2 Member Control
 
-V9 ühendab Xenoxy boti, OAuth dashboardi ja SQLite persistence'i üheks control surface'iks.
+V9.2 expands Xenoxy from a command bot into a proper server control platform. Discord commands, member actions, server configuration, OAuth sessions and persisted settings all work through the same Xenoxy stack.
 
 ```text
 Discord
   ↓
 Discord OAuth2
   ↓
-30-day persistent session
+30-day restart-safe session
   ↓
-Xenoxy Control OS
+Xenoxy Member Control
   ↓
 bot.py + 100 slash commands
   ↓
-xenoxy.db
+SQLite / xenoxy.db
   ↓
 Live Discord server behavior
 ```
 
-### V9 upgrades
+### Current V9.2 systems
 
-- Control OS branding and dashboard interface
-- 100 slash commands preserved
-- working Save Changes flow preserved
-- visible Saving / successful-sync feedback
-- unsaved-changes dashboard state
-- 30-day persistent OAuth sessions
-- sessions survive bot restarts
-- hosted HTTPS dashboard; no localhost required
-- Suggestions + Confessions controls
-- Sticky Messages controls
-- Birthdays overview/removal
-- Activity rankings
-- Welcome / Goodbye / Welcome DM controls
-- Autorole + Verification controls
-- Logs + Rules + moderation toggles
-- SQLite remains the live source of truth
-- refreshed Xenoxy website and Control OS branding
+- 100 global slash commands
+- hosted Xenoxy Member Control dashboard
+- Discord OAuth2 login
+- restart-safe rolling 30-day web sessions
+- SQLite-backed guild settings and session persistence
+- permission-aware member search and actions
+- timeout, nickname, kick and ban controls
+- Welcome / Goodbye / Welcome DM configuration
+- Autorole and Verification controls
+- Logs, Rules and moderation settings
+- Suggestions and Confessions systems
+- Sticky Messages
+- Birthdays overview and removal tools
+- Activity rankings and member stats
+- community and server-management controls
+- visible save/sync feedback in the dashboard
+- public HTTPS control surface; localhost is not required
+- GitHub Pages product website
+
+---
+
+## Member Control
+
+The hosted dashboard only exposes servers the signed-in Discord user is allowed to manage and where Xenoxy is installed.
+
+Main control areas include:
+
+- guild configuration
+- member lookup
+- permission-aware moderation actions
+- community systems
+- verification and autorole
+- welcome/goodbye flows
+- logs and moderation toggles
+- persisted settings
+- dashboard audit/state data
+
+The live dashboard target shown on the public website is **Mustikavesi**.
 
 ---
 
 ## Architecture
 
-`bot.py` runs the Discord bot and hosted control layer in the same process:
+`bot.py` runs Xenoxy's Discord and control layers around the same persisted data model:
 
-- 100 slash commands
-- Discord events
+- Discord slash commands and events
 - persistent Discord UI
 - SQLite storage
 - authenticated API
-- public dashboard web server
+- hosted dashboard server
 - Discord OAuth callback flow
 - persistent web sessions
+- permission-aware live member control
 
-API endpoints remain protected by Bearer auth. Public dashboard routes use Discord OAuth sessions and expose only servers where the user has Owner, Administrator or Manage Server permission and Xenoxy is installed.
+API endpoints remain protected by authentication. Public dashboard routes use Discord OAuth sessions and expose only manageable Discord servers.
 
 ### Bot-host environment variables
 
@@ -84,7 +107,29 @@ DISCORD_CLIENT_SECRET=...
 DISCORD_REDIRECT_URI=https://4jeo6afdee.apps.bot-hosting.cloud/callback
 ```
 
-Never commit bot tokens, Discord Client Secrets or Xenoxy API Secrets to GitHub.
+Never commit bot tokens, Discord client secrets, OAuth secrets or Xenoxy API secrets to GitHub.
+
+---
+
+## Command layer
+
+The website currently exposes the full **100-command** Xenoxy command database with searchable/copyable slash-command names.
+
+Examples of the command systems represented in the current build include:
+
+- utility and information commands
+- fun/social commands
+- moderation
+- roles and channels
+- welcome/goodbye setup
+- autorole
+- suggestions
+- confessions
+- birthdays
+- sticky messages
+- verification
+- activity and member stats
+- server health and server-management tools
 
 ---
 
@@ -105,7 +150,27 @@ V8.3     Public Dashboard
 V8.4     Session Fortress
 V8.5     Nexus Interface
 V9.0     Control OS
+V9.1     Control Expansion
+V9.2     Member Control
 ```
+
+---
+
+## Website
+
+The public Xenoxy site is the product/feature surface for V9.2. It includes:
+
+- V9.2 Member Control hero/dashboard preview
+- live feature overview
+- 100-command searchable database
+- architecture overview
+- creator/contact section
+- direct hosted-dashboard access
+- responsive luxury cyber UI
+
+Website source lives in this repository and is deployed with GitHub Pages.
+
+---
 
 ## Tech
 
@@ -116,6 +181,7 @@ V9.0     Control OS
 - SQLite
 - Discord Interactions / Slash Commands
 - Discord UI Views
+- HTML / CSS / JavaScript
 - GitHub Pages
 
 Built by **@kodaniq**.
