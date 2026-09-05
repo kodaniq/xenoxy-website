@@ -1,0 +1,25 @@
+/* XENOXY // beam killer
+   Loaded last on purpose: removes every hero/background layer capable of producing the clipped diagonal light beam. */
+.hero.nexus-hero::before,
+.hero-copy::before{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  filter:none!important;
+  box-shadow:none!important;
+}
+
+/* Keep ambient lighting soft and radial only. */
+body::before{
+  background:
+    radial-gradient(circle at 76% 7%,rgba(74,26,126,.68) 0%,rgba(34,13,63,.32) 25%,transparent 52%),
+    radial-gradient(circle at 12% 38%,rgba(69,24,100,.20) 0%,transparent 42%)!important;
+}
+.aurora{
+  inset:-35%!important;
+  background:
+    radial-gradient(ellipse at 74% 12%,rgba(111,55,255,.20),transparent 48%),
+    radial-gradient(ellipse at 18% 32%,rgba(255,79,216,.08),transparent 46%),
+    radial-gradient(ellipse at 54% 72%,rgba(88,40,190,.12),transparent 52%)!important;
+  filter:blur(150px)!important;
+}
