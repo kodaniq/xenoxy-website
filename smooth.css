@@ -1,3 +1,5 @@
+@import url('./beam-killer.css?v=2273b286');
+
 /* XENOXY // top-only floating navigation */
 nav{
   position:absolute;
@@ -22,52 +24,16 @@ nav{
   transition:opacity .38s ease,transform .38s cubic-bezier(.22,.61,.36,1),filter .38s ease;
   will-change:opacity,transform;
 }
-
-nav.nav-fading{
-  opacity:.18;
-  transform:translateY(-14px);
-  filter:blur(1.5px);
-  pointer-events:none;
-}
-
-nav.nav-hidden{
-  opacity:0;
-  transform:translateY(-26px);
-  filter:blur(3px);
-  pointer-events:none;
-}
-
+nav.nav-fading{opacity:.18;transform:translateY(-14px);filter:blur(1.5px);pointer-events:none}
+nav.nav-hidden{opacity:0;transform:translateY(-26px);filter:blur(3px);pointer-events:none}
 nav::before,nav::after{content:none!important;display:none!important}
-
 main#top{position:relative;margin-top:0}
 .hero.nexus-hero{position:relative;padding-top:138px!important}
-.hero.nexus-hero::before{
-  content:"";
-  position:absolute;
-  z-index:-1;
-  left:50%;
-  top:-150px;
-  width:100vw;
-  height:390px;
-  transform:translateX(-50%);
-  pointer-events:none;
-  background:
-    radial-gradient(ellipse at 72% 5%,rgba(119,42,225,.25) 0%,rgba(91,31,173,.13) 32%,transparent 68%),
-    radial-gradient(ellipse at 5% 8%,rgba(255,79,216,.09) 0%,rgba(132,49,197,.035) 34%,transparent 62%);
-  filter:blur(24px);
-}
-
+/* Hero beam intentionally removed. Ambient background now lives outside this clipped pseudo-element. */
+.hero.nexus-hero::before{content:none!important;display:none!important}
 .brand,.navlinks{position:relative;z-index:2}
 .navlinks a{transition:background .22s ease,color .22s ease,box-shadow .22s ease,transform .22s ease}
 .navlinks a:hover{transform:translateY(-1px)}
 .navlinks .nav-cta{box-shadow:0 10px 28px rgba(124,58,237,.22),0 0 26px rgba(255,79,216,.12)!important}
-
-@media(max-width:760px){
-  nav{padding-left:18px!important;padding-right:18px!important}
-  .hero.nexus-hero{padding-top:116px!important}
-  .hero.nexus-hero::before{top:-120px;height:300px}
-}
-
-@media(prefers-reduced-motion:reduce){
-  nav{transition:none!important}
-}
+@media(max-width:760px){nav{padding-left:18px!important;padding-right:18px!important}.hero.nexus-hero{padding-top:116px!important}}
+@media(prefers-reduced-motion:reduce){nav{transition:none!important}}
