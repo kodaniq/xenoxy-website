@@ -1,30 +1,34 @@
-# XENOXY V8.2 // DASHBOARD EXPANSION
+# XENOXY V8.3 // PUBLIC DASHBOARD
 
 Xenoxy on Pythoni ja `discord.py` peal ehitatud Discord management bot/platform.
 
-Praegune build: **V8.2 // DASHBOARD EXPANSION**  
+Praegune build: **V8.3 // PUBLIC DASHBOARD**  
 Slash commande: **100 / 100**  
 Persistence: **SQLite (`xenoxy.db`)**  
-Dashboard: **Discord OAuth + authenticated live control API**
+Dashboard: **Discord OAuth + public hosted control center**
 
 Website: https://kodaniq.github.io/xenoxy-website/
 
+Public dashboard: https://4jeo6afdee.apps.bot-hosting.cloud/
+
 ---
 
-## Mis V8.2-s uut on?
+## Mis V8.3-s uut on?
 
-V8.2 laiendab V8.1 Full Control Core'i dashboardi päris server control centeriks.
+V8.3 eemaldab localhost-only dashboard workflow.
+
+Dashboard jookseb nüüd samas hostitud Xenoxy protsessis, kus bot ja control API. See tähendab, et eraldi `py dashboard.py` protsessi pole enam vaja.
 
 ```text
-Discord admin
+Browser
     ↓
-Login with Discord (OAuth2)
+Public Xenoxy HTTPS domain
+    ↓
+Discord OAuth2
     ↓
 Server select
     ↓
-Xenoxy V8.2 Web Dashboard
-    ↓
-Authenticated Control API
+Xenoxy V8.3 Public Dashboard
     ↓
 Xenoxy bot.py
     ↓
@@ -33,12 +37,13 @@ xenoxy.db
 Discord server behavior changes
 ```
 
-Dashboard kasutab päris Discord serveri channel'e, role'e ja live Xenoxy settinguid. Save muudatused liiguvad bot API kaudu samasse SQLite datasüsteemi, mida bot ise kasutab.
+Dashboard näitab ainult servereid, kus kasutajal on Owner, Administrator või Manage Server õigus ja kus Xenoxy bot on olemas.
 
 ### Dashboard controls
 
 - Welcome channel + ON/OFF
 - Welcome message
+- Welcome thumbnail: Xenoxy / Server Icon / Off
 - Welcome DM + message
 - Goodbye channel + ON/OFF
 - Goodbye message
@@ -48,46 +53,61 @@ Dashboard kasutab päris Discord serveri channel'e, role'e ja live Xenoxy settin
 - Verification channel + role
 - Log channel
 - Rules channel
-- Server systems overview
-- Discord OAuth server selector
-- Premium dashboard toggle UI
+- Anti-spam toggle
+- Anti-links toggle
+- Premium custom toggle UI
+- Public Discord OAuth login
+- Public server selector
 
 ---
 
-## Kuidas Xenoxy töötab?
+## V8.3 architecture
 
-`bot.py` jooksutab 100 slash-commandi, Discord evente, persistent UI-d ja authenticated control API-t. `xenoxy.db` hoiab persistent guild configuration'it. Dashboard logib admini Discord OAuth2 kaudu sisse ning näitab ainult servereid, mida kasutajal on õigus hallata.
+`bot.py` jooksutab nüüd korraga:
+
+- 100 slash-commandi
+- Discord evente
+- persistent UI-d
+- SQLite storage'i
+- authenticated API-t
+- public dashboard web serverit
+- Discord OAuth callback flow'd
 
 ```text
-Discord → OAuth → Dashboard → Control API → bot.py → SQLite → Discord
+Discord → OAuth → Hosted Dashboard → Xenoxy → SQLite → Discord
 ```
 
-### Security
+API endpointid jäävad Bearer secretiga kaitstuks. Public web routes kasutavad Discord OAuth sessionit.
 
-Secretid peavad jääma environment variable'itesse. Bot tokenit, Discord Client Secreti ega Xenoxy API Secreti ei tohi frontendile ega GitHubi commitida.
+### Bot-host environment variables
 
-Bot env kasutab näiteks `DISCORD_TOKEN`, `XENOXY_API_HOST`, `XENOXY_API_PORT` ja `XENOXY_API_SECRET`. Dashboard kasutab Discord OAuth Client ID/Secretit, redirect URI-d, session secretit ning sama Xenoxy API secretit.
+```env
+DISCORD_TOKEN=...
+GUILD_ID=...
+XENOXY_API_HOST=0.0.0.0
+XENOXY_API_PORT=25931
+XENOXY_API_SECRET=...
+DISCORD_CLIENT_ID=...
+DISCORD_CLIENT_SECRET=...
+DISCORD_REDIRECT_URI=https://4jeo6afdee.apps.bot-hosting.cloud/callback
+XENOXY_WEB_SESSION_SECRET=...
+```
+
+`XENOXY_WEB_SESSION_SECRET` võib olla suvaline pikk random secret. Seda ei tohi frontendile ega GitHubi commitida.
+
+Discord Developer Portal OAuth2 Redirects peab sisaldama täpselt:
+
+```text
+https://4jeo6afdee.apps.bot-hosting.cloud/callback
+```
 
 ---
 
 ## Xenoxy systems
 
-V8.2 sisaldab muu hulgas moderationit, welcome/goodbye süsteemi, welcome DM configuratorit, suggestions + managementi, anonymous confessions süsteemi, birthdays, activity/member stats, server health/age, role menu, reaction/button roles, verification, sticky messages, embed builderit, backups, autorole'i, logs, polls/utilities, SQLite persistence'i, Discord OAuth dashboardi ja authenticated control API-t.
+V8.3 sisaldab muu hulgas moderationit, welcome/goodbye süsteemi, welcome DM configuratorit, suggestions + managementi, anonymous confessions süsteemi, birthdays, activity/member stats, server health/age, role menu, reaction/button roles, verification, sticky messages, embed builderit, backups, autorole'i, logs, polls/utilities, SQLite persistence'i, Discord OAuth dashboardi ja authenticated control API-t.
 
 Website'i command database sisaldab kõiki **100 slash-commandi**.
-
----
-
-## Beginner: enda Discord bot
-
-1. Installi Python ja kontrolli `py --version`.
-2. Discord Developer Portal → New Application → Bot.
-3. Hoia `DISCORD_TOKEN` `.env` failis ja lisa `.env` `.gitignore` faili.
-4. Installi `py -m pip install discord.py python-dotenv`.
-5. Tee `bot.py`, loo `discord.Client`, `app_commands.CommandTree` ja sync'i slash-commandod.
-6. Käivita `py bot.py`.
-
-Ära kunagi commiti Discord bot tokenit või muid secrete GitHubi.
 
 ---
 
@@ -104,6 +124,7 @@ V7.8     Community Core
 V8.0     SQLite Database Core
 V8.1     Full Control Core
 V8.2     Dashboard Expansion
+V8.3     Public Dashboard
 ```
 
 ## Tech
@@ -111,7 +132,6 @@ V8.2     Dashboard Expansion
 - Python
 - discord.py
 - aiohttp
-- Flask
 - Discord OAuth2
 - SQLite
 - Discord Interactions / Slash Commands
