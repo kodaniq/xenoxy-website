@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#8b5cf6">
-  <title>Xenoxy // System Online</title>
-  <meta name="description" content="Xenoxy is an all-in-one Discord automation system with 100 slash commands, moderation, tickets, welcome systems, logs and more.">
+  <title>Xenoxy V7.4 // Welcome Actions</title>
+  <meta name="description" content="Xenoxy V7.4 is an all-in-one Discord automation system with 100 slash commands, moderation, tickets, dynamic welcome DMs, server actions and more.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -19,10 +19,10 @@
 
   <main id="top">
     <section class="hero">
-      <div class="status"><span class="pulse"></span> SYSTEM ONLINE <b>// V7.2</b></div>
+      <div class="status"><span class="pulse"></span> SYSTEM ONLINE <b>// V7.4</b></div>
       <p class="kicker">DISCORD AUTOMATION // SERVER CONTROL</p>
-      <h1>X E N O X Y<br><em>built to evolve.</em></h1>
-      <p class="lead">One system for moderation, tickets, welcomes, logs, roles, utility and community tools. Fast. Clean. Zero clutter.</p>
+      <h1>X E N O X Y<br><em>welcome actions.</em></h1>
+      <p class="lead">One system for moderation, tickets, welcomes, logs, roles, utility and community tools. Fast. Clean. Built to evolve.</p>
       <div class="actions">
         <a class="primary" href="#commands">Explore 100 commands <span>↗</span></a>
         <a class="secondary" href="#setup">Open setup guide</a>
@@ -30,8 +30,8 @@
       <div class="stats">
         <article><b>100</b><small>GLOBAL COMMANDS</small></article>
         <article><b>24/7</b><small>SYSTEM UPTIME</small></article>
-        <article><b>V7.2</b><small>DYNAMIC WELCOME</small></article>
-        <article><b>1</b><small>CONTROL SYSTEM</small></article>
+        <article><b>V7.4</b><small>WELCOME ACTIONS</small></article>
+        <article><b>2</b><small>WELCOME BUTTONS</small></article>
       </div>
     </section>
 
@@ -40,19 +40,19 @@
       <div class="cards">
         <article><div class="icon">🎫</div><p class="tag">SUPPORT</p><h3>Ticket System</h3><p>Create private tickets, claim them, rename them, add members and close them cleanly.</p></article>
         <article><div class="icon">🛡️</div><p class="tag">PROTECTION</p><h3>Moderation</h3><p>Bans, kicks, timeouts, warnings, locks, purge tools, logs, anti-spam and anti-links.</p></article>
-        <article><div class="icon">⚙️</div><p class="tag">CONTROL</p><h3>/setup Dashboard</h3><p>Configure Xenoxy from Discord with buttons for status, protection, logs and welcome systems.</p></article>
+        <article><div class="icon">⚙️</div><p class="tag">CONTROL</p><h3>/setup Dashboard</h3><p>Configure Xenoxy from Discord with buttons for status, protection, logs, welcome systems and Rules setup.</p></article>
         <article><div class="icon">🎭</div><p class="tag">IDENTITY</p><h3>Roles</h3><p>Autoroles plus clickable button-role panels your members can control themselves.</p></article>
-        <article><div class="icon">👋</div><p class="tag">V7.2</p><h3>Dynamic Welcome</h3><p>Xenoxy detects the exact server a member joined and builds a personalized DM using that server's name, icon and member count.</p></article>
+        <article><div class="icon">👋</div><p class="tag">V7.4</p><h3>Welcome Actions</h3><p>Dynamic welcome DMs now include Open Server and Rules buttons built for the exact server a member joined.</p></article>
         <article><div class="icon">🎮</div><p class="tag">COMMUNITY</p><h3>Fun + Utility</h3><p>Games, polls, reminders, server info, random tools and dozens of everyday commands.</p></article>
       </div>
     </section>
 
     <section id="welcome" class="welcome">
       <div>
-        <p class="eyebrow">// DYNAMIC WELCOME DM</p>
-        <h2>Every server gets<br><span>its own identity.</span></h2>
-        <p class="muted">Welcome DM is no longer hardcoded. Xenoxy reads the server the member actually joined and automatically uses that server's real name, icon and current member count.</p>
-        <div class="chips"><span>SERVER NAME</span><span>SERVER ICON</span><span>MEMBER COUNT</span><span>SERVER ID</span></div>
+        <p class="eyebrow">// V7.4 WELCOME ACTIONS</p>
+        <h2>Welcome them.<br><span>Then guide them.</span></h2>
+        <p class="muted">Xenoxy detects the exact server a member joined and automatically uses that server's real name, icon and current member count. The DM can now take members straight back to the server or directly to your configured Rules channel.</p>
+        <div class="chips"><span>SERVER NAME</span><span>SERVER ICON</span><span>MEMBER #</span><span>OPEN SERVER</span><span>RULES</span></div>
       </div>
       <div class="dmcard">
         <div class="dmbar"><span class="avatar">X</span><div><b>Xenoxy</b><small>APP • SYSTEM ONLINE</small></div></div>
@@ -61,9 +61,10 @@
           <p class="dmeyebrow">✦ WELCOME TO YOUR SERVER ✦</p>
           <h3>Hey username 👋</h3>
           <p>Sa liitusid serveriga <b>Your Server</b>.</p>
-          <div class="dmmeta"><span>👥 Members <b>88</b></span><span>🆔 Server ID <b>dynamic</b></span></div>
+          <div class="dmmeta"><span>👥 <b>You are member #88</b></span></div>
           <p class="powered">🤖 Powered by <b>Xenoxy</b><br>💜 Enjoy your stay.</p>
-          <small>Xenoxy // Your Server // SYSTEM ONLINE</small>
+          <div class="dmbuttons"><span>🚀 Open Server</span><span>📖 Rules</span></div>
+          <small>XENOXY // SYSTEM ONLINE</small>
         </div>
       </div>
     </section>
@@ -75,8 +76,9 @@
     </section>
 
     <section id="setup" class="setup">
-      <div><p class="eyebrow">// QUICK START</p><h2>Boot the system.</h2><p class="muted">Once Xenoxy is online, start with <code>/setup</code>. The dashboard gives you fast access to server control and protection settings.</p></div>
+      <div><p class="eyebrow">// QUICK START</p><h2>Boot the system.</h2><p class="muted">Start with <code>/setup</code>. To enable the Rules button in Welcome DMs, open <code>/setup</code> inside your Rules channel and press <b>Rules = This Channel</b>.</p></div>
       <div class="terminal"><div class="terminalbar"><span></span><span></span><span></span><b>XENOXY // COMMAND CENTER</b></div><pre><strong>/setup</strong>
+→ Rules = This Channel
 /welcome-channel
 /goodbye-channel
 /log-channel
@@ -87,7 +89,7 @@
     </section>
   </main>
 
-  <footer><span>XENOXY // V7.2 // SYSTEM ONLINE</span><span>100 commands • Python + discord.py • 💜</span></footer>
+  <footer><span>XENOXY // V7.4 // WELCOME ACTIONS</span><span>100 commands • Python + discord.py • 💜</span></footer>
   <div id="toast">Copied!</div>
   <script src="script.js"></script>
 </body>
