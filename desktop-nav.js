@@ -4,6 +4,10 @@
   const nav = document.querySelector('nav');
   if (!nav) return;
 
+  const extra = document.createElement('style');
+  extra.textContent = '@media(min-width:1000px){footer{padding-bottom:240px!important}}';
+  document.head.appendChild(extra);
+
   const links = [...nav.querySelectorAll('.navlinks a[href^="#"]')];
   const sections = links
     .map(link => ({
@@ -19,6 +23,8 @@
     return item.el.querySelector('.sectionhead') || item.el;
   };
 
+  const pageY = el => el.getBoundingClientRect().top + window.scrollY;
+
   const setActive = hash => {
     links.forEach(link => {
       link.classList.toggle('section-active', link.getAttribute('href') === hash);
@@ -28,23 +34,23 @@
   const yFor = item => {
     const anchor = anchorFor(item);
     if (!anchor) return 0;
-    const finalTop = item.hash === '#contact' ? 96 : 104;
-    return Math.max(0, anchor.getBoundingClientRect().top + window.scrollY - finalTop);
+    const finalTop = item.hash === '#contact' ? 92 : 104;
+    return Math.max(0, pageY(anchor) - finalTop);
   };
 
   const updateActive = () => {
-    const nearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100;
-    if (nearBottom) {
-      setActive('#contact');
-      return;
-    }
-
-    const probe = window.scrollY + 130;
+    const probe = window.scrollY + 140;
     let current = sections[0]?.hash || null;
+
     for (const item of sections) {
       const anchor = anchorFor(item);
-      if (anchor && anchor.getBoundingClientRect().top + window.scrollY <= probe) current = item.hash;
+      if (anchor && pageY(anchor) <= probe) current = item.hash;
     }
+
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 140) {
+      current = '#contact';
+    }
+
     if (current) setActive(current);
   };
 
