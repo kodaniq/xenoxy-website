@@ -1,7 +1,7 @@
 (() => {
   const API = 'https://4jeo6afdee.apps.bot-hosting.cloud/api/health';
-  const FALLBACK_VERSION = '10.0';
-  const FALLBACK_CORE = 'CONTROL PLATFORM';
+  const FALLBACK_VERSION = '10.1';
+  const FALLBACK_CORE = 'COMMAND QA ENGINE';
   const $ = id => document.getElementById(id);
   const set = (id, value) => { const el = $(id); if (el) el.textContent = value; };
   const finite = value => Number.isFinite(value);
@@ -11,27 +11,6 @@
   let lastData = null;
 
   const normalizeCore = value => String(value || FALLBACK_CORE).trim().toUpperCase();
-
-  function syncStaticPlatformCopy() {
-    const setText = (selector, value) => { const el = document.querySelector(selector); if (el) el.textContent = value; };
-    setText('.hero .kicker', 'DISCORD CONTROL PLATFORM');
-    setText('.console-brand', 'XENOXY CONTROL PLATFORM');
-    setText('.console-grid article:first-child span', 'Control Platform');
-    setText('main > .metric-strip article:first-child span', 'Control Platform');
-    setText('#systems .eyebrow', '// CONTROL PLATFORM SYSTEMS');
-    setText('#architecture .eyebrow', '// V10.0 ARCHITECTURE');
-    setText('footer span:first-child', 'XENOXY // V10.0 // CONTROL PLATFORM');
-    set('liveVersion', 'V10.0');
-
-    const architectureTitle = document.querySelector('#architecture h2');
-    if (architectureTitle) architectureTitle.innerHTML = 'Discord → Control Platform → <span>Xenoxy.</span>';
-
-    const lead = document.querySelector('.hero .lead');
-    if (lead) lead.textContent = '100 slash commands, Discord OAuth, restart-safe SQLite, Member Ops, Automod, Incident Center, server analytics and platform diagnostics — unified in Xenoxy.';
-
-    const systemsCopy = document.querySelector('#systems .sectionhead .muted');
-    if (systemsCopy) systemsCopy.textContent = 'Xenoxy unifies Discord configuration, Member Ops, Automod, incident workflows, analytics and persistent platform state in one hosted control surface.';
-  }
 
   function formatUptime(total) {
     total = Math.max(0, Math.floor(total || 0));
@@ -44,11 +23,32 @@
     return `${s}s`;
   }
 
+  function syncStaticCopy() {
+    const text = (selector, value) => { const el = document.querySelector(selector); if (el) el.textContent = value; };
+    text('.hero .kicker', 'DISCORD CONTROL PLATFORM');
+    text('.console-brand', 'XENOXY CONTROL PLATFORM');
+    text('.console-grid article:first-child span', 'Command QA Engine');
+    text('main > .metric-strip article:first-child span', 'Command QA Engine');
+    text('#systems .eyebrow', '// CONTROL PLATFORM SYSTEMS');
+    text('#architecture .eyebrow', '// V10.1 ARCHITECTURE');
+    text('footer span:first-child', 'XENOXY // V10.1 // COMMAND QA ENGINE');
+    set('liveVersion', 'V10.1');
+
+    const architectureTitle = document.querySelector('#architecture h2');
+    if (architectureTitle) architectureTitle.innerHTML = 'Discord → Control Platform → <span>Xenoxy.</span>';
+
+    const lead = document.querySelector('.hero .lead');
+    if (lead) lead.textContent = '100 verified slash commands, Discord OAuth, restart-safe SQLite, Member Ops, Automod, Incident Center, Server Analytics and a shared V10.1 command-response layer — unified in Xenoxy.';
+
+    const systems = document.querySelector('#systems .sectionhead .muted');
+    if (systems) systems.textContent = 'Xenoxy unifies Discord configuration, command QA, Member Ops, Automod, incident workflows, analytics and persistent platform state in one hosted control surface.';
+  }
+
   function syncPageIdentity(version = FALLBACK_VERSION, core = FALLBACK_CORE) {
     const cleanCore = normalizeCore(core);
     document.title = `Xenoxy V${version} // ${cleanCore}`;
     const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.content = `Xenoxy V${version} ${cleanCore} — 100 Discord commands, persistent OAuth, SQLite, Automod, Incident Center, server analytics and live platform telemetry.`;
+    if (meta) meta.content = `Xenoxy V${version} ${cleanCore} — 100 verified Discord commands, persistent OAuth, SQLite, Automod, Incident Center, Server Analytics and live platform telemetry.`;
   }
 
   function setState(state, label) {
@@ -73,18 +73,18 @@
     const screen = demo.querySelector('.x-demo-screen');
     if (!screen) return;
     const title = screen.querySelector('b');
-    const text = screen.querySelector('span');
+    const body = screen.querySelector('span');
     const core = normalizeCore(data.core);
 
     if (active === 'members') {
       if (title && finite(data.members)) title.textContent = `${data.members} members visible`;
-      if (text) text.textContent = `${finite(data.guilds) ? data.guilds : '—'} guilds • ${finite(data.latency_ms) ? data.latency_ms + ' ms' : 'latency —'} • permission-aware member operations.`;
+      if (body) body.textContent = `${finite(data.guilds) ? data.guilds : '—'} guilds • ${finite(data.latency_ms) ? data.latency_ms + ' ms' : 'latency —'} • permission-aware member operations.`;
     } else if (active === 'moderation') {
       if (title) title.textContent = data.bot_ready === true ? 'Moderation + Automod online' : 'Moderation node starting';
-      if (text) text.textContent = 'Member Ops, Automod Engine, Incident Center and role-hierarchy protection run through the same control platform.';
+      if (body) body.textContent = 'Member Ops, Automod Engine, Incident Center and role-hierarchy protection run through the same Control Platform.';
     } else if (active === 'settings') {
       if (title) title.textContent = `V${data.version || FALLBACK_VERSION} ${core}`;
-      if (text) text.textContent = `${finite(data.commands) ? data.commands : '—'} commands • SQLite persistence • restart-safe OAuth • runtime diagnostics.`;
+      if (body) body.textContent = `${finite(data.commands) ? data.commands : '—'} commands • SQLite persistence • restart-safe OAuth • runtime diagnostics.`;
     }
   }
 
@@ -131,7 +131,7 @@
       set('liveGuilds', finite(data.guilds) ? String(data.guilds) : '—');
       set('liveMembers', finite(data.members) ? String(data.members) : '—');
       set('liveCommands', finite(data.commands) ? String(data.commands) : '—');
-      set('liveUpdated', data.updated_at ? new Date(data.updated_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'just now');
+      set('liveUpdated', data.updated_at ? new Date(data.updated_at).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit', second:'2-digit' }) : 'just now');
 
       uptimeBase = finite(data.uptime_seconds) ? data.uptime_seconds : null;
       uptimeFetchedAt = performance.now();
@@ -144,7 +144,7 @@
       lastData = null;
       syncPageIdentity();
       setState('offline', 'CONTROL PLATFORM OFFLINE • RETRYING');
-      ['liveLatency', 'liveUptime', 'liveGuilds', 'liveMembers', 'liveCommands'].forEach(id => set(id, '—'));
+      ['liveLatency','liveUptime','liveGuilds','liveMembers','liveCommands'].forEach(id => set(id, '—'));
       set('liveVersion', `V${FALLBACK_VERSION}`);
       set('liveUpdated', 'retrying automatically');
       uptimeBase = uptimeFetchedAt = null;
@@ -168,7 +168,7 @@
     if (cards[3]?.querySelector('b')) cards[3].querySelector('b').textContent = formatUptime(current);
   }, 1000);
 
-  syncStaticPlatformCopy();
+  syncStaticCopy();
   syncPageIdentity();
   refreshStatus();
   setInterval(refreshStatus, 30000);
