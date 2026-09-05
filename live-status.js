@@ -31,6 +31,18 @@
     setTimeout(() => live.classList.remove('telemetry-flash'), 850);
   }
 
+  function syncDemo(data) {
+    const demo = document.querySelector('.x-demo');
+    if (!demo) return;
+    const active = demo.querySelector('[data-demo].active')?.dataset.demo;
+    const screen = demo.querySelector('.x-demo-screen');
+    if (!screen || active !== 'members') return;
+    const title = screen.querySelector('b');
+    const text = screen.querySelector('span');
+    if (title && Number.isFinite(data.members)) title.textContent = `${data.members} members visible`;
+    if (text) text.textContent = 'Live member count synced from Xenoxy. Search, inspect and run permission-aware member actions.';
+  }
+
   async function refreshStatus() {
     setState('loading', 'SYNCING');
     try {
@@ -40,8 +52,9 @@
       if (!data || data.ok !== true) throw new Error('Invalid status payload');
 
       const online = data.bot_ready === true;
+      const version = data.version || '9.3';
       setState(online ? 'online' : 'starting', online ? 'BOT ONLINE' : 'BOT STARTING');
-      set('liveVersion', `V${data.version || '9.3'}`);
+      set('liveVersion', `V${version}`);
       set('liveLatency', Number.isFinite(data.latency_ms) ? `${data.latency_ms} ms` : '—');
       set('liveGuilds', Number.isFinite(data.guilds) ? String(data.guilds) : '—');
       set('liveMembers', Number.isFinite(data.members) ? String(data.members) : '—');
@@ -53,13 +66,16 @@
       set('liveUptime', uptimeBase !== null ? formatUptime(uptimeBase) : (data.uptime || '—'));
 
       const heroStatus = document.querySelector('.hero .status');
-      if (heroStatus) heroStatus.innerHTML = `<span class="pulse"></span> V${data.version || '9.3'} MEMBER OPS <b>// ${online ? 'ONLINE' : 'STARTING'}</b>`;
+      if (heroStatus) heroStatus.innerHTML = `<span class="pulse"></span> V${version} MEMBER OPS <b>// ${online ? 'ONLINE' : 'STARTING'}</b>`;
       const heroOnline = document.querySelector('.trust-row span:first-child');
       if (heroOnline) heroOnline.innerHTML = `<i></i> ${online ? 'BOT ONLINE' : 'BOT STARTING'}`;
       const heroCore = document.querySelector('.console-grid article:first-child b');
-      if (heroCore) heroCore.textContent = `V${data.version || '9.3'}`;
+      if (heroCore) heroCore.textContent = `V${version}`;
       const heroCommands = document.querySelector('.console-grid article:nth-child(2) b');
       if (heroCommands && Number.isFinite(data.commands)) heroCommands.textContent = data.commands;
+      const heroMembers = document.querySelector('.hero-console .x-demo-screen b');
+      if (heroMembers && Number.isFinite(data.members)) heroMembers.textContent = `${data.members} members visible`;
+      syncDemo(data);
       flashTelemetry();
     } catch (error) {
       setState('offline', 'STATUS UNAVAILABLE');
