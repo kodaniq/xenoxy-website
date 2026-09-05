@@ -91,7 +91,17 @@
   });
 
   if (nav) {
-    nav.style.transition = 'opacity .18s ease, transform .22s cubic-bezier(.2,.8,.2,1), filter .18s ease';
+    const keepNavVisible = () => {
+      nav.classList.remove('nav-fading', 'nav-hidden');
+      nav.style.opacity = '1';
+      nav.style.filter = 'none';
+      nav.style.pointerEvents = 'auto';
+    };
+
+    window.addEventListener('scroll', keepNavVisible, { passive: true });
+    keepNavVisible();
+
+    nav.style.transition = 'opacity .12s ease, transform .20s cubic-bezier(.2,.8,.2,1), filter .12s ease';
     nav.querySelectorAll('.navlinks a').forEach(a => {
       a.style.transition = 'background .12s ease, color .12s ease, box-shadow .12s ease, transform .12s ease';
     });
