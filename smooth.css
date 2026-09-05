@@ -1,4 +1,4 @@
-/* XENOXY // seamless full-width navbar -> hero blend */
+/* XENOXY // clean full-width navbar -> hero blend */
 nav{
   position:sticky;
   top:0;
@@ -8,7 +8,7 @@ nav{
   margin:0!important;
   padding-left:max(24px,calc((100vw - 1200px)/2 + 24px))!important;
   padding-right:max(24px,calc((100vw - 1200px)/2 + 24px))!important;
-  background:linear-gradient(180deg,rgba(6,3,10,.88) 0%,rgba(8,4,14,.72) 48%,rgba(13,5,22,.34) 78%,rgba(18,7,30,0) 100%)!important;
+  background:rgba(6,3,10,.72)!important;
   border-bottom:0!important;
   box-shadow:none!important;
   backdrop-filter:blur(26px) saturate(125%)!important;
@@ -16,57 +16,25 @@ nav{
   overflow:visible;
 }
 
-nav::before{
-  content:"";
-  position:absolute;
-  z-index:-1;
-  left:0;
-  right:0;
-  top:0;
-  bottom:-42px;
-  pointer-events:none;
-  background:
-    radial-gradient(ellipse at 8% 18%,rgba(255,79,216,.11) 0%,rgba(255,79,216,.04) 32%,transparent 64%),
-    radial-gradient(ellipse at 88% 10%,rgba(137,58,255,.22) 0%,rgba(137,58,255,.08) 38%,transparent 70%),
-    linear-gradient(180deg,rgba(6,3,10,.28) 0%,rgba(11,4,19,.16) 46%,transparent 100%);
-  filter:blur(8px);
-  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 52%,rgba(0,0,0,.65) 76%,transparent 100%);
-  mask-image:linear-gradient(to bottom,#000 0%,#000 52%,rgba(0,0,0,.65) 76%,transparent 100%);
-}
+/* no extra pseudo-layers: they caused the horizontal dark stripe */
+nav::before,nav::after{content:none!important;display:none!important}
 
-nav::after{
-  content:"";
-  position:absolute;
-  z-index:-2;
-  left:0;
-  right:0;
-  bottom:-78px;
-  height:112px;
-  pointer-events:none;
-  background:
-    radial-gradient(ellipse at 80% 0%,rgba(137,58,255,.24) 0%,rgba(137,58,255,.09) 34%,transparent 72%),
-    radial-gradient(ellipse at 6% 5%,rgba(255,79,216,.12) 0%,rgba(174,67,226,.05) 34%,transparent 68%),
-    linear-gradient(180deg,rgba(10,4,17,.26) 0%,rgba(14,5,24,.11) 42%,transparent 100%);
-  filter:blur(12px);
-}
-
-main#top{position:relative;margin-top:-1px}
+main#top{position:relative;margin-top:0}
 .hero.nexus-hero{position:relative}
 .hero.nexus-hero::before{
   content:"";
   position:absolute;
   z-index:-1;
   left:50%;
-  top:-130px;
-  width:120vw;
-  height:320px;
+  top:-150px;
+  width:100vw;
+  height:390px;
   transform:translateX(-50%);
   pointer-events:none;
   background:
-    radial-gradient(ellipse at 72% 18%,rgba(119,42,225,.28) 0%,rgba(91,31,173,.16) 30%,transparent 67%),
-    radial-gradient(ellipse at 3% 24%,rgba(255,79,216,.11) 0%,rgba(132,49,197,.045) 30%,transparent 58%),
-    linear-gradient(180deg,transparent 0%,rgba(13,5,22,.12) 45%,transparent 100%);
-  filter:blur(18px);
+    radial-gradient(ellipse at 72% 5%,rgba(119,42,225,.25) 0%,rgba(91,31,173,.13) 32%,transparent 68%),
+    radial-gradient(ellipse at 5% 8%,rgba(255,79,216,.09) 0%,rgba(132,49,197,.035) 34%,transparent 62%);
+  filter:blur(24px);
 }
 
 .brand,.navlinks{position:relative;z-index:2}
@@ -76,7 +44,5 @@ main#top{position:relative;margin-top:-1px}
 
 @media(max-width:760px){
   nav{padding-left:18px!important;padding-right:18px!important}
-  nav::before{bottom:-30px}
-  nav::after{bottom:-58px;height:90px}
-  .hero.nexus-hero::before{top:-100px;height:245px}
+  .hero.nexus-hero::before{top:-120px;height:300px}
 }
