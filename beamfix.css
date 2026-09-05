@@ -1,0 +1,26 @@
+/* XENOXY // BEAM KILLER // final hard override */
+html,body{background:#050209!important;background-image:none!important}
+body::before,body::after,
+.aurora,.aurora::before,.aurora::after,
+.gridfx,.gridfx::before,.gridfx::after,
+.hero.nexus-hero::before,.hero.nexus-hero::after,
+.hero-copy::before,.hero-copy::after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  background-image:none!important;
+  filter:none!important;
+  box-shadow:none!important;
+  animation:none!important;
+  transform:none!important;
+}
+body{
+  background-color:#050209!important;
+  background-image:radial-gradient(ellipse at 72% 8%,rgba(107,52,214,.18) 0%,rgba(73,29,146,.08) 30%,transparent 60%)!important;
+  background-repeat:no-repeat!important;
+  background-attachment:fixed!important;
+}
+.hero,.hero.nexus-hero,.hero-copy,main#top{
+  background-image:none!important;
+  filter:none!important;
+}
