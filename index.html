@@ -10,6 +10,21 @@
   <link rel="stylesheet" href="cyber.css">
   <link rel="stylesheet" href="smooth.css?v=3f2dd948">
   <link rel="stylesheet" href="futuristic.css?v=c4d2fa9f">
+  <style id="xenoxy-beam-killer">
+    html,body{background:#050209!important}
+    body{
+      background-image:
+        radial-gradient(ellipse at 76% 8%,rgba(104,45,210,.22) 0%,rgba(70,26,140,.10) 30%,transparent 62%),
+        radial-gradient(ellipse at 16% 32%,rgba(255,79,216,.07) 0%,rgba(120,45,170,.035) 34%,transparent 64%)!important;
+      background-attachment:fixed!important;
+      background-repeat:no-repeat!important;
+    }
+    /* HARD RESET: no legacy full-screen glow layer may draw a clipped beam */
+    .aurora,.gridfx{display:none!important;background:none!important;filter:none!important;animation:none!important}
+    body::before,body::after{content:none!important;display:none!important;background:none!important;filter:none!important}
+    .hero.nexus-hero::before{content:none!important;display:none!important;background:none!important;filter:none!important;box-shadow:none!important}
+    .hero-copy::before{content:none!important;display:none!important}
+  </style>
 </head>
 <body>
   <div class="aurora"></div><div class="gridfx"></div>
