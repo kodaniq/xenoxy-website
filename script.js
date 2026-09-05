@@ -24,6 +24,17 @@ function copyCmd(cmd){
 search.addEventListener('input',e=>render(e.target.value));
 render();
 
+// XENOXY // top navigation fades out before the next section
+const topNav=document.querySelector('nav');
+function updateTopNav(){
+  if(!topNav)return;
+  const y=window.scrollY||document.documentElement.scrollTop;
+  topNav.classList.toggle('nav-fading',y>70&&y<=155);
+  topNav.classList.toggle('nav-hidden',y>155);
+}
+window.addEventListener('scroll',updateTopNav,{passive:true});
+updateTopNav();
+
 // XENOXY // unified neon brand mark
 const xenoxyMark=`<svg viewBox="0 0 64 64" aria-hidden="true" class="xenoxy-mark"><defs><linearGradient id="xenoCore" x1="10" y1="8" x2="54" y2="56"><stop stop-color="#ffffff"/><stop offset=".28" stop-color="#d8b4fe"/><stop offset=".62" stop-color="#a855f7"/><stop offset="1" stop-color="#ff4fd8"/></linearGradient><linearGradient id="xenoOrbit" x1="8" y1="54" x2="56" y2="10"><stop stop-color="#7c3aed"/><stop offset=".52" stop-color="#c084fc"/><stop offset="1" stop-color="#ff4fd8"/></linearGradient><filter id="xenoGlow"><feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><circle cx="32" cy="32" r="27" fill="url(#xenoCore)" opacity=".06"/><ellipse cx="32" cy="32" rx="28" ry="11" transform="rotate(-24 32 32)" fill="none" stroke="url(#xenoOrbit)" stroke-width="1.8" stroke-linecap="round" opacity=".88"/><ellipse cx="32" cy="32" rx="24" ry="8.3" transform="rotate(-24 32 32)" fill="none" stroke="#ff8be8" stroke-width=".7" opacity=".38"/><path d="M15.5 12.8 32 28.1l16.5-15.3 5 5.3L37.6 32.6 53.5 47.4l-5 5.3L32 37.3 15.5 52.7l-5-5.3 15.9-14.8L10.5 18.1l5-5.3Z" fill="url(#xenoCore)" filter="url(#xenoGlow)"/><path d="M18.2 16.8 31.9 29.6 45.8 16.7" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity=".5"/><circle cx="50.7" cy="18.8" r="2.25" fill="#fff"/><circle cx="50.7" cy="18.8" r="5.4" fill="#ff4fd8" opacity=".18"/></svg>`;
 
