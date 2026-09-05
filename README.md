@@ -1,9 +1,9 @@
-# XENOXY V10.0 // CONTROL PLATFORM
+# XENOXY V10.1 // COMMAND QA ENGINE
 
-Xenoxy is a Discord server control platform built with Python and `discord.py`. It combines a full 100-command Discord layer, hosted OAuth dashboard, persistent SQLite state, live member operations, Automod, incident workflows, server analytics and platform diagnostics in one control surface.
+Xenoxy is a Discord server control platform built with Python and `discord.py`. It combines a full 100-command Discord layer, hosted OAuth dashboard, persistent SQLite state, Member Ops, Automod, Incident Center, Server Analytics, runtime diagnostics and a shared command-response system in one control surface.
 
-**Current build:** V10.0 // CONTROL PLATFORM  
-**Slash commands:** 100 / 100  
+**Current build:** V10.1 // COMMAND QA ENGINE  
+**Slash commands:** 100 / 100 verified  
 **Persistence:** SQLite (`xenoxy.db`)  
 **Dashboard:** hosted Xenoxy Control Platform  
 **Authentication:** Discord OAuth2  
@@ -16,9 +16,26 @@ Public dashboard: https://4jeo6afdee.apps.bot-hosting.cloud/
 
 ---
 
-## V10.0 Control Platform
+## V10.1 Command QA Engine
 
-V10.0 turns Xenoxy from a feature-rich Discord bot into a unified control platform. The Discord bot, hosted dashboard, OAuth layer, SQLite data model, Automod, Incident Center, analytics and runtime diagnostics now operate as one system.
+V10.1 is Xenoxy's command-quality release. It keeps the V10 Control Platform architecture and adds a shared response layer plus a full static audit of the command registry and user-facing command output.
+
+### V10.1 QA results
+
+- 100 / 100 direct slash commands verified
+- 100 unique command names verified
+- zero literal `\\n` sequences left in slash-command output blocks
+- zero suspicious undefined ALL-CAPS constants found by the V10.1 static audit
+- internal Python exception names are no longer intentionally exposed to users by the global command error handler
+- shared `xenoxy_embed()` response layer
+- shared `xenoxy_reply()` interaction-response layer
+- consistent success / warning / error / info / brand colors
+- permission, role-hierarchy, Discord API, missing-target and cooldown errors get user-readable responses
+- original command exceptions are retained in runtime diagnostics instead of being dumped into the user-facing message
+
+---
+
+## Control Platform
 
 ```text
 Discord
@@ -28,6 +45,7 @@ Discord OAuth2
 30-day restart-safe session
   ↓
 Xenoxy Control Platform
+  ├─ Command QA Engine
   ├─ Member Ops
   ├─ Automod Engine
   ├─ Incident Center
@@ -52,113 +70,46 @@ Live Discord server behavior
 - restart-safe rolling 30-day web sessions
 - SQLite-backed guild settings and session persistence
 - live public runtime telemetry
+- shared V10.1 command response system
 - permission-aware Member Ops
-- member search by username, display name or Discord ID
-- timeout / untimeout controls and presets
-- nickname edit / clear
-- role add / remove
-- kick and ban controls
-- moderation reasons and case history
+- timeout / untimeout, nickname, role, kick and ban controls
 - Discord permission and role-hierarchy checks
 - Automod Engine with spam, repeat, mention, link/invite and caps detection
-- LOW / MEDIUM / HIGH Automod sensitivity
-- delete or delete + timeout Automod actions
-- trusted role/channel bypass
 - Incident Center with OPEN / ESCALATED / RESOLVED / IGNORED workflow
-- incident severity and repeat-offender counts
-- Ops Intelligence moderation counters and filtered audit feed
+- moderation case history and Ops Intelligence
 - Server Analytics with 24h / 7d / 30d activity
-- joins, leaves and net growth
-- activity trend, top channels and peak activity window
-- Automod triggered-rule analytics
-- System tab with platform health score
-- latency, uptime, server, member and command telemetry
-- SQLite health, database size and row counts
-- runtime diagnostics stored in SQLite
-- global slash-command error logging
+- joins, leaves, net growth, top channels and peak activity
+- System tab with platform health telemetry
+- SQLite/runtime diagnostics and command error logging
 - Welcome / Goodbye / Welcome DM configuration
 - Autorole and Verification controls
-- Logs, Rules and moderation settings
-- Suggestions and Confessions systems
-- Sticky Messages
-- Birthdays with optional birth year
-- Activity rankings and member stats
+- Suggestions, Confessions, Sticky Messages and Birthdays
 - public HTTPS control surface; localhost is not required
 - GitHub Pages product website with live bot telemetry
 
 ---
 
-## Control Platform
-
-The hosted dashboard only exposes servers the signed-in Discord user is allowed to manage and where Xenoxy is installed.
-
-Member and moderation actions are checked server-side. Xenoxy verifies the acting user, target member, Discord permissions and role hierarchy before supported actions are applied.
-
-The platform is organized around five operational layers:
-
-1. **Member Ops** — direct member search and moderation controls.
-2. **Automod Engine** — automatic server protection and rule enforcement.
-3. **Incident Center** — review, resolve, ignore and escalate Automod incidents.
-4. **Server Analytics** — persistent activity, growth and moderation intelligence.
-5. **System Core** — Xenoxy runtime, database and control-plane health.
-
----
-
-## Dashboard architecture
-
-`bot.py` runs Xenoxy's Discord, API and dashboard layers around the same persisted data model:
-
-- Discord slash commands and events
-- persistent Discord UI
-- SQLite state storage
-- authenticated control API
-- hosted aiohttp dashboard
-- Discord OAuth callback flow
-- persistent web sessions
-- permission-aware live member control
-- moderation case storage
-- Automod incident storage
-- persistent activity analytics
-- runtime event diagnostics
-
-The public product website reads Xenoxy's read-only `/api/health` endpoint for live runtime telemetry such as version, latency, uptime, server count, member count and loaded commands.
-
-### Bot-host environment variables
-
-```env
-DISCORD_TOKEN=...
-GUILD_ID=...
-XENOXY_API_HOST=0.0.0.0
-XENOXY_API_PORT=25931
-XENOXY_API_SECRET=...
-DISCORD_CLIENT_ID=...
-DISCORD_CLIENT_SECRET=...
-DISCORD_REDIRECT_URI=https://4jeo6afdee.apps.bot-hosting.cloud/callback
-```
-
-Never commit bot tokens, Discord client secrets, OAuth secrets or Xenoxy API secrets to GitHub.
-
----
-
 ## Command layer
 
-Xenoxy uses the full **100-command** global slash-command ceiling. New systems therefore live primarily in the dashboard, buttons, modals and existing command structures instead of adding more top-level commands.
+Xenoxy uses the full **100-command** global slash-command ceiling. V10.1 verified all 100 direct command names as unique and keeps future expansion focused on dashboard controls, existing command structures, buttons and modals rather than casually exceeding the top-level command ceiling.
 
-The command layer covers utility, information, fun/social commands, moderation, roles and channels, welcome/goodbye setup, autorole, suggestions, confessions, birthdays, sticky messages, verification, activity/member stats and server-management tools.
+The command layer covers utilities, information, fun/social commands, moderation, roles and channels, welcome/goodbye setup, autorole, suggestions, confessions, birthdays, sticky messages, verification, activity/member stats and server-management tools.
 
 ---
 
 ## Persistence
 
-Xenoxy's main state lives in SQLite. Web login sessions are also stored in SQLite and use a rolling 30-day lifetime, so ordinary bot restarts do not log users out.
+Xenoxy's main state lives in SQLite. Web sessions use a rolling 30-day lifetime so ordinary bot restarts do not log users out.
 
-Operational data includes:
+Operational tables include:
 
 - `xenoxy_mod_cases` — moderation case history
 - `xenoxy_automod_incidents` — Automod incidents and workflow state
 - `xenoxy_activity_events` — persistent server activity analytics
 - `xenoxy_member_events` — join/leave analytics
 - `xenoxy_runtime_events` — platform/runtime diagnostics
+
+Never commit bot tokens, Discord client secrets, OAuth secrets or Xenoxy API secrets to GitHub.
 
 ---
 
@@ -187,22 +138,16 @@ V9.6     Incident Center
 V9.7     Server Analytics
 V9.7.5   Control Panel Polish
 V10.0    Control Platform
+V10.0.1  Command Output Sanity Fix
+V10.0.2  Command Error Hotfix
+V10.1    Command QA Engine
 ```
 
 ---
 
 ## Website
 
-The public Xenoxy site is the product surface for V10.0. It includes:
-
-- V10.0 Control Platform identity
-- live runtime telemetry
-- 100-command searchable database
-- interactive local demo shell
-- architecture overview
-- creator/contact section
-- direct hosted-dashboard access
-- responsive dark neon cyber UI
+The public Xenoxy site is the product surface for V10.1. It includes live runtime telemetry, a 100-command searchable database, interactive local terminal, architecture overview, creator/contact section, direct hosted-dashboard access and the existing responsive dark-neon Control Platform interface.
 
 ### Contact
 
