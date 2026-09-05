@@ -4,46 +4,124 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#8b5cf6">
-  <title>Xenoxy V7.5 // DM Configurator</title>
-  <meta name="description" content="Xenoxy V7.5 is an all-in-one Discord automation system with 100 slash commands, moderation, tickets, dynamic welcome DMs and a private DM Configurator.">
+  <title>Xenoxy V7.8 // Community Core</title>
+  <meta name="description" content="Xenoxy V7.8 is an all-in-one Discord bot with 100 slash commands, moderation, community tools, welcome systems, roles, activity stats and server control.">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="cyber.css">
 </head>
 <body>
   <div class="aurora"></div><div class="gridfx"></div>
-  <nav><a class="brand" href="#top"><span class="logo">X</span><span>XENOXY</span></a><div class="navlinks"><a href="#features">Systems</a><a href="#configurator">Configurator</a><a href="#commands">Commands</a><a href="#setup">Setup</a><a href="#contact">Contact</a></div></nav>
+  <nav>
+    <a class="brand" href="#top"><span class="logo">X</span><span>XENOXY</span></a>
+    <div class="navlinks">
+      <a href="#features">Systems</a><a href="#how">How it works</a><a href="#commands">Commands</a><a href="#setup">Setup</a><a href="#build">Build a bot</a><a href="#contact">Contact</a>
+    </div>
+  </nav>
+
   <main id="top">
-    <section class="hero"><div class="status"><span class="pulse"></span> SYSTEM ONLINE <b>// V7.5</b></div><p class="kicker">DISCORD AUTOMATION // SERVER CONTROL</p><h1>X E N O X Y<br><em>configure everything.</em></h1><p class="lead">Moderation, tickets, welcomes, logs, roles and now a private DM-based configuration system. Fast. Clean. Built to evolve.</p><div class="actions"><a class="primary" href="#configurator">See DM Configurator <span>↗</span></a><a class="secondary" href="#commands">Explore 100 commands</a></div><div class="stats"><article><b>100</b><small>GLOBAL COMMANDS</small></article><article><b>24/7</b><small>SYSTEM UPTIME</small></article><article><b>V7.5</b><small>DM CONFIGURATOR</small></article><article><b>3</b><small>CUSTOM MESSAGES</small></article></div></section>
+    <section class="hero">
+      <div class="status"><span class="pulse"></span> SYSTEM ONLINE <b>// V7.8</b></div>
+      <p class="kicker">DISCORD AUTOMATION // COMMUNITY CORE</p>
+      <h1>X E N O X Y<br><em>built for real servers.</em></h1>
+      <p class="lead">100 focused slash commands for moderation, community tools, welcome systems, roles, activity stats and server control. Less filler. More useful systems.</p>
+      <div class="actions"><a class="primary" href="#how">See how Xenoxy works <span>↗</span></a><a class="secondary" href="#commands">Explore 100 commands</a></div>
+      <div class="stats"><article><b>100</b><small>GLOBAL COMMANDS</small></article><article><b>V7.8</b><small>COMMUNITY CORE</small></article><article><b>24/7</b><small>HOSTED BOT</small></article><article><b>JSON</b><small>PERSISTENT CONFIG</small></article></div>
+    </section>
 
-    <section id="features"><div class="sectionhead"><p class="eyebrow">// CORE SYSTEMS</p><h2>Everything your server needs.<br><span>Now easier to configure.</span></h2></div><div class="cards"><article><div class="icon">🎫</div><p class="tag">SUPPORT</p><h3>Ticket System</h3><p>Create private tickets, claim them, rename them, add members and close them cleanly.</p></article><article><div class="icon">🛡️</div><p class="tag">PROTECTION</p><h3>Moderation</h3><p>Bans, kicks, timeouts, warnings, locks, purge tools, logs, anti-spam and anti-links.</p></article><article><div class="icon">⚙️</div><p class="tag">V7.5</p><h3>DM Configurator</h3><p>Press a button in /setup and Xenoxy sends the admin a private configuration dashboard in DMs.</p></article><article><div class="icon">👋</div><p class="tag">MESSAGES</p><h3>Custom Welcome</h3><p>Edit Welcome, Welcome DM and Goodbye messages with dynamic placeholders for every server.</p></article><article><div class="icon">🚀</div><p class="tag">WELCOME ACTIONS</p><h3>Server + Rules</h3><p>Welcome DMs still include Open Server and Rules buttons for the exact server the member joined.</p></article><article><div class="icon">🎮</div><p class="tag">COMMUNITY</p><h3>Fun + Utility</h3><p>Games, polls, reminders, server info, random tools and dozens of everyday commands.</p></article></div></section>
+    <section id="features">
+      <div class="sectionhead"><p class="eyebrow">// CORE SYSTEMS</p><h2>Everything useful.<br><span>Nothing just for the number.</span></h2></div>
+      <div class="cards">
+        <article><div class="icon">🛡️</div><p class="tag">MODERATION</p><h3>Server Control</h3><p>Bans, kicks, timeouts, locks, purge tools, role controls, channel controls and moderation logs.</p></article>
+        <article><div class="icon">💡</div><p class="tag">COMMUNITY</p><h3>Suggestions</h3><p>Suggestion channel setup, voting and staff status management with Accepted, Denied and Planned states.</p></article>
+        <article><div class="icon">🕶️</div><p class="tag">COMMUNITY</p><h3>Confessions</h3><p>Configure a dedicated confession channel while keeping the public post anonymous and logging the author privately for staff.</p></article>
+        <article><div class="icon">🎂</div><p class="tag">MEMBERS</p><h3>Birthdays</h3><p>Members can save, remove and browse upcoming birthdays directly through Discord slash commands.</p></article>
+        <article><div class="icon">🎭</div><p class="tag">ROLES</p><h3>Role Menu + Verification</h3><p>Interactive role menus and a persistent Verify button make self-roles and onboarding clean.</p></article>
+        <article><div class="icon">📈</div><p class="tag">STATS</p><h3>Activity + Member Stats</h3><p>Track server activity, top channels and member message counts, plus inspect server health and server age.</p></article>
+        <article><div class="icon">📌</div><p class="tag">CHANNEL TOOLS</p><h3>Sticky Messages</h3><p>Keep an important message at the bottom of a channel and turn it off cleanly with a dedicated command.</p></article>
+        <article><div class="icon">⚙️</div><p class="tag">CONFIG</p><h3>DM Configurator</h3><p>Run /setup and configure Welcome, Welcome DM and Goodbye messages privately through Xenoxy's DM dashboard.</p></article>
+      </div>
+    </section>
 
-    <section id="configurator" class="welcome"><div><p class="eyebrow">// V7.5 DM CONFIGURATOR</p><h2>Setup in Discord.<br><span>Configure in private.</span></h2><p class="muted">Run <code>/setup</code> and press <b>DM Configurator</b>. Xenoxy sends a private dashboard directly to the admin who pressed the button. Each server keeps its own settings.</p><div class="chips"><span>WELCOME MESSAGE</span><span>WELCOME DM</span><span>GOODBYE</span><span>ON / OFF</span><span>PREVIEW</span><span>PER SERVER</span></div></div><div class="dmcard"><div class="dmbar"><span class="avatar">X</span><div><b>Xenoxy</b><small>APP • PRIVATE CONFIG</small></div></div><div class="embedline"></div><div class="dmbody"><p class="dmeyebrow">⚙️ YOUR SERVER // DM CONFIG</p><h3>Configure Xenoxy</h3><p>👋 Welcome system: <b>ON</b><br>💌 Welcome DM: <b>ON</b><br>🚪 Goodbye system: <b>ON</b></p><div class="dmbuttons"><span>👋 Welcome Message</span><span>💌 Welcome DM Message</span><span>🚪 Goodbye Message</span></div><div class="dmbuttons"><span>👋 Welcome ON/OFF</span><span>💌 DM ON/OFF</span><span>🚪 Goodbye ON/OFF</span></div><div class="dmbuttons"><span>👀 Preview</span><span>🔄 Refresh Status</span></div><small>XENOXY V7.5 // DM CONFIGURATOR</small></div></div></section>
+    <section id="how" class="guide-section">
+      <div class="sectionhead"><p class="eyebrow">// HOW XENOXY WORKS</p><h2>One bot.<br><span>Several connected systems.</span></h2></div>
+      <div class="guide-grid">
+        <article><span class="guide-num">01</span><h3>Discord sends an interaction</h3><p>A member runs a slash command such as <code>/server-health</code>, <code>/birthday</code> or <code>/suggestion</code>.</p></article>
+        <article><span class="guide-num">02</span><h3>discord.py routes the command</h3><p>Xenoxy's Python code receives the interaction, checks permissions and runs the matching command function.</p></article>
+        <article><span class="guide-num">03</span><h3>Per-server settings are loaded</h3><p>Settings such as welcome channels, suggestion channels, role menus and verification roles are stored by Discord server ID.</p></article>
+        <article><span class="guide-num">04</span><h3>Xenoxy responds</h3><p>The bot sends embeds, DMs, buttons, select menus, roles or moderation actions back through Discord.</p></article>
+        <article><span class="guide-num">05</span><h3>Persistent data is saved</h3><p>Configuration, birthdays, activity data, reaction roles and backups are stored in <code>xenoxy_data.json</code> so they survive restarts.</p></article>
+        <article><span class="guide-num">06</span><h3>The bot stays online</h3><p>The hosted Python process keeps listening for slash commands, reactions, joins, messages and UI button interactions.</p></article>
+      </div>
+    </section>
 
-    <section class="welcome"><div><p class="eyebrow">// CUSTOM PLACEHOLDERS</p><h2>Write it once.<br><span>Xenoxy fills the rest.</span></h2><p class="muted">Custom messages can use dynamic placeholders. Xenoxy replaces them automatically when a member joins or leaves.</p><div class="chips"><span>{user}</span><span>{mention}</span><span>{server}</span><span>{member_count}</span></div></div><div class="terminal"><div class="terminalbar"><span></span><span></span><span></span><b>MESSAGE PREVIEW</b></div><pre><strong>Tere {mention}! 💜</strong>
-Welcome to {server}.
-Sa oled member #{member_count}.
+    <section id="configurator" class="welcome">
+      <div><p class="eyebrow">// PRIVATE DM CONFIGURATOR</p><h2>Setup in Discord.<br><span>Configure in private.</span></h2><p class="muted">Run <code>/setup</code> and press <b>DM Configurator</b>. Xenoxy sends the admin a private configuration dashboard. Each server keeps its own settings.</p><div class="chips"><span>WELCOME MESSAGE</span><span>WELCOME DM</span><span>GOODBYE</span><span>ON / OFF</span><span>PREVIEW</span><span>PER SERVER</span></div></div>
+      <div class="dmcard"><div class="dmbar"><span class="avatar">X</span><div><b>Xenoxy</b><small>APP • PRIVATE CONFIG</small></div></div><div class="embedline"></div><div class="dmbody"><p class="dmeyebrow">⚙️ YOUR SERVER // DM CONFIG</p><h3>Configure Xenoxy</h3><p>👋 Welcome system: <b>ON</b><br>💌 Welcome DM: <b>ON</b><br>🚪 Goodbye system: <b>ON</b></p><div class="dmbuttons"><span>👋 Welcome Message</span><span>💌 Welcome DM Message</span><span>🚪 Goodbye Message</span></div><div class="dmbuttons"><span>👀 Preview</span><span>🔄 Refresh Status</span></div><small>XENOXY V7.8 // COMMUNITY CORE</small></div></div>
+    </section>
 
-↓ becomes ↓
+    <section id="commands">
+      <div class="sectionhead"><p class="eyebrow">// COMMAND DATABASE</p><h2>100 commands.<br><span>Cleaned up and rebuilt.</span></h2></div>
+      <p class="muted">V7.8 removes old filler systems and adds better community tools: suggestion management, birthdays, confession setup, member stats, verification controls and server age.</p>
+      <div class="searchwrap"><span>⌕</span><input id="search" placeholder="Search commands — birthday, confess, sticky, setup..."></div><div id="commandGrid" class="command-grid"></div>
+    </section>
 
-<strong>Tere @username! 💜</strong>
-Welcome to Mustikavesi.
-Sa oled member #88.</pre></div></section>
-
-    <section id="commands"><div class="sectionhead"><p class="eyebrow">// COMMAND DATABASE</p><h2>100 commands.<br><span>Still maxed out.</span></h2></div><p class="muted">V7.5 adds the configurator without using a 101st global command — it lives inside the existing /setup dashboard.</p><div class="searchwrap"><span>⌕</span><input id="search" placeholder="Search commands — ticket, ban, avatar, setup..."></div><div id="commandGrid" class="command-grid"></div></section>
-
-    <section id="setup" class="setup"><div><p class="eyebrow">// QUICK START</p><h2>Configure the system.</h2><p class="muted">Start with <code>/setup</code>. Press <b>DM Configurator</b> to receive the private dashboard. For the Rules button, run /setup inside your Rules channel and press <b>Rules = This Channel</b>.</p></div><div class="terminal"><div class="terminalbar"><span></span><span></span><span></span><b>XENOXY // V7.5 COMMAND CENTER</b></div><pre><strong>/setup</strong>
+    <section id="setup" class="setup">
+      <div><p class="eyebrow">// QUICK START</p><h2>Configure Xenoxy.</h2><p class="muted">Invite the bot, give it the permissions your server needs, run <code>/setup</code>, then configure the community systems you actually use.</p></div>
+      <div class="terminal"><div class="terminalbar"><span></span><span></span><span></span><b>XENOXY // V7.8 QUICK START</b></div><pre><strong>/setup</strong>
 → ⚙️ DM Configurator
 → 📖 Rules = This Channel
 
-DM CONFIG:
-→ Welcome Message
-→ Welcome DM Message
-→ Goodbye Message
-→ Toggle systems
-→ Preview</pre></div></section>
+<strong>/suggestion-setup</strong> #suggestions
+<strong>/confess-setup</strong> #confessions
+<strong>/verification-setup</strong> @Verified
+<strong>/role-menu</strong> @Gamer @Artist
+<strong>/server-health</strong></pre></div>
+    </section>
+
+    <section id="build" class="guide-section build-section">
+      <div class="sectionhead"><p class="eyebrow">// BUILD YOUR OWN DISCORD BOT</p><h2>Start small.<br><span>Then build systems.</span></h2></div>
+      <div class="build-layout">
+        <div class="build-steps">
+          <article><span>01</span><div><h3>Create a Discord application</h3><p>Open the Discord Developer Portal, create an application, add a Bot user and enable only the intents your bot actually needs.</p></div></article>
+          <article><span>02</span><div><h3>Keep the token secret</h3><p>Put the bot token in a local <code>.env</code> file as <code>DISCORD_TOKEN=...</code>. Never commit the token to GitHub.</p></div></article>
+          <article><span>03</span><div><h3>Install Python packages</h3><p>Use <code>py -m pip install discord.py python-dotenv</code>.</p></div></article>
+          <article><span>04</span><div><h3>Create bot.py</h3><p>Load the token, create a Discord client, add a command tree and start with one slash command.</p></div></article>
+          <article><span>05</span><div><h3>Invite and test</h3><p>Add the bot with the <code>bot</code> and <code>applications.commands</code> scopes, test in your own server and read the terminal errors when something breaks.</p></div></article>
+          <article><span>06</span><div><h3>Add persistence and UI</h3><p>Once the basics work, add JSON or SQLite storage, embeds, buttons, modals, select menus and permission checks.</p></div></article>
+        </div>
+        <div class="terminal code-terminal"><div class="terminalbar"><span></span><span></span><span></span><b>MINIMAL BOT.PY</b></div><pre>import os
+import discord
+from discord import app_commands
+from dotenv import load_dotenv
+
+load_dotenv()
+TOKEN = os.getenv("DISCORD_TOKEN")
+
+class Bot(discord.Client):
+    def __init__(self):
+        intents = discord.Intents.default()
+        super().__init__(intents=intents)
+        self.tree = app_commands.CommandTree(self)
+
+    async def setup_hook(self):
+        await self.tree.sync()
+
+bot = Bot()
+
+@bot.tree.command(name="ping")
+async def ping(interaction):
+    await interaction.response.send_message("Pong!")
+
+bot.run(TOKEN)</pre></div>
+      </div>
+      <p class="muted build-note">The full beginner guide is also in this GitHub repository as <code>README.md</code>.</p>
+    </section>
 
     <section id="contact" class="contact"><div class="contact-shell"><div class="contact-copy"><p class="eyebrow">// CONTACT // DEVELOPER</p><div class="creator-badge"><span class="creator-dot"></span> CREATOR ONLINE</div><h2>Built by <span>@kodaniq</span>.</h2><p class="muted">Questions, collabs, feedback or just wanna say yo? Pick a platform and hit me up.</p><div class="creator-meta"><span>ESTONIA</span><span>PYTHON</span><span>DISCORD BOTS</span><span>WEB</span></div></div><div class="contact-grid"><a class="contact-card discord" href="discord://-/users/1067463639189164114"><div class="contact-top"><span class="contact-icon discord-icon">◖◗</span><span class="contact-arrow">↗</span></div><small>DISCORD</small><b>@kodaniq</b><p>Open profile in Discord</p><span class="contact-cta">CONNECT</span></a><a class="contact-card instagram" href="https://www.instagram.com/kodaniq/" target="_blank" rel="noopener"><div class="contact-top"><span class="contact-icon insta-icon">◎</span><span class="contact-arrow">↗</span></div><small>INSTAGRAM</small><b>@kodaniq</b><p>Photos, updates & random stuff</p><span class="contact-cta">FOLLOW</span></a><a class="contact-card github" href="https://github.com/kodaniq" target="_blank" rel="noopener"><div class="contact-top"><span class="contact-icon github-icon">⌘</span><span class="contact-arrow">↗</span></div><small>GITHUB</small><b>kodaniq</b><p>Projects, code & Xenoxy builds</p><span class="contact-cta">VIEW CODE</span></a></div></div><p class="contact-note">Discord card opens the Discord app when your browser allows the Discord protocol.</p></section>
   </main>
-  <footer><span>XENOXY // V7.5 // DM CONFIGURATOR</span><span>100 commands • Python + discord.py • 💜</span></footer><div id="toast">Copied!</div><script src="script.js"></script>
+
+  <footer><span>XENOXY // V7.8 // COMMUNITY CORE</span><span>100 commands • Python + discord.py • 💜</span></footer>
+  <div id="toast">Copied!</div>
+  <script src="script.js"></script>
 </body>
 </html>
