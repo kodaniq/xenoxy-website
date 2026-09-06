@@ -1,18 +1,18 @@
-# XENOXY V11.4 // RULE BUILDER + ANALYTICS
+# XENOXY V11.5 // MEMBER INTELLIGENCE
 
-Xenoxy is a hosted Discord server control platform built with Python and `discord.py`. V11.4 adds a no-code Rule Builder plus persistent message and voice analytics while preserving the verified 100-command Discord layer.
+Xenoxy is a hosted Discord server control platform built with Python and `discord.py`. V11.5 turns the V11.4 message + voice analytics foundation into per-member intelligence profiles, activity heatmaps and leaderboards while preserving the verified 100-command Discord layer.
 
-**Current build:** V11.4 // RULE BUILDER + ANALYTICS  
+**Current build:** V11.5 // MEMBER INTELLIGENCE  
 **Slash commands:** 100 / 100 verified and unique  
 **Persistence:** SQLite (`xenoxy.db`)  
 **Authentication:** Discord OAuth2  
 **Web sessions:** restart-safe rolling 30-day SQLite sessions  
 **Security:** Security Guard + OAuth guild authorization  
 **Automod:** Smart Automod risk engine + escalation  
-**Intelligence:** health history + 24h trends + risk overview + recommendations  
-**Automation:** guild-scoped policies + custom safe rules + cooldowns + SQLite audit trail  
-**Analytics:** message counts + top message members + persistent voice-time tracking  
-**Dashboard:** Dashboard 2.0 + Rule Builder + Analytics
+**Intelligence:** Nexus health + member-level activity intelligence  
+**Automation:** Rule Builder + safe guild automation + cooldowns + audit history  
+**Analytics:** message + persistent voice-time tracking  
+**Member Intelligence:** per-member profiles + activity score + heatmap + leaderboards
 
 Website: https://kodaniq.github.io/xenoxy-website/
 
@@ -20,69 +20,60 @@ Public dashboard: https://4jeo6afdee.apps.bot-hosting.cloud/
 
 ---
 
-## V11.4 Rule Builder + Analytics
+## V11.5 Member Intelligence
 
-V11.4 turns the V11.2/V11.3 automation foundation into a running automation system and expands server analytics with message and voice activity.
+V11.5 builds member-level intelligence on top of Xenoxy's existing analytics data.
 
-### Rule Builder
+### Member profiles
 
-Custom OAuth-protected rules can use these triggers:
+Each dashboard member profile can expose:
 
-- Nexus health below threshold
-- gateway latency above threshold
-- critical Smart Automod risk count
-- messages in five minutes above threshold
+- messages in the last 24h / 7d / 30d
+- voice time in the last 24h / 7d / 30d
+- top text channel
+- top voice channel
+- current Smart Automod risk
+- moderation case count
+- activity score from message + voice engagement
+- 30-day message activity heatmap by weekday/hour (UTC)
 
-Safe actions currently include `audit_alert` and `incident_alert`. Rules have configurable thresholds, cooldowns and priorities, are stored in SQLite, and execution history is persisted. The background automation cycle runs every 60 seconds.
+The activity score is an engagement metric only; moderation risk is displayed separately rather than being mixed into the activity score.
 
-### Message analytics
+### Leaderboards
 
-- existing 24h / 7d / 30d message totals
-- top channels and peak activity
-- top message members over 7 days
-- five-minute message volume available to Rule Builder
+- Top Texters • 7D
+- Top Voice • 7D
+- Overall Activity
+- bot accounts excluded
 
-### Voice analytics
-
-- voice join / leave / channel-move tracking
-- persistent voice sessions in SQLite
-- 24h / 7d / 30d voice-time totals
-- currently active voice users
-- unique voice users over 7 days
-- top voice members
-- top voice channels
-- active sessions reconciled when Xenoxy starts
-
-Voice history begins collecting from the V11.4 deployment; earlier voice activity is not backfilled.
-
-### V11.4 authenticated routes
+### V11.5 authenticated routes
 
 ```text
-GET    /v114/{guild_id}/rules
-POST   /v114/{guild_id}/rules
-DELETE /v114/{guild_id}/rules/{rule_id}
-GET    /v114/{guild_id}/analytics
+GET /v115/{guild_id}/members/{user_id}
+GET /v115/{guild_id}/leaderboards
 ```
 
-These routes require the persistent OAuth web session and verify that the selected guild is manageable by the authenticated Discord user.
+Both routes require the persistent OAuth web session and verify that the selected guild is manageable by the authenticated Discord user.
 
 ---
 
+## V11.4 Rule Builder + Analytics
+
+V11.4 introduced custom safe automation rules, a running 60-second automation cycle, message analytics and persistent voice join/leave/channel-move tracking.
+
+Voice history begins collecting from the V11.4 deployment; earlier voice activity is not backfilled.
+
 ## V11.3 Dashboard 2.0
 
-Dashboard 2.0 exposes Nexus Intelligence and guild automation policy through the hosted OAuth dashboard. The V11.4 build also fixes Dashboard 2.0 session authorization to use the persistent session implementation and keeps guild-specific panels out of the pre-selection server screen.
+Dashboard 2.0 exposes Nexus Intelligence and guild automation policy through the hosted OAuth dashboard.
 
 ## V11.2 Nexus Automation
 
-Guild-scoped automation configuration, safe default OFF, low-health/high-latency/critical-risk triggers, cooldown protection and persistent audit events.
+Guild-scoped automation configuration, safe default OFF, health/latency/risk triggers, cooldown protection and persistent audit events.
 
 ## V11.1 Nexus Intelligence
 
 Persistent Nexus health snapshots, 24-hour trends, Smart Automod server-wide risk overview and recommendations.
-
-## V11.0 Nexus
-
-Unified runtime snapshot, weighted 0–100 platform health, subsystem readiness and Smart Automod risk bridge.
 
 ---
 
@@ -95,22 +86,19 @@ Discord users / moderators
           ↓
 Security Guard
           ↓
-Smart Automod + Member Ops + Server Systems
-          ↓
-Incident Center + Ops Intelligence
+Smart Automod + Member Ops
           ↓
 Message Analytics + Voice Analytics
           ↓
-Nexus Runtime + Nexus Intelligence
+V11.5 Member Intelligence
+          ├─ member profiles
+          ├─ activity score
+          ├─ 30d heatmap
+          └─ leaderboards
           ↓
-Nexus Automation
-          ├─ guild policy
-          ├─ 60s automation cycle
-          ├─ custom Rule Builder
-          ├─ cooldowns
-          └─ audit / execution history
+Nexus Intelligence + Rule Builder
           ↓
-Dashboard 2.0 + Rule Builder + Analytics
+Dashboard 2.0
           ↓
 SQLite + aiohttp Control API
           ↓
@@ -123,15 +111,13 @@ Hosted dashboard + GitHub Pages telemetry
 
 ## SQLite
 
-Operational data includes state/meta, OAuth sessions, moderation cases, Automod incidents, message/member analytics events, runtime events, Nexus snapshots, automation policies/events and V11.4 tables:
+Operational data includes state/meta, OAuth sessions, moderation cases, Automod incidents, message/member analytics events, runtime events, Nexus snapshots, automation policies/events, custom rules, rule executions and voice sessions.
 
-- `xenoxy_automation_custom_rules`
-- `xenoxy_rule_executions`
-- `xenoxy_voice_events`
+V11.5 derives member intelligence from the existing message and voice analytics stores rather than creating duplicate activity storage.
 
 ## Public telemetry
 
-`/api/health` powers the public website with intentionally public version/core/readiness/count/latency/uptime, Nexus Intelligence and compact automation state. Guild configuration, custom rules and detailed analytics remain behind OAuth authorization.
+`/api/health` powers the public website with intentionally public version/core/readiness/count/latency/uptime plus Nexus/automation summaries. Detailed member intelligence remains behind OAuth authorization.
 
 ---
 
@@ -168,6 +154,7 @@ V11.1    Nexus Intelligence
 V11.2    Nexus Automation
 V11.3    Dashboard 2.0
 V11.4    Rule Builder + Analytics
+V11.5    Member Intelligence
 ```
 
 ## Tech stack
