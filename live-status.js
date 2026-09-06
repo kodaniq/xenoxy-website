@@ -1,7 +1,7 @@
 (() => {
   const API = 'https://4jeo6afdee.apps.bot-hosting.cloud/api/health';
-  const FALLBACK_VERSION = '10.3';
-  const FALLBACK_CORE = 'SMART AUTOMOD';
+  const FALLBACK_VERSION = '11.0';
+  const FALLBACK_CORE = 'NEXUS';
   const $ = id => document.getElementById(id);
   const set = (id, value) => { const el = $(id); if (el) el.textContent = value; };
   const finite = value => Number.isFinite(value);
@@ -26,29 +26,29 @@
   function syncStaticCopy() {
     const text = (selector, value) => { const el = document.querySelector(selector); if (el) el.textContent = value; };
     text('.hero .kicker', 'DISCORD CONTROL PLATFORM');
-    text('.console-brand', 'XENOXY CONTROL PLATFORM');
-    text('.console-grid article:first-child span', 'Smart Automod');
-    text('main > .metric-strip article:first-child span', 'Smart Automod');
-    text('#systems .eyebrow', '// CONTROL PLATFORM SYSTEMS');
-    text('#architecture .eyebrow', '// V10.3 ARCHITECTURE');
-    text('footer span:first-child', 'XENOXY // V10.3 // SMART AUTOMOD');
-    set('liveVersion', 'V10.3');
+    text('.console-brand', 'XENOXY NEXUS');
+    text('.console-grid article:first-child span', 'Nexus Core');
+    text('main > .metric-strip article:first-child span', 'Nexus Core');
+    text('#systems .eyebrow', '// NEXUS SYSTEMS');
+    text('#architecture .eyebrow', '// V11.0 NEXUS ARCHITECTURE');
+    text('footer span:first-child', 'XENOXY // V11.0 // NEXUS');
+    set('liveVersion', 'V11.0');
 
     const architectureTitle = document.querySelector('#architecture h2');
-    if (architectureTitle) architectureTitle.innerHTML = 'Discord → Control Platform → <span>Xenoxy.</span>';
+    if (architectureTitle) architectureTitle.innerHTML = 'Discord → Nexus → <span>Xenoxy.</span>';
 
     const lead = document.querySelector('.hero .lead');
-    if (lead) lead.textContent = '100 verified slash commands, Discord OAuth, restart-safe SQLite, Security Guard, Smart Automod risk scoring, Incident Center and Server Analytics — unified in Xenoxy.';
+    if (lead) lead.textContent = '100 verified slash commands, Discord OAuth, restart-safe SQLite, Security Guard, Smart Automod and V11 Nexus runtime intelligence — unified in Xenoxy.';
 
     const systems = document.querySelector('#systems .sectionhead .muted');
-    if (systems) systems.textContent = 'Xenoxy unifies Discord configuration, Security & Permissions, Smart Automod, Member Ops, incident workflows, analytics and persistent platform state in one hosted control surface.';
+    if (systems) systems.textContent = 'Xenoxy Nexus unifies Security & Permissions, Smart Automod, Member Ops, incident workflows, analytics, health scoring and persistent platform state in one hosted control surface.';
   }
 
   function syncPageIdentity(version = FALLBACK_VERSION, core = FALLBACK_CORE) {
     const cleanCore = normalizeCore(core);
     document.title = `Xenoxy V${version} // ${cleanCore}`;
     const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.content = `Xenoxy V${version} ${cleanCore} — 100 verified Discord commands, Security Guard, persistent OAuth, SQLite, Smart Automod, Incident Center, Server Analytics and live platform telemetry.`;
+    if (meta) meta.content = `Xenoxy V${version} ${cleanCore} — 100 verified Discord commands, Security Guard, Smart Automod, OAuth, SQLite, Nexus health intelligence and live platform telemetry.`;
   }
 
   function setState(state, label) {
@@ -81,10 +81,11 @@
       if (body) body.textContent = `${finite(data.guilds) ? data.guilds : '—'} guilds • ${finite(data.latency_ms) ? data.latency_ms + ' ms' : 'latency —'} • permission-aware member operations.`;
     } else if (active === 'moderation') {
       if (title) title.textContent = data.bot_ready === true ? 'Security + Smart Automod online' : 'Moderation node starting';
-      if (body) body.textContent = 'Security Guard, Member Ops, Smart Automod and Incident Center run through the same Control Platform.';
+      if (body) body.textContent = 'Security Guard, Member Ops, Smart Automod and Incident Center run through the Nexus control layer.';
     } else if (active === 'settings') {
       if (title) title.textContent = `V${data.version || FALLBACK_VERSION} ${core}`;
-      if (body) body.textContent = `${finite(data.commands) ? data.commands : '—'} commands • SQLite persistence • restart-safe OAuth • runtime diagnostics.`;
+      const health = finite(data.health_score) ? ` • Nexus ${data.health_score}/100 ${String(data.health_state || '').toUpperCase()}` : '';
+      if (body) body.textContent = `${finite(data.commands) ? data.commands : '—'} commands • SQLite persistence • restart-safe OAuth • runtime diagnostics${health}.`;
     }
   }
 
@@ -98,7 +99,10 @@
     if (heroStatus) heroStatus.innerHTML = `<span class="pulse"></span> V${version} ${core} <b>// ${online ? 'ONLINE' : 'STARTING'}</b>`;
 
     const heroOnline = document.querySelector('.trust-row span:first-child');
-    if (heroOnline) heroOnline.innerHTML = `<i></i> ${online ? 'CONTROL PLATFORM ONLINE' : 'CONTROL PLATFORM STARTING'}`;
+    if (heroOnline) {
+      const health = finite(data.health_score) ? ` • NEXUS ${data.health_score}/100` : '';
+      heroOnline.innerHTML = `<i></i> ${online ? 'CONTROL PLATFORM ONLINE' : 'CONTROL PLATFORM STARTING'}${health}`;
+    }
 
     const cards = document.querySelectorAll('.console-grid article');
     if (cards[0]?.querySelector('b')) cards[0].querySelector('b').textContent = `V${version}`;
@@ -113,7 +117,7 @@
   }
 
   async function refreshStatus() {
-    setState('loading', 'SYNCING CONTROL PLATFORM');
+    setState('loading', 'SYNCING NEXUS');
     try {
       const response = await fetch(API, { cache: 'no-store' });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -124,8 +128,9 @@
       const online = data.bot_ready === true;
       const version = data.version || FALLBACK_VERSION;
       const core = normalizeCore(data.core);
+      const healthSuffix = finite(data.health_score) ? ` • ${data.health_score}/100 ${String(data.health_state || '').toUpperCase()}` : '';
 
-      setState(online ? 'online' : 'starting', online ? `${core} ONLINE` : `${core} STARTING`);
+      setState(online ? 'online' : 'starting', online ? `${core} ONLINE${healthSuffix}` : `${core} STARTING`);
       set('liveVersion', `V${version}`);
       set('liveLatency', finite(data.latency_ms) ? `${data.latency_ms} ms` : '—');
       set('liveGuilds', finite(data.guilds) ? String(data.guilds) : '—');
@@ -140,10 +145,11 @@
       syncHero(data);
       flashTelemetry();
       document.documentElement.dataset.xenoxyState = online ? 'online' : 'starting';
+      if (data.health_state) document.documentElement.dataset.nexusHealth = String(data.health_state).toLowerCase();
     } catch (error) {
       lastData = null;
       syncPageIdentity();
-      setState('offline', 'CONTROL PLATFORM OFFLINE • RETRYING');
+      setState('offline', 'NEXUS OFFLINE • RETRYING');
       ['liveLatency','liveUptime','liveGuilds','liveMembers','liveCommands'].forEach(id => set(id, '—'));
       set('liveVersion', `V${FALLBACK_VERSION}`);
       set('liveUpdated', 'retrying automatically');
@@ -153,7 +159,7 @@
       const heroStatus = document.querySelector('.hero .status');
       if (heroStatus) heroStatus.innerHTML = `<span class="pulse"></span> V${FALLBACK_VERSION} ${FALLBACK_CORE} <b>// RETRYING</b>`;
       const heroOnline = document.querySelector('.trust-row span:first-child');
-      if (heroOnline) heroOnline.innerHTML = '<i></i> CONTROL PLATFORM RETRYING';
+      if (heroOnline) heroOnline.innerHTML = '<i></i> NEXUS RETRYING';
       console.warn('Xenoxy live status unavailable:', error);
     }
   }
