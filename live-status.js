@@ -1,7 +1,7 @@
 (() => {
   const API = 'https://4jeo6afdee.apps.bot-hosting.cloud/api/health';
-  const FALLBACK_VERSION = '10.1';
-  const FALLBACK_CORE = 'COMMAND QA ENGINE';
+  const FALLBACK_VERSION = '10.3';
+  const FALLBACK_CORE = 'SMART AUTOMOD';
   const $ = id => document.getElementById(id);
   const set = (id, value) => { const el = $(id); if (el) el.textContent = value; };
   const finite = value => Number.isFinite(value);
@@ -27,28 +27,28 @@
     const text = (selector, value) => { const el = document.querySelector(selector); if (el) el.textContent = value; };
     text('.hero .kicker', 'DISCORD CONTROL PLATFORM');
     text('.console-brand', 'XENOXY CONTROL PLATFORM');
-    text('.console-grid article:first-child span', 'Command QA Engine');
-    text('main > .metric-strip article:first-child span', 'Command QA Engine');
+    text('.console-grid article:first-child span', 'Smart Automod');
+    text('main > .metric-strip article:first-child span', 'Smart Automod');
     text('#systems .eyebrow', '// CONTROL PLATFORM SYSTEMS');
-    text('#architecture .eyebrow', '// V10.1 ARCHITECTURE');
-    text('footer span:first-child', 'XENOXY // V10.1 // COMMAND QA ENGINE');
-    set('liveVersion', 'V10.1');
+    text('#architecture .eyebrow', '// V10.3 ARCHITECTURE');
+    text('footer span:first-child', 'XENOXY // V10.3 // SMART AUTOMOD');
+    set('liveVersion', 'V10.3');
 
     const architectureTitle = document.querySelector('#architecture h2');
     if (architectureTitle) architectureTitle.innerHTML = 'Discord → Control Platform → <span>Xenoxy.</span>';
 
     const lead = document.querySelector('.hero .lead');
-    if (lead) lead.textContent = '100 verified slash commands, Discord OAuth, restart-safe SQLite, Member Ops, Automod, Incident Center, Server Analytics and a shared V10.1 command-response layer — unified in Xenoxy.';
+    if (lead) lead.textContent = '100 verified slash commands, Discord OAuth, restart-safe SQLite, Security Guard, Smart Automod risk scoring, Incident Center and Server Analytics — unified in Xenoxy.';
 
     const systems = document.querySelector('#systems .sectionhead .muted');
-    if (systems) systems.textContent = 'Xenoxy unifies Discord configuration, command QA, Member Ops, Automod, incident workflows, analytics and persistent platform state in one hosted control surface.';
+    if (systems) systems.textContent = 'Xenoxy unifies Discord configuration, Security & Permissions, Smart Automod, Member Ops, incident workflows, analytics and persistent platform state in one hosted control surface.';
   }
 
   function syncPageIdentity(version = FALLBACK_VERSION, core = FALLBACK_CORE) {
     const cleanCore = normalizeCore(core);
     document.title = `Xenoxy V${version} // ${cleanCore}`;
     const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.content = `Xenoxy V${version} ${cleanCore} — 100 verified Discord commands, persistent OAuth, SQLite, Automod, Incident Center, Server Analytics and live platform telemetry.`;
+    if (meta) meta.content = `Xenoxy V${version} ${cleanCore} — 100 verified Discord commands, Security Guard, persistent OAuth, SQLite, Smart Automod, Incident Center, Server Analytics and live platform telemetry.`;
   }
 
   function setState(state, label) {
@@ -80,8 +80,8 @@
       if (title && finite(data.members)) title.textContent = `${data.members} members visible`;
       if (body) body.textContent = `${finite(data.guilds) ? data.guilds : '—'} guilds • ${finite(data.latency_ms) ? data.latency_ms + ' ms' : 'latency —'} • permission-aware member operations.`;
     } else if (active === 'moderation') {
-      if (title) title.textContent = data.bot_ready === true ? 'Moderation + Automod online' : 'Moderation node starting';
-      if (body) body.textContent = 'Member Ops, Automod Engine, Incident Center and role-hierarchy protection run through the same Control Platform.';
+      if (title) title.textContent = data.bot_ready === true ? 'Security + Smart Automod online' : 'Moderation node starting';
+      if (body) body.textContent = 'Security Guard, Member Ops, Smart Automod and Incident Center run through the same Control Platform.';
     } else if (active === 'settings') {
       if (title) title.textContent = `V${data.version || FALLBACK_VERSION} ${core}`;
       if (body) body.textContent = `${finite(data.commands) ? data.commands : '—'} commands • SQLite persistence • restart-safe OAuth • runtime diagnostics.`;
