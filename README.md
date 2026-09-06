@@ -1,8 +1,8 @@
-# XENOXY V10.3 // SMART AUTOMOD
+# XENOXY V11.0 // NEXUS
 
 Xenoxy is a hosted Discord server control platform built with Python and `discord.py`. It combines a verified 100-command Discord layer, Discord OAuth2 dashboard, persistent SQLite state, Member Ops, Security & Permissions, Smart Automod, Incident Center, Server Analytics, runtime diagnostics and live public telemetry in one control surface.
 
-**Current build:** V10.3 // SMART AUTOMOD  
+**Current build:** V11.0 // NEXUS  
 **Slash commands:** 100 / 100 verified and unique  
 **Persistence:** SQLite (`xenoxy.db`)  
 **Dashboard:** hosted Xenoxy Control Platform  
@@ -10,6 +10,7 @@ Xenoxy is a hosted Discord server control platform built with Python and `discor
 **Web sessions:** restart-safe rolling 30-day SQLite sessions  
 **Security:** centralized permission + role-hierarchy preflight  
 **Automod:** risk scoring + repeat-offender memory + proportional escalation  
+**Nexus:** unified runtime intelligence + health scoring + platform capability checks  
 **Hosting:** public HTTPS dashboard + 24/7 bot hosting
 
 Website: https://kodaniq.github.io/xenoxy-website/
@@ -18,33 +19,51 @@ Public dashboard: https://4jeo6afdee.apps.bot-hosting.cloud/
 
 ---
 
-## V10.3 Smart Automod
+## V11.0 Nexus
 
-V10.3 builds on the production-tested V10.2 Security & Permissions layer and upgrades Xenoxy's existing Automod from individual threshold checks into a risk-aware moderation system.
+V11.0 is the platform-level release that unifies the strongest systems from the V10 generation under a new Nexus runtime layer. It keeps the production-tested command QA, Security Guard and Smart Automod foundations while adding unified runtime health intelligence.
 
-### Smart Automod core
+### Nexus core
 
-- per-member runtime risk score
-- risk decay over time so old behavior gradually matters less
-- repeat-offender memory with recent rule history
-- weighted rules for spam, repeated messages, mass mentions, links/invites and excessive caps
-- repeated violations of the same rule receive an additional risk bonus
-- risk levels: LOW / MEDIUM / HIGH / CRITICAL
-- proportional escalation from delete-only behavior toward 10-minute and 1-hour timeouts at higher risk
-- human-readable Smart Automod explanations containing rule, risk score, level and strike count
-- Smart Automod runtime events for diagnostics
-- existing trusted-role / trusted-channel behavior remains part of the Automod system
-- existing Incident Center and legacy Automod enforcement remain available instead of being replaced by a separate command system
+- unified runtime snapshot for bot, database, commands, latency and Automod capability state
+- weighted 0-100 platform health score
+- health states: EXCELLENT / HEALTHY / DEGRADED / CRITICAL
+- Discord readiness check
+- SQLite readiness check
+- 100-command registry integrity check
+- latency-aware health scoring
+- Security Guard capability status
+- Smart Automod capability status
+- Nexus member-risk bridge into Smart Automod runtime state
+- public API telemetry for Nexus version, core, health score and subsystem readiness
+- startup and runtime Nexus diagnostics
+- no additional top-level slash commands; Xenoxy stays at 100 / 100
 
-Smart Automod is intentionally implemented as a platform layer. Xenoxy stays at **100 top-level slash commands** rather than adding command spam for every new subsystem.
+The Nexus layer is intentionally an internal platform layer rather than another pile of slash commands. New capabilities are surfaced through the dashboard, telemetry, runtime diagnostics and existing control flows.
 
 ---
 
-## V10.2 Security & Permissions
+## V10.3 Smart Automod foundation
 
-V10.2 introduced the centralized Security Guard that now sits underneath moderation operations.
+V10.3 upgraded Xenoxy's Automod into a risk-aware moderation system.
 
-### Security Guard
+- per-member runtime risk score
+- risk decay over time
+- repeat-offender memory with recent rule history
+- weighted spam, repeat, mention, link/invite and caps rules
+- repeated-rule risk bonuses
+- LOW / MEDIUM / HIGH / CRITICAL risk levels
+- proportional escalation toward 10-minute and 1-hour timeouts
+- human-readable rule / risk / strike explanations
+- Smart Automod runtime events
+- trusted-role and trusted-channel behavior
+- Incident Center compatibility
+
+---
+
+## V10.2 Security & Permissions foundation
+
+The centralized Security Guard protects moderation operations before Discord API execution.
 
 - actor permission preflight
 - Xenoxy/bot permission preflight
@@ -52,17 +71,17 @@ V10.2 introduced the centralized Security Guard that now sits underneath moderat
 - self-target protection where applicable
 - target role-hierarchy checks
 - Xenoxy role-hierarchy checks
-- role safety for managed roles and `@everyone`
-- clean ephemeral security responses instead of exposing Discord/Python internals
-- security allow/deny events in runtime diagnostics
+- managed-role and `@everyone` safety
+- clean ephemeral denial responses
+- security allow/deny runtime events
 
-Production tests confirmed that owner and higher-role `/ban` attempts are rejected by Xenoxy before the Discord API call, preventing the old raw `403 Missing Permissions` workflow.
+Production tests confirmed owner and higher-role `/ban` attempts are blocked by Xenoxy before Discord returns raw permission failures.
 
 ---
 
 ## V10.1 Command QA foundation
 
-The V10.1 command-quality layer is still part of the current platform:
+The V10.1 command-quality layer remains part of V11:
 
 - 100 / 100 direct slash commands verified
 - 100 unique command names
@@ -70,7 +89,7 @@ The V10.1 command-quality layer is still part of the current platform:
 - shared `xenoxy_reply()` interaction-response layer
 - consistent success / warning / error / info / brand responses
 - user-readable permission, hierarchy, Discord API, missing-target and cooldown errors
-- original exceptions retained in runtime diagnostics rather than intentionally exposed to users
+- original exceptions retained in runtime diagnostics
 - command-output sanity cleanup
 
 ---
@@ -82,11 +101,17 @@ Discord users / moderators
           ↓
 100 slash commands + Discord interactions
           ↓
-V10.2 Security & Permissions preflight
+Security Guard / role-hierarchy preflight
           ↓
-V10.3 Smart Automod / Member Ops / Server Systems
+Smart Automod + Member Ops + Server Systems
           ↓
 Incident Center + Ops Intelligence + Server Analytics
+          ↓
+V11 Nexus runtime intelligence
+          ├─ health score
+          ├─ capability checks
+          ├─ latency / command integrity
+          └─ Smart Automod member-risk bridge
           ↓
 SQLite persistence + runtime diagnostics
           ↓
@@ -103,6 +128,8 @@ Public GitHub Pages product site + live telemetry
 
 - 100 global slash commands
 - shared command-response system
+- V11 Nexus runtime intelligence
+- 0-100 platform health score
 - Security Guard and role-hierarchy protection
 - Smart Automod risk engine
 - spam / repeat / mass mention / link-invite / caps detection
@@ -126,19 +153,35 @@ Public GitHub Pages product site + live telemetry
 
 ---
 
+## Nexus health model
+
+V11 uses weighted capability checks for a compact platform health score.
+
+```text
+Discord readiness      30 points
+SQLite readiness       25 points
+100-command integrity  20 points
+Gateway latency        15 points
+Smart Automod loaded   10 points
+                       ---------
+                       100 total
+```
+
+The score is diagnostic rather than a replacement for detailed logs. A high score means the major platform components are loaded and responsive; individual command or Discord permission failures can still be handled separately by Security Guard and runtime diagnostics.
+
+---
+
 ## Command layer
 
-Xenoxy intentionally uses the full **100-command** top-level slash-command set. Future platform expansion is focused on smarter internals, dashboard controls, buttons, modals and existing command structures instead of casually exceeding the global command registry design.
+Xenoxy intentionally uses the full **100-command** top-level slash-command set. V11 expansion is focused on smarter internals, dashboard controls, telemetry, buttons, modals and existing command structures instead of exceeding the top-level registry design.
 
 The command layer covers information, utilities, fun/social features, moderation, roles, channels, server setup, welcome/goodbye, autorole, suggestions, confessions, birthdays, sticky messages, verification, activity/member statistics and server-management tools.
-
-Moderation actions are protected by Xenoxy's own preflight layer before Discord API execution whenever supported by the action.
 
 ---
 
 ## Persistence and data
 
-Xenoxy's main state lives in SQLite. The original compatibility state store preserves guild configuration while newer platform systems use dedicated operational tables.
+Xenoxy's main state lives in SQLite. The original compatibility state store preserves guild configuration while newer systems use dedicated operational tables.
 
 Operational data includes:
 
@@ -157,7 +200,7 @@ Web sessions use a rolling 30-day lifetime so ordinary bot restarts and redeploy
 
 ## API and live telemetry
 
-The bot hosts its own `aiohttp` web/API layer. The public health endpoint powers the GitHub Pages live status UI and exposes non-secret runtime health information such as:
+The bot hosts its own `aiohttp` web/API layer. The public health endpoint powers the GitHub Pages live status UI and exposes intentionally public runtime information such as:
 
 - current Xenoxy version and core
 - bot-ready state
@@ -166,11 +209,14 @@ The bot hosts its own `aiohttp` web/API layer. The public health endpoint powers
 - slash-command count
 - Discord gateway latency
 - runtime uptime
+- Nexus health score and health state
+- Security Guard readiness
+- Smart Automod readiness
 - dashboard availability
 
 Authenticated control routes remain separate from the public health endpoint.
 
-The GitHub Pages frontend is static HTML/CSS/JavaScript; live backend behavior comes from the hosted Xenoxy API rather than putting secrets or server-side bot logic into GitHub Pages.
+The GitHub Pages frontend is static HTML/CSS/JavaScript; live backend behavior comes from the hosted Xenoxy API rather than exposing bot secrets or server-side control logic in GitHub Pages.
 
 ---
 
@@ -179,9 +225,10 @@ The GitHub Pages frontend is static HTML/CSS/JavaScript; live backend behavior c
 The public Xenoxy website is the product surface for the Control Platform. It includes:
 
 - live bot/API telemetry
+- Nexus version/core identity
 - searchable 100-command database
 - interactive local terminal with autocomplete/history
-- safe demo commands for health, latency, guilds, members, version/core, security, Automod, incidents, analytics and architecture
+- safe demo commands for health, latency, guilds, members, version/core, security, Smart Automod, incidents, analytics and architecture
 - moderation commands intentionally blocked from execution in the public terminal
 - architecture and systems overview
 - direct hosted-dashboard access
@@ -224,6 +271,7 @@ V10.1.1  Telemetry Recovery
 V10.1.2  Startup Hotfix
 V10.2    Security & Permissions
 V10.3    Smart Automod
+V11.0    Nexus
 ```
 
 ---
