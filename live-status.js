@@ -1,90 +1,14 @@
 (() => {
-  const API = 'https://4jeo6afdee.apps.bot-hosting.cloud/api/health';
-  const FALLBACK_VERSION = '11.1';
-  const FALLBACK_CORE = 'NEXUS INTELLIGENCE';
-  const $ = id => document.getElementById(id);
-  const set = (id, value) => { const el = $(id); if (el) el.textContent = value; };
-  const finite = value => Number.isFinite(value);
-  let uptimeBase = null, uptimeFetchedAt = null, lastData = null;
-  const normalizeCore = value => String(value || FALLBACK_CORE).trim().toUpperCase();
-
-  function formatUptime(total) {
-    total = Math.max(0, Math.floor(total || 0));
-    const d = Math.floor(total / 86400); total %= 86400;
-    const h = Math.floor(total / 3600); total %= 3600;
-    const m = Math.floor(total / 60), s = total % 60;
-    if (d) return `${d}d ${h}h ${m}m`; if (h) return `${h}h ${m}m ${s}s`; if (m) return `${m}m ${s}s`; return `${s}s`;
-  }
-
-  function intelligence(data) { return data?.nexus_intelligence || {}; }
-  function recSummary(data) {
-    const recs = intelligence(data).recommendations;
-    if (!Array.isArray(recs) || !recs.length) return 'No intelligence recommendation available yet.';
-    return recs[0]?.message || 'Nexus systems nominal.';
-  }
-
-  function syncStaticCopy() {
-    const text = (selector, value) => { const el = document.querySelector(selector); if (el) el.textContent = value; };
-    text('.hero .kicker', 'DISCORD INTELLIGENCE PLATFORM');
-    text('.console-brand', 'XENOXY NEXUS INTELLIGENCE');
-    text('.console-grid article:first-child span', 'Nexus Intelligence');
-    text('main > .metric-strip article:first-child span', 'Nexus Intelligence');
-    text('#systems .eyebrow', '// NEXUS INTELLIGENCE SYSTEMS');
-    text('#architecture .eyebrow', '// V11.1 INTELLIGENCE ARCHITECTURE');
-    text('footer span:first-child', 'XENOXY // V11.1 // NEXUS INTELLIGENCE');
-    set('liveVersion', 'V11.1');
-    const architectureTitle = document.querySelector('#architecture h2');
-    if (architectureTitle) architectureTitle.innerHTML = 'Discord → Nexus → Intelligence → <span>Xenoxy.</span>';
-    const lead = document.querySelector('.hero .lead');
-    if (lead) lead.textContent = '100 verified slash commands, Security Guard, Smart Automod and persistent Nexus Intelligence with health history, trends, risk overview and recommendations.';
-    const systems = document.querySelector('#systems .sectionhead .muted');
-    if (systems) systems.textContent = 'V11.1 turns Nexus telemetry into persistent intelligence: health snapshots, 24-hour trends, server-wide Smart Automod risk and actionable recommendations.';
-  }
-
-  function syncPageIdentity(version=FALLBACK_VERSION, core=FALLBACK_CORE) {
-    const cleanCore=normalizeCore(core); document.title=`Xenoxy V${version} // ${cleanCore}`;
-    const meta=document.querySelector('meta[name="description"]');
-    if(meta) meta.content=`Xenoxy V${version} ${cleanCore} — 100 Discord commands, Security Guard, Smart Automod, persistent health history, trends, risk intelligence and live telemetry.`;
-  }
-  function setState(state,label){const badge=$('liveStatusBadge');if(!badge)return;badge.dataset.state=state;badge.innerHTML=`<span class="pulse"></span>${label}`;}
-  function flashTelemetry(){const live=$('live');if(!live)return;live.classList.remove('telemetry-flash');requestAnimationFrame(()=>live.classList.add('telemetry-flash'));setTimeout(()=>live.classList.remove('telemetry-flash'),850);}
-
-  function syncDemo(data){
-    const demo=document.querySelector('.x-demo');if(!demo)return;const active=demo.querySelector('[data-demo].active')?.dataset.demo;const screen=demo.querySelector('.x-demo-screen');if(!screen)return;
-    const title=screen.querySelector('b'),body=screen.querySelector('span'),core=normalizeCore(data.core),intel=intelligence(data),trends=intel.trends_24h||{},risk=intel.risk||{};
-    if(active==='members'){
-      if(title&&finite(data.members))title.textContent=`${data.members} members visible`;
-      if(body)body.textContent=`${finite(data.guilds)?data.guilds:'—'} guilds • ${finite(data.latency_ms)?data.latency_ms+' ms':'latency —'} • member trend ${finite(trends.member_delta)?(trends.member_delta>=0?'+':'')+trends.member_delta:'—'}.`;
-    }else if(active==='moderation'){
-      if(title)title.textContent=data.bot_ready===true?'Security + Smart Automod online':'Moderation node starting';
-      if(body)body.textContent=`Tracked risk: ${finite(risk.tracked_members)?risk.tracked_members:'—'} • critical: ${finite(risk.critical_risk)?risk.critical_risk:'—'} • ${recSummary(data)}`;
-    }else if(active==='settings'){
-      if(title)title.textContent=`V${data.version||FALLBACK_VERSION} ${core}`;
-      const health=finite(data.health_score)?`Nexus ${data.health_score}/100 ${String(data.health_state||'').toUpperCase()}`:'Nexus health —';
-      if(body)body.textContent=`${finite(data.commands)?data.commands:'—'} commands • ${health} • 24h health Δ ${finite(trends.health_delta)?(trends.health_delta>=0?'+':'')+trends.health_delta:'—'}.`;
-    }
-  }
-
-  function syncHero(data){
-    const version=data.version||FALLBACK_VERSION,core=normalizeCore(data.core),online=data.bot_ready===true,intel=intelligence(data),trends=intel.trends_24h||{};syncPageIdentity(version,core);
-    const heroStatus=document.querySelector('.hero .status');if(heroStatus)heroStatus.innerHTML=`<span class="pulse"></span> V${version} ${core} <b>// ${online?'ONLINE':'STARTING'}</b>`;
-    const heroOnline=document.querySelector('.trust-row span:first-child');if(heroOnline){const health=finite(data.health_score)?` • NEXUS ${data.health_score}/100`:'';const trend=finite(trends.health_delta)?` • 24H Δ ${trends.health_delta>=0?'+':''}${trends.health_delta}`:'';heroOnline.innerHTML=`<i></i> ${online?'INTELLIGENCE ONLINE':'INTELLIGENCE STARTING'}${health}${trend}`;}
-    const cards=document.querySelectorAll('.console-grid article');if(cards[0]?.querySelector('b'))cards[0].querySelector('b').textContent=`V${version}`;if(cards[1]?.querySelector('b')&&finite(data.commands))cards[1].querySelector('b').textContent=data.commands;if(cards[2]?.querySelector('b')&&finite(data.latency_ms))cards[2].querySelector('b').textContent=`${data.latency_ms} ms`;if(cards[3]?.querySelector('b'))cards[3].querySelector('b').textContent=uptimeBase!==null?formatUptime(uptimeBase):(data.uptime||'—');
-    const topMetric=document.querySelector('main > .metric-strip article:first-child b');if(topMetric)topMetric.textContent=`V${version}`;set('liveVersion',`V${version}`);syncDemo(data);
-  }
-
-  async function refreshStatus(){
-    setState('loading','SYNCING NEXUS INTELLIGENCE');
-    try{
-      const response=await fetch(API,{cache:'no-store'});if(!response.ok)throw new Error(`HTTP ${response.status}`);const data=await response.json();if(!data||data.ok!==true)throw new Error('Invalid status payload');lastData=data;
-      const online=data.bot_ready===true,version=data.version||FALLBACK_VERSION,core=normalizeCore(data.core),intel=intelligence(data),trends=intel.trends_24h||{};
-      const healthSuffix=finite(data.health_score)?` • ${data.health_score}/100 ${String(data.health_state||'').toUpperCase()}`:'';const trendSuffix=finite(trends.health_delta)?` • 24H Δ ${trends.health_delta>=0?'+':''}${trends.health_delta}`:'';
-      setState(online?'online':'starting',online?`${core} ONLINE${healthSuffix}${trendSuffix}`:`${core} STARTING`);
-      set('liveVersion',`V${version}`);set('liveLatency',finite(data.latency_ms)?`${data.latency_ms} ms`:'—');set('liveGuilds',finite(data.guilds)?String(data.guilds):'—');set('liveMembers',finite(data.members)?String(data.members):'—');set('liveCommands',finite(data.commands)?String(data.commands):'—');set('liveUpdated',data.updated_at?new Date(data.updated_at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'}):'just now');
-      uptimeBase=finite(data.uptime_seconds)?data.uptime_seconds:null;uptimeFetchedAt=performance.now();set('liveUptime',uptimeBase!==null?formatUptime(uptimeBase):(data.uptime||'—'));syncHero(data);flashTelemetry();document.documentElement.dataset.xenoxyState=online?'online':'starting';if(data.health_state)document.documentElement.dataset.nexusHealth=String(data.health_state).toLowerCase();
-    }catch(error){lastData=null;syncPageIdentity();setState('offline','NEXUS INTELLIGENCE OFFLINE • RETRYING');['liveLatency','liveUptime','liveGuilds','liveMembers','liveCommands'].forEach(id=>set(id,'—'));set('liveVersion',`V${FALLBACK_VERSION}`);set('liveUpdated','retrying automatically');uptimeBase=uptimeFetchedAt=null;document.documentElement.dataset.xenoxyState='offline';const heroStatus=document.querySelector('.hero .status');if(heroStatus)heroStatus.innerHTML=`<span class="pulse"></span> V${FALLBACK_VERSION} ${FALLBACK_CORE} <b>// RETRYING</b>`;const heroOnline=document.querySelector('.trust-row span:first-child');if(heroOnline)heroOnline.innerHTML='<i></i> NEXUS INTELLIGENCE RETRYING';console.warn('Xenoxy live status unavailable:',error);}
-  }
-  window.addEventListener('xenoxy-demo-tab',()=>{if(lastData)syncDemo(lastData);});
-  setInterval(()=>{if(uptimeBase===null||uptimeFetchedAt===null)return;const current=uptimeBase+(performance.now()-uptimeFetchedAt)/1000;set('liveUptime',formatUptime(current));const cards=document.querySelectorAll('.console-grid article');if(cards[3]?.querySelector('b'))cards[3].querySelector('b').textContent=formatUptime(current);},1000);
-  syncStaticCopy();syncPageIdentity();refreshStatus();setInterval(refreshStatus,30000);
+  const API='https://4jeo6afdee.apps.bot-hosting.cloud/api/health',FALLBACK_VERSION='11.2',FALLBACK_CORE='NEXUS AUTOMATION';
+  const $=id=>document.getElementById(id),set=(id,v)=>{const e=$(id);if(e)e.textContent=v;},finite=Number.isFinite;let uptimeBase=null,uptimeFetchedAt=null,lastData=null;
+  const core=v=>String(v||FALLBACK_CORE).trim().toUpperCase();
+  function uptime(t){t=Math.max(0,Math.floor(t||0));const d=Math.floor(t/86400);t%=86400;const h=Math.floor(t/3600);t%=3600;const m=Math.floor(t/60),s=t%60;return d?`${d}d ${h}h ${m}m`:h?`${h}h ${m}m ${s}s`:m?`${m}m ${s}s`:`${s}s`;}
+  const intel=d=>d?.nexus_intelligence||{},auto=d=>d?.nexus_automation||{};
+  function staticCopy(){const text=(s,v)=>{const e=document.querySelector(s);if(e)e.textContent=v;};text('.hero .kicker','DISCORD AUTOMATION PLATFORM');text('.console-brand','XENOXY NEXUS AUTOMATION');text('.console-grid article:first-child span','Nexus Automation');text('main > .metric-strip article:first-child span','Nexus Automation');text('#systems .eyebrow','// NEXUS AUTOMATION SYSTEMS');text('#architecture .eyebrow','// V11.2 AUTOMATION ARCHITECTURE');text('footer span:first-child','XENOXY // V11.2 // NEXUS AUTOMATION');set('liveVersion','V11.2');const a=document.querySelector('#architecture h2');if(a)a.innerHTML='Discord → Nexus → Intelligence → Automation → <span>Xenoxy.</span>';const l=document.querySelector('.hero .lead');if(l)l.textContent='100 verified slash commands, Security Guard, Smart Automod, persistent Nexus Intelligence and safe guild-scoped automation with cooldowns and audit history.';const s=document.querySelector('#systems .sectionhead .muted');if(s)s.textContent='V11.2 connects Nexus Intelligence to an opt-in automation engine with health, latency and critical-risk triggers, cooldown protection and persistent audit events.';}
+  function identity(v=FALLBACK_VERSION,c=FALLBACK_CORE){document.title=`Xenoxy V${v} // ${core(c)}`;const m=document.querySelector('meta[name="description"]');if(m)m.content=`Xenoxy V${v} ${core(c)} — 100 Discord commands, Security Guard, Smart Automod, Nexus Intelligence and safe auditable automation.`;}
+  function state(s,l){const b=$('liveStatusBadge');if(b){b.dataset.state=s;b.innerHTML=`<span class="pulse"></span>${l}`;}}
+  function demo(d){const x=document.querySelector('.x-demo');if(!x)return;const active=x.querySelector('[data-demo].active')?.dataset.demo,screen=x.querySelector('.x-demo-screen');if(!screen)return;const title=screen.querySelector('b'),body=screen.querySelector('span'),i=intel(d),t=i.trends_24h||{},r=i.risk||{},a=auto(d);if(active==='members'){if(title&&finite(d.members))title.textContent=`${d.members} members visible`;if(body)body.textContent=`${finite(d.guilds)?d.guilds:'—'} guilds • member trend ${finite(t.member_delta)?(t.member_delta>=0?'+':'')+t.member_delta:'—'} • permission-aware operations.`;}else if(active==='moderation'){if(title)title.textContent=d.bot_ready?'Security + Automation online':'Control node starting';if(body)body.textContent=`Smart Automod critical risk ${r.critical_risk??'—'} • Automation engine ${String(a.engine||'—').toUpperCase()} • enabled guilds ${a.enabled_guilds??'—'}.`;}else if(active==='settings'){if(title)title.textContent=`V${d.version||FALLBACK_VERSION} ${core(d.core)}`;if(body)body.textContent=`${d.commands??'—'} commands • Nexus ${d.health_score??'—'}/100 • Automation safe default ${String(a.safe_default||'off').toUpperCase()} • SQLite audit ${String(a.audit||'—').toUpperCase()}.`;}}
+  function hero(d){const v=d.version||FALLBACK_VERSION,c=core(d.core),online=d.bot_ready===true,a=auto(d);identity(v,c);const hs=document.querySelector('.hero .status');if(hs)hs.innerHTML=`<span class="pulse"></span> V${v} ${c} <b>// ${online?'ONLINE':'STARTING'}</b>`;const ho=document.querySelector('.trust-row span:first-child');if(ho)ho.innerHTML=`<i></i> ${online?'AUTOMATION PLATFORM ONLINE':'AUTOMATION STARTING'}${finite(d.health_score)?` • NEXUS ${d.health_score}/100`:''} • AUTO ${a.enabled_guilds??0} GUILD(S)`;const cards=document.querySelectorAll('.console-grid article');if(cards[0]?.querySelector('b'))cards[0].querySelector('b').textContent=`V${v}`;if(cards[1]?.querySelector('b')&&finite(d.commands))cards[1].querySelector('b').textContent=d.commands;if(cards[2]?.querySelector('b')&&finite(d.latency_ms))cards[2].querySelector('b').textContent=`${d.latency_ms} ms`;if(cards[3]?.querySelector('b'))cards[3].querySelector('b').textContent=uptimeBase!==null?uptime(uptimeBase):(d.uptime||'—');set('liveVersion',`V${v}`);demo(d);}
+  async function refresh(){state('loading','SYNCING NEXUS AUTOMATION');try{const r=await fetch(API,{cache:'no-store'});if(!r.ok)throw Error(`HTTP ${r.status}`);const d=await r.json();if(!d||d.ok!==true)throw Error('Invalid status payload');lastData=d;const online=d.bot_ready===true,a=auto(d);state(online?'online':'starting',online?`${core(d.core)} ONLINE${finite(d.health_score)?` • ${d.health_score}/100 ${String(d.health_state||'').toUpperCase()}`:''} • AUTO ${a.enabled_guilds??0}`:`${core(d.core)} STARTING`);set('liveVersion',`V${d.version||FALLBACK_VERSION}`);set('liveLatency',finite(d.latency_ms)?`${d.latency_ms} ms`:'—');set('liveGuilds',finite(d.guilds)?String(d.guilds):'—');set('liveMembers',finite(d.members)?String(d.members):'—');set('liveCommands',finite(d.commands)?String(d.commands):'—');set('liveUpdated',d.updated_at?new Date(d.updated_at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'}):'just now');uptimeBase=finite(d.uptime_seconds)?d.uptime_seconds:null;uptimeFetchedAt=performance.now();set('liveUptime',uptimeBase!==null?uptime(uptimeBase):(d.uptime||'—'));hero(d);document.documentElement.dataset.xenoxyState=online?'online':'starting';document.documentElement.dataset.nexusAutomation=String(a.engine||'unknown');}catch(e){lastData=null;identity();state('offline','NEXUS AUTOMATION OFFLINE • RETRYING');['liveLatency','liveUptime','liveGuilds','liveMembers','liveCommands'].forEach(id=>set(id,'—'));set('liveVersion',`V${FALLBACK_VERSION}`);set('liveUpdated','retrying automatically');uptimeBase=uptimeFetchedAt=null;document.documentElement.dataset.xenoxyState='offline';console.warn('Xenoxy live status unavailable:',e);}}
+  window.addEventListener('xenoxy-demo-tab',()=>{if(lastData)demo(lastData);});setInterval(()=>{if(uptimeBase===null||uptimeFetchedAt===null)return;const now=uptimeBase+(performance.now()-uptimeFetchedAt)/1000;set('liveUptime',uptime(now));const c=document.querySelectorAll('.console-grid article');if(c[3]?.querySelector('b'))c[3].querySelector('b').textContent=uptime(now);},1000);staticCopy();identity();refresh();setInterval(refresh,30000);
 })();
