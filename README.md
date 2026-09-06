@@ -1,8 +1,8 @@
-# XENOXY V11.3 // DASHBOARD 2.0
+# XENOXY V11.4 // RULE BUILDER + ANALYTICS
 
-Xenoxy is a hosted Discord server control platform built with Python and `discord.py`. V11.3 makes the Nexus Intelligence + Automation stack directly controllable from the OAuth dashboard while preserving the verified 100-command Discord layer.
+Xenoxy is a hosted Discord server control platform built with Python and `discord.py`. V11.4 adds a no-code Rule Builder plus persistent message and voice analytics while preserving the verified 100-command Discord layer.
 
-**Current build:** V11.3 // DASHBOARD 2.0  
+**Current build:** V11.4 // RULE BUILDER + ANALYTICS  
 **Slash commands:** 100 / 100 verified and unique  
 **Persistence:** SQLite (`xenoxy.db`)  
 **Authentication:** Discord OAuth2  
@@ -10,8 +10,9 @@ Xenoxy is a hosted Discord server control platform built with Python and `discor
 **Security:** Security Guard + OAuth guild authorization  
 **Automod:** Smart Automod risk engine + escalation  
 **Intelligence:** health history + 24h trends + risk overview + recommendations  
-**Automation:** guild-scoped rules + cooldowns + SQLite audit trail + safe default OFF  
-**Dashboard 2.0:** Automation Center + live Intelligence + audit view
+**Automation:** guild-scoped policies + custom safe rules + cooldowns + SQLite audit trail  
+**Analytics:** message counts + top message members + persistent voice-time tracking  
+**Dashboard:** Dashboard 2.0 + Rule Builder + Analytics
 
 Website: https://kodaniq.github.io/xenoxy-website/
 
@@ -19,52 +20,61 @@ Public dashboard: https://4jeo6afdee.apps.bot-hosting.cloud/
 
 ---
 
-## V11.3 Dashboard 2.0
+## V11.4 Rule Builder + Analytics
 
-V11.3 exposes the V11.1/V11.2 systems through a new Nexus Automation Center in the hosted OAuth dashboard.
+V11.4 turns the V11.2/V11.3 automation foundation into a running automation system and expands server analytics with message and voice activity.
 
-### Nexus Automation Center
+### Rule Builder
 
-- Master Automation ON/OFF
-- configurable Nexus health threshold
-- configurable gateway-latency threshold
-- configurable automation cooldown
-- Critical Risk Incident toggle
-- live Nexus health/intelligence summary
-- 24-hour health and latency deltas
-- Smart Automod critical-risk overview
-- Nexus recommendations
-- recent Automation Audit events
-- Save Automation directly into SQLite-backed guild configuration
-- OAuth session required
-- guild must be manageable by the authenticated Discord user
-- no nested form regression: Dashboard 2.0 saves through dedicated fetch/PUT flow
-- no new top-level slash commands; Xenoxy remains 100 / 100
+Custom OAuth-protected rules can use these triggers:
 
-### Dashboard 2.0 routes
+- Nexus health below threshold
+- gateway latency above threshold
+- critical Smart Automod risk count
+- messages in five minutes above threshold
+
+Safe actions currently include `audit_alert` and `incident_alert`. Rules have configurable thresholds, cooldowns and priorities, are stored in SQLite, and execution history is persisted. The background automation cycle runs every 60 seconds.
+
+### Message analytics
+
+- existing 24h / 7d / 30d message totals
+- top channels and peak activity
+- top message members over 7 days
+- five-minute message volume available to Rule Builder
+
+### Voice analytics
+
+- voice join / leave / channel-move tracking
+- persistent voice sessions in SQLite
+- 24h / 7d / 30d voice-time totals
+- currently active voice users
+- unique voice users over 7 days
+- top voice members
+- top voice channels
+- active sessions reconciled when Xenoxy starts
+
+Voice history begins collecting from the V11.4 deployment; earlier voice activity is not backfilled.
+
+### V11.4 authenticated routes
 
 ```text
-GET /dashboard2/{guild_id}
-PUT /dashboard2/{guild_id}/automation
+GET    /v114/{guild_id}/rules
+POST   /v114/{guild_id}/rules
+DELETE /v114/{guild_id}/rules/{rule_id}
+GET    /v114/{guild_id}/analytics
 ```
 
-Both routes require an authenticated Xenoxy web session and verify that the selected guild is manageable by the current Discord user.
+These routes require the persistent OAuth web session and verify that the selected guild is manageable by the authenticated Discord user.
 
 ---
 
+## V11.3 Dashboard 2.0
+
+Dashboard 2.0 exposes Nexus Intelligence and guild automation policy through the hosted OAuth dashboard. The V11.4 build also fixes Dashboard 2.0 session authorization to use the persistent session implementation and keeps guild-specific panels out of the pre-selection server screen.
+
 ## V11.2 Nexus Automation
 
-V11.2 introduced guild-scoped automation configuration, safe default OFF, low-health/high-latency/critical-risk triggers, cooldown protection and persistent automation audit events.
-
-Default policy:
-
-```text
-Automation enabled       false
-Health alert below       70
-Latency alert above      500 ms
-Critical-risk incident   true
-Cooldown                 900 seconds
-```
+Guild-scoped automation configuration, safe default OFF, low-health/high-latency/critical-risk triggers, cooldown protection and persistent audit events.
 
 ## V11.1 Nexus Intelligence
 
@@ -73,10 +83,6 @@ Persistent Nexus health snapshots, 24-hour trends, Smart Automod server-wide ris
 ## V11.0 Nexus
 
 Unified runtime snapshot, weighted 0–100 platform health, subsystem readiness and Smart Automod risk bridge.
-
-## V10 foundations
-
-V10.3 Smart Automod provides weighted risk, decay, repeat-offender memory and proportional escalation. V10.2 Security Guard provides owner protection, permission preflight and role-hierarchy safety. V10.1 Command QA keeps the complete 100/100 command layer verified.
 
 ---
 
@@ -91,27 +97,20 @@ Security Guard
           ↓
 Smart Automod + Member Ops + Server Systems
           ↓
-Incident Center + Ops Intelligence + Server Analytics
+Incident Center + Ops Intelligence
           ↓
-Nexus Runtime
+Message Analytics + Voice Analytics
           ↓
-Nexus Intelligence
-          ├─ health history
-          ├─ 24h trends
-          ├─ risk overview
-          └─ recommendations
+Nexus Runtime + Nexus Intelligence
           ↓
 Nexus Automation
           ├─ guild policy
-          ├─ safe triggers
+          ├─ 60s automation cycle
+          ├─ custom Rule Builder
           ├─ cooldowns
-          └─ audit events
+          └─ audit / execution history
           ↓
-V11.3 Dashboard 2.0
-          ├─ Automation Center
-          ├─ live Intelligence
-          ├─ recommendations
-          └─ Automation Audit
+Dashboard 2.0 + Rule Builder + Analytics
           ↓
 SQLite + aiohttp Control API
           ↓
@@ -124,15 +123,15 @@ Hosted dashboard + GitHub Pages telemetry
 
 ## SQLite
 
-Operational data includes state/meta, OAuth sessions, moderation cases, Automod incidents, analytics events, runtime events, Nexus snapshots, `xenoxy_automation_rules` and `xenoxy_automation_events`.
+Operational data includes state/meta, OAuth sessions, moderation cases, Automod incidents, message/member analytics events, runtime events, Nexus snapshots, automation policies/events and V11.4 tables:
 
-Dashboard 2.0 writes automation policy through the existing SQLite-backed V11.2 automation layer rather than introducing a second configuration source.
-
----
+- `xenoxy_automation_custom_rules`
+- `xenoxy_rule_executions`
+- `xenoxy_voice_events`
 
 ## Public telemetry
 
-`/api/health` continues to power the public product website with intentionally public version/core/readiness/count/latency/uptime, Nexus Intelligence and compact automation state. Private dashboard configuration remains behind OAuth authorization.
+`/api/health` powers the public website with intentionally public version/core/readiness/count/latency/uptime, Nexus Intelligence and compact automation state. Guild configuration, custom rules and detailed analytics remain behind OAuth authorization.
 
 ---
 
@@ -168,6 +167,7 @@ V11.0    Nexus
 V11.1    Nexus Intelligence
 V11.2    Nexus Automation
 V11.3    Dashboard 2.0
+V11.4    Rule Builder + Analytics
 ```
 
 ## Tech stack
