@@ -8,7 +8,7 @@
   if (commandsSection) {
     const section = document.createElement('section');
     section.id = 'terminal'; section.className = 'x-terminal-section';
-    section.innerHTML = `<div class="sectionhead"><p class="eyebrow">// LOCAL CONTROL TERMINAL</p><h2>Talk to Xenoxy.<br><span>Smart Automod shell.</span></h2><p class="muted">Safe local terminal with live telemetry, history and autocomplete. Public moderation actions are never executed.</p></div><div class="x-terminal-shell"><div class="x-terminal-top"><div class="x-terminal-brand"><span class="x-terminal-dots"><i></i><i></i><i></i></span>XENOXY // V10.3 SMART AUTOMOD</div><span class="x-terminal-badge">SAFE DEMO</span></div><div class="x-terminal-output" id="xTerminalOutput"></div><div class="x-terminal-inputrow"><span class="x-terminal-prompt">xenoxy@web:~$</span><input class="x-terminal-input" id="xTerminalInput" autocomplete="off" spellcheck="false" placeholder="type help and press Enter"></div><div class="x-terminal-hint">TAB autocomplete • ↑ ↓ history • try: help, status, security, automod, incidents, analytics, gng</div></div>`;
+    section.innerHTML = `<div class="sectionhead"><p class="eyebrow">// LOCAL CONTROL TERMINAL</p><h2>Talk to Xenoxy.<br><span>Nexus shell.</span></h2><p class="muted">Safe local terminal with live telemetry, history and autocomplete. Public moderation actions are never executed.</p></div><div class="x-terminal-shell"><div class="x-terminal-top"><div class="x-terminal-brand"><span class="x-terminal-dots"><i></i><i></i><i></i></span>XENOXY // V11.0 NEXUS</div><span class="x-terminal-badge">SAFE DEMO</span></div><div class="x-terminal-output" id="xTerminalOutput"></div><div class="x-terminal-inputrow"><span class="x-terminal-prompt">xenoxy@web:~$</span><input class="x-terminal-input" id="xTerminalInput" autocomplete="off" spellcheck="false" placeholder="type help and press Enter"></div><div class="x-terminal-hint">TAB autocomplete • ↑ ↓ history • try: nexus, health, security, automod, incidents, analytics, gng</div></div>`;
     commandsSection.insertAdjacentElement('afterend', section);
   }
 
@@ -21,30 +21,36 @@
   document.addEventListener('click',e=>{if(soundOn&&e.target.closest('button,a')&&e.target!==sound)tone('click');},{passive:true});
 
   const out=document.getElementById('xTerminalOutput'),input=document.getElementById('xTerminalInput');if(!out||!input)return;
-  const known=['help','status','health','ping','latency','uptime','servers','guilds','members','commands','version','core','database','oauth','dashboard','security','permissions','automod','risk','incidents','analytics','architecture','features','invite','contact','github','about','date','clear','whoami','gng','sudo','matrix','reboot','deploy'];
+  const known=['help','status','health','nexus','healthscore','platform','ping','latency','uptime','servers','guilds','members','commands','version','core','database','oauth','dashboard','security','permissions','automod','risk','incidents','analytics','architecture','features','telemetry','systems','invite','contact','github','about','date','clear','whoami','gng','sudo','matrix','reboot','deploy'];
   const history=[];let h=-1;
   const print=(text,cls='')=>{const d=document.createElement('div');d.className=`x-line ${cls}`;d.textContent=text;out.appendChild(d);out.scrollTop=out.scrollHeight;};
   const val=id=>document.getElementById(id)?.textContent?.trim()||'—';
-  print('Xenoxy V10.3 Smart Automod shell initialized.','ok');print('100 / 100 commands verified. Type help.','dim');
+  const badge=()=>document.getElementById('liveStatusBadge')?.textContent?.trim()||'UNKNOWN';
+  print('Xenoxy V11.0 Nexus shell initialized.','ok');print('100 / 100 commands verified. Type help.','dim');
 
   function run(raw){
     const cmd=raw.trim().replace(/^\//,'').toLowerCase();if(!cmd)return;print(`xenoxy@web:~$ ${raw}`,'command');tone('term');
     if(cmd==='clear'){out.innerHTML='';return;}
     if(/^(ban|kick|timeout|untimeout|purge|purge-user|role-add|role-remove|lock|unlock|move|nickname|channel-delete|role-delete)\b/.test(cmd)){print('ACCESS DENIED // SAFE DEMO cannot execute moderation or destructive actions.','dim');return;}
     const replies={
-      help:'SYSTEM   // status health ping latency uptime servers guilds members commands version core\nPLATFORM // database oauth dashboard security permissions automod risk incidents analytics\nINFO     // architecture features invite contact github about date clear\nSECRETS  // whoami gng sudo matrix reboot deploy',
-      status:()=>`XENOXY ${val('liveVersion')} // ${document.getElementById('liveStatusBadge')?.textContent?.trim()||'UNKNOWN'}\nPING ${val('liveLatency')} // UPTIME ${val('liveUptime')} // SERVERS ${val('liveGuilds')} // MEMBERS ${val('liveMembers')}`,
-      health:()=>`Discord READY // OAuth READY // SQLite READY\n${val('liveCommands')} commands // ${val('liveGuilds')} guilds // ${val('liveMembers')} members`,
+      help:'SYSTEM   // status health nexus healthscore platform ping latency uptime servers guilds members commands version core\nPLATFORM // database oauth dashboard security permissions automod risk incidents analytics telemetry systems\nINFO     // architecture features invite contact github about date clear\nSECRETS  // whoami gng sudo matrix reboot deploy',
+      status:()=>`XENOXY ${val('liveVersion')} // ${badge()}\nPING ${val('liveLatency')} // UPTIME ${val('liveUptime')} // SERVERS ${val('liveGuilds')} // MEMBERS ${val('liveMembers')}`,
+      health:()=>`${badge()}\nDiscord READY // OAuth READY // SQLite READY\n${val('liveCommands')} commands // ${val('liveGuilds')} guilds // ${val('liveMembers')} members`,
+      nexus:()=>`NEXUS CORE // ${badge()}\nSecurity Guard READY // Smart Automod READY // runtime intelligence ONLINE`,
+      healthscore:()=>`NEXUS HEALTH // ${badge()}`,
+      platform:()=>`V11.0 NEXUS // 100-command Discord layer + Security Guard + Smart Automod + SQLite + OAuth + live telemetry`,
       ping:()=>`Discord gateway latency: ${val('liveLatency')}`,latency:()=>`Gateway latency: ${val('liveLatency')}`,uptime:()=>`Runtime uptime: ${val('liveUptime')}`,
       servers:()=>`Connected servers: ${val('liveGuilds')}`,guilds:()=>`Connected guilds: ${val('liveGuilds')}`,members:()=>`Visible members: ${val('liveMembers')}`,commands:()=>`Loaded slash commands: ${val('liveCommands')} / 100`,
-      version:()=>`${val('liveVersion')} // SMART AUTOMOD`,core:'SMART AUTOMOD // risk scoring + repeat-offender memory + proportional escalation',
-      database:'SQLite // persistent guild settings, sessions, moderation cases, incidents and analytics.',oauth:'Discord OAuth // identify + guilds // persistent secure dashboard sessions.',dashboard:'Public OAuth control dashboard // guild settings, Member Ops, Incident Center, Analytics and Automod.',
+      version:()=>`${val('liveVersion')} // NEXUS`,core:'NEXUS // unified runtime intelligence, health scoring and capability checks',
+      database:'SQLite // persistent guild settings, sessions, moderation cases, incidents, analytics and runtime diagnostics.',oauth:'Discord OAuth // identify + guilds // persistent secure dashboard sessions.',dashboard:'Public OAuth control dashboard // guild settings, Member Ops, Incident Center, Analytics and Automod.',
       security:'SECURITY GUARD // owner protection + actor/bot permissions + role hierarchy + clean denial UX.',permissions:'Permission preflight protects ban, kick, timeout, nickname and role operations before Discord API execution.',
-      automod:'SMART AUTOMOD // spam + repeat + mentions + links/invites + caps // trusted roles/channels // escalating enforcement.',risk:'RISK ENGINE // weighted violations decay over time; repeat offenses increase score; high risk escalates to timeout.',
+      automod:'SMART AUTOMOD // spam + repeat + mentions + links/invites + caps // risk scoring // escalating enforcement.',risk:'RISK ENGINE // weighted violations decay over time; repeat offenses increase score; high risk escalates to timeout.',
       incidents:'INCIDENT CENTER // Automod incidents, severity, Resolve / Ignore / Escalate workflow and audit trail.',analytics:'SERVER ANALYTICS // message activity, joins/leaves, top channels, peak hour, mod trend and server pulse.',
-      architecture:'Discord Bot → SQLite → authenticated API → OAuth Dashboard → GitHub Pages telemetry.',features:'100 slash commands // Security Guard // Smart Automod // Member Ops // Incident Center // Analytics // live telemetry.',
+      telemetry:()=>`LIVE TELEMETRY // ${val('liveVersion')} // ${val('liveLatency')} // uptime ${val('liveUptime')} // ${val('liveGuilds')} guilds // ${val('liveMembers')} members`,
+      systems:'NEXUS SYSTEMS // Command QA + Security Guard + Smart Automod + Member Ops + Incident Center + Analytics + OAuth + SQLite.',
+      architecture:'Discord Bot → Security Guard → Smart Automod / Member Ops → Nexus → SQLite → authenticated API → OAuth Dashboard → GitHub Pages telemetry.',features:'100 slash commands // Nexus health intelligence // Security Guard // Smart Automod // Member Ops // Incident Center // Analytics // live telemetry.',
       invite:'Use the Xenoxy website Dashboard / invite controls to add Xenoxy to a server.',contact:'Operator: kodaniq // Discord + Instagram + GitHub links are available in the Contact section.',github:'Repository / project links are available through the site Contact and project controls.',
-      about:'Xenoxy // all-in-one Discord Control Platform. 100 commands, Security Guard, Smart Automod, OAuth, SQLite, Member Ops, Incident Center, Analytics and live telemetry.',date:()=>new Date().toLocaleString(),
+      about:'Xenoxy V11.0 Nexus // all-in-one Discord Control Platform with 100 commands, Security Guard, Smart Automod, OAuth, SQLite, Member Ops, Incident Center, Analytics, health intelligence and live telemetry.',date:()=>new Date().toLocaleString(),
       whoami:'kodaniq // XENOXY OPERATOR // clearance: GNG',gng:'GÄÄÄÄÄNG MODE ENABLED 😭🔥',sudo:'nice try gng 💀 SAFE DEMO is not giving you root',matrix:'01011000 01000101 01001110 01001111 01011000 01011001 // wake up, gng.',reboot:'REBOOT BLOCKED // production stays alive 😭',deploy:'DEPLOY STATUS // ask the operator, this shell is read-only.'
     };
     const r=replies[cmd],secret=['whoami','gng','sudo','matrix','reboot','deploy'].includes(cmd);print(typeof r==='function'?r():r||`Unknown command: ${cmd}. Try help.`,r?(secret?'secret':'ok'):'dim');if(secret)tone('secret');if(!reduceMotion){out.classList.remove('x-terminal-flash');requestAnimationFrame(()=>out.classList.add('x-terminal-flash'));}
