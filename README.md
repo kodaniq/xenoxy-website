@@ -1,18 +1,17 @@
-# XENOXY V11.5 // MEMBER INTELLIGENCE
+# XENOXY V11.6 // ADVANCED ANALYTICS
 
-Xenoxy is a hosted Discord server control platform built with Python and `discord.py`. V11.5 turns the V11.4 message + voice analytics foundation into per-member intelligence profiles, activity heatmaps and leaderboards while preserving the verified 100-command Discord layer.
+Xenoxy is a hosted Discord server control platform built with Python and `discord.py`. V11.6 upgrades the analytics stack into full server intelligence while preserving Member Intelligence, Rule Builder, Security Guard and the verified 100-command Discord layer.
 
-**Current build:** V11.5 // MEMBER INTELLIGENCE  
+**Current build:** V11.6 // ADVANCED ANALYTICS  
 **Slash commands:** 100 / 100 verified and unique  
 **Persistence:** SQLite (`xenoxy.db`)  
 **Authentication:** Discord OAuth2  
 **Web sessions:** restart-safe rolling 30-day SQLite sessions  
 **Security:** Security Guard + OAuth guild authorization  
 **Automod:** Smart Automod risk engine + escalation  
-**Intelligence:** Nexus health + member-level activity intelligence  
-**Automation:** Rule Builder + safe guild automation + cooldowns + audit history  
-**Analytics:** message + persistent voice-time tracking  
-**Member Intelligence:** per-member profiles + activity score + heatmap + leaderboards
+**Automation:** Nexus Automation + Rule Builder + cooldowns + SQLite audit history  
+**Member Intelligence:** message/voice profiles + activity score + per-member heatmaps + leaderboards  
+**Advanced Analytics:** server heatmap + daily trends + engagement + growth + retention + Server Activity Score
 
 Website: https://kodaniq.github.io/xenoxy-website/
 
@@ -20,60 +19,73 @@ Public dashboard: https://4jeo6afdee.apps.bot-hosting.cloud/
 
 ---
 
-## V11.5 Member Intelligence
+## V11.6 Advanced Analytics
 
-V11.5 builds member-level intelligence on top of Xenoxy's existing analytics data.
+V11.6 builds a server-wide intelligence layer on top of the message, member and persistent voice data already collected by Xenoxy.
 
-### Member profiles
+### Server activity heatmap
 
-Each dashboard member profile can expose:
+- 7 weekdays × 24 hours
+- rolling 30-day message activity
+- UTC-based hourly distribution
+- shows when the server is actually active
 
-- messages in the last 24h / 7d / 30d
-- voice time in the last 24h / 7d / 30d
-- top text channel
-- top voice channel
-- current Smart Automod risk
-- moderation case count
-- activity score from message + voice engagement
-- 30-day message activity heatmap by weekday/hour (UTC)
+### Message + voice trends
 
-The activity score is an engagement metric only; moderation risk is displayed separately rather than being mixed into the activity score.
+- 14-day daily message series
+- 14-day daily voice-time series
+- rolling 7-day engagement comparisons
+- current 7 days vs previous 7 days
+- automatic `GROWING`, `STABLE` or `DECLINING` state
 
-### Leaderboards
+### Member engagement
 
-- Top Texters • 7D
-- Top Voice • 7D
-- Overall Activity
-- bot accounts excluded
+- active members over the last 7 days
+- inactive members over the last 7 days
+- active-member percentage
+- bots excluded
+- activity can come from text or voice
 
-### V11.5 authenticated routes
+### New-member retention
+
+- members who joined during the last 30 days
+- how many were active during the recent activity window
+- retention percentage
+
+### Server Activity Score
+
+A 0–100 engagement score combines:
+
+- active-member rate
+- message growth
+- voice growth
+- recent-member retention
+
+The score measures activity and engagement, not moderation quality.
+
+### V11.6 authenticated route
 
 ```text
-GET /v115/{guild_id}/members/{user_id}
-GET /v115/{guild_id}/leaderboards
+GET /v116/{guild_id}/analytics
 ```
 
-Both routes require the persistent OAuth web session and verify that the selected guild is manageable by the authenticated Discord user.
+The route requires a persistent OAuth web session and verifies that the selected guild is manageable by the authenticated Discord user.
 
 ---
 
+## V11.5 Member Intelligence
+
+Per-member message + voice profiles, 24h/7d/30d activity, top channels, Smart Automod risk, moderation case count, activity scores, 30-day member heatmaps and leaderboards.
+
 ## V11.4 Rule Builder + Analytics
 
-V11.4 introduced custom safe automation rules, a running 60-second automation cycle, message analytics and persistent voice join/leave/channel-move tracking.
+Custom safe automation rules, a running automation cycle, message analytics and persistent voice join/leave/channel-move tracking.
 
-Voice history begins collecting from the V11.4 deployment; earlier voice activity is not backfilled.
+Voice history begins collecting from the V11.4 deployment; activity before that point is not backfilled.
 
 ## V11.3 Dashboard 2.0
 
-Dashboard 2.0 exposes Nexus Intelligence and guild automation policy through the hosted OAuth dashboard.
-
-## V11.2 Nexus Automation
-
-Guild-scoped automation configuration, safe default OFF, health/latency/risk triggers, cooldown protection and persistent audit events.
-
-## V11.1 Nexus Intelligence
-
-Persistent Nexus health snapshots, 24-hour trends, Smart Automod server-wide risk overview and recommendations.
+OAuth control surface for Nexus Intelligence and guild automation configuration.
 
 ---
 
@@ -84,40 +96,45 @@ Discord users / moderators
           ↓
 100 slash commands + interactions
           ↓
-Security Guard
-          ↓
-Smart Automod + Member Ops
+Security Guard + Smart Automod
           ↓
 Message Analytics + Voice Analytics
           ↓
-V11.5 Member Intelligence
+Member Intelligence
           ├─ member profiles
-          ├─ activity score
-          ├─ 30d heatmap
+          ├─ member heatmaps
+          ├─ activity scores
           └─ leaderboards
           ↓
-Nexus Intelligence + Rule Builder
+V11.6 Advanced Analytics
+          ├─ server 7×24 heatmap
+          ├─ 14d message trend
+          ├─ 14d voice trend
+          ├─ active / inactive members
+          ├─ 7d growth comparison
+          ├─ new-member retention
+          └─ Server Activity Score
+          ↓
+Nexus Intelligence + Automation + Rule Builder
           ↓
 Dashboard 2.0
           ↓
 SQLite + aiohttp Control API
           ↓
 Discord OAuth2 + persistent sessions
-          ↓
-Hosted dashboard + GitHub Pages telemetry
 ```
 
 ---
 
 ## SQLite
 
-Operational data includes state/meta, OAuth sessions, moderation cases, Automod incidents, message/member analytics events, runtime events, Nexus snapshots, automation policies/events, custom rules, rule executions and voice sessions.
+Xenoxy keeps state, OAuth sessions, moderation cases, Automod incidents, message/member activity events, voice sessions, Nexus snapshots, automation rules and execution history in SQLite.
 
-V11.5 derives member intelligence from the existing message and voice analytics stores rather than creating duplicate activity storage.
+V11.6 derives its Advanced Analytics from the existing event stores instead of duplicating activity data.
 
 ## Public telemetry
 
-`/api/health` powers the public website with intentionally public version/core/readiness/count/latency/uptime plus Nexus/automation summaries. Detailed member intelligence remains behind OAuth authorization.
+`/api/health` powers the public website with intentionally public runtime/version/health information. Detailed guild analytics, Member Intelligence and custom automation configuration remain behind OAuth authorization.
 
 ---
 
@@ -155,6 +172,7 @@ V11.2    Nexus Automation
 V11.3    Dashboard 2.0
 V11.4    Rule Builder + Analytics
 V11.5    Member Intelligence
+V11.6    Advanced Analytics
 ```
 
 ## Tech stack
