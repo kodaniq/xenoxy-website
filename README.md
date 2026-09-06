@@ -1,15 +1,16 @@
-# XENOXY V11.1 // NEXUS INTELLIGENCE
+# XENOXY V11.2 // NEXUS AUTOMATION
 
-Xenoxy is a hosted Discord server control platform built with Python and `discord.py`. V11.1 adds a persistent intelligence layer on top of the 100-command Discord system, Security Guard, Smart Automod, OAuth dashboard, SQLite persistence, Member Ops, Incident Center, Server Analytics and live telemetry.
+Xenoxy is a hosted Discord server control platform built with Python and `discord.py`. V11.2 adds a safe, auditable automation layer on top of Nexus Intelligence, Security Guard, Smart Automod, OAuth, SQLite, Member Ops, Incident Center, Server Analytics and the verified 100-command Discord layer.
 
-**Current build:** V11.1 // NEXUS INTELLIGENCE  
+**Current build:** V11.2 // NEXUS AUTOMATION  
 **Slash commands:** 100 / 100 verified and unique  
 **Persistence:** SQLite (`xenoxy.db`)  
 **Authentication:** Discord OAuth2  
 **Web sessions:** restart-safe rolling 30-day SQLite sessions  
 **Security:** centralized permission + role-hierarchy preflight  
 **Automod:** risk scoring + repeat-offender memory + proportional escalation  
-**Nexus Intelligence:** persistent health history + 24h trends + risk overview + recommendations  
+**Intelligence:** persistent health history + 24h trends + risk overview + recommendations  
+**Automation:** guild-scoped rules + cooldowns + SQLite audit trail + safe default OFF
 
 Website: https://kodaniq.github.io/xenoxy-website/
 
@@ -17,80 +18,51 @@ Public dashboard: https://4jeo6afdee.apps.bot-hosting.cloud/
 
 ---
 
-## V11.1 Nexus Intelligence
+## V11.2 Nexus Automation
 
-V11.1 turns the V11 Nexus runtime layer into a persistent intelligence system instead of only reporting the current state.
+V11.2 connects the intelligence layer to a controlled automation engine. Automation is deliberately opt-in: every guild starts with the master automation switch disabled.
 
-### Intelligence layer
+### Automation engine
 
-- persistent Nexus health snapshots in SQLite
-- snapshot throttling: maximum one intelligence snapshot every 5 minutes
-- 30-day snapshot retention
-- 24-hour health history
-- health-score delta analysis
-- gateway-latency delta analysis
-- visible-member delta analysis
-- Smart Automod server-wide risk overview
-- tracked-member count
-- average runtime risk
-- HIGH and CRITICAL risk counts
-- recommendation engine for command-registry integrity, gateway latency, database state, Security Guard, Smart Automod, critical member risk and health degradation
-- compact Nexus Intelligence payload in the public health telemetry
+- guild-scoped automation configuration
+- master enable/disable state
+- safe default: OFF
+- low Nexus-health trigger
+- high gateway-latency trigger
+- critical Smart Automod risk trigger
+- configurable health and latency thresholds
+- configurable cooldowns to prevent repeated alert spam
+- persistent automation event/audit history
+- 30-day automation-event retention
+- runtime diagnostic events for automation triggers/errors
+- public telemetry exposes only a compact non-secret automation summary
 - no new top-level slash commands; Xenoxy remains 100 / 100
 
-### Nexus health model
+### Default policy
 
 ```text
-Discord readiness      30 points
-SQLite readiness       25 points
-100-command integrity  20 points
-Gateway latency        15 points
-Smart Automod loaded   10 points
-                       ---------
-                       100 total
+Automation enabled       false
+Health alert below       70
+Latency alert above      500 ms
+Critical-risk incident   true
+Cooldown                 900 seconds
 ```
 
-Health states remain `EXCELLENT`, `HEALTHY`, `DEGRADED` and `CRITICAL`.
+The engine does not blindly perform destructive moderation actions. V11.2 focuses on safe triggers, alert/incident workflow foundations, auditability and admin-controlled configuration.
 
 ---
 
-## Platform foundations
+## V11.1 Nexus Intelligence
 
-### V11.0 Nexus
+V11.1 introduced persistent Nexus health snapshots, 30-day retention, 24-hour health/latency/member trends, Smart Automod server-wide risk overview and a recommendation engine.
 
-V11.0 introduced the unified runtime snapshot, weighted platform health score, Discord/SQLite/command/latency capability checks, Security Guard readiness, Smart Automod readiness and member-risk bridge.
+## V11.0 Nexus
 
-### V10.3 Smart Automod
+V11.0 introduced the unified runtime snapshot, weighted 0–100 health score, capability checks, Security Guard readiness, Smart Automod readiness and the member-risk bridge.
 
-- per-member runtime risk score
-- risk decay over time
-- repeat-offender memory and recent rule history
-- weighted spam, repeat, mention, link/invite and caps rules
-- LOW / MEDIUM / HIGH / CRITICAL risk levels
-- proportional escalation toward 10-minute and 1-hour timeouts
-- Smart Automod runtime events
-- trusted roles/channels and Incident Center compatibility
+## V10 foundations
 
-### V10.2 Security & Permissions
-
-- actor and Xenoxy permission preflight
-- server-owner protection
-- self-target protection where applicable
-- role-hierarchy checks
-- managed-role and `@everyone` safety
-- clean ephemeral denial responses
-- security allow/deny runtime diagnostics
-
-Production tests confirmed owner and higher-role `/ban` attempts are blocked before Discord returns raw permission failures.
-
-### V10.1 Command QA
-
-- 100 / 100 direct slash commands verified
-- 100 unique command names
-- shared `xenoxy_embed()` / `xenoxy_reply()` response layer
-- consistent user-readable errors
-- original exceptions retained in diagnostics
-- command-output sanity cleanup
+V10.3 Smart Automod provides weighted risk, decay, repeat-offender memory and proportional escalation. V10.2 Security Guard provides owner protection, actor/bot permission preflight and role-hierarchy safety. V10.1 Command QA keeps the full 100/100 command layer verified and consistent.
 
 ---
 
@@ -107,56 +79,40 @@ Smart Automod + Member Ops + Server Systems
           ↓
 Incident Center + Ops Intelligence + Server Analytics
           ↓
-V11 Nexus runtime health layer
+Nexus runtime health
           ↓
-V11.1 Nexus Intelligence
-          ├─ persistent health snapshots
+Nexus Intelligence
+          ├─ persistent health history
           ├─ 24h trends
-          ├─ server-wide risk overview
+          ├─ risk overview
           └─ recommendations
+          ↓
+V11.2 Nexus Automation
+          ├─ guild rules
+          ├─ safe triggers
+          ├─ cooldowns
+          └─ audit events
           ↓
 SQLite persistence + runtime diagnostics
           ↓
 Authenticated aiohttp Control API
           ↓
-Discord OAuth2 + restart-safe web sessions
+Discord OAuth2 + restart-safe sessions
           ↓
-Hosted Xenoxy dashboard
-          ↓
-GitHub Pages product site + public live telemetry
+Hosted dashboard + GitHub Pages telemetry
 ```
 
 ---
 
-## Persistence
+## SQLite data
 
-Operational SQLite data includes:
-
-- `xenoxy_state` — compatibility state and guild configuration
-- `xenoxy_meta` — database metadata
-- `xenoxy_web_sessions` — persistent OAuth sessions
-- `xenoxy_mod_cases` — moderation case history
-- `xenoxy_automod_incidents` — Automod incidents/workflow state
-- `xenoxy_activity_events` — message/activity analytics
-- `xenoxy_member_events` — join/leave analytics
-- `xenoxy_runtime_events` — runtime diagnostics
-- `xenoxy_nexus_snapshots` — V11.1 health/intelligence history
+Core operational tables include `xenoxy_state`, `xenoxy_meta`, `xenoxy_web_sessions`, `xenoxy_mod_cases`, `xenoxy_automod_incidents`, `xenoxy_activity_events`, `xenoxy_member_events`, `xenoxy_runtime_events`, `xenoxy_nexus_snapshots`, plus V11.2 `xenoxy_automation_rules` and `xenoxy_automation_events`.
 
 ---
 
-## API and telemetry
+## Public telemetry
 
-The bot hosts its own `aiohttp` API. The public health endpoint powers the GitHub Pages telemetry and can expose intentionally public runtime data including version/core, readiness, guild/member/command counts, latency, uptime, Nexus health score/state, subsystem readiness and V11.1 Nexus Intelligence trends/risk/recommendations.
-
-Authenticated control routes remain separate. Bot tokens, OAuth client secrets, API secrets and session secrets must never be exposed to the static frontend.
-
----
-
-## Website terminal
-
-The public terminal is a safe local/demo shell. It can inspect public telemetry and explain Xenoxy systems, but moderation/destructive commands are intentionally blocked from execution.
-
-V11.1 terminal coverage includes Nexus Intelligence, health score, trends, recommendations, risk, telemetry, Security Guard, Smart Automod, incidents, analytics, OAuth, SQLite and architecture information.
+`/api/health` powers the product website and exposes intentionally public runtime data such as version/core, readiness, counts, latency, uptime, Nexus health, Intelligence trends/risk/recommendations and the compact `nexus_automation` summary. Automation configuration details and authenticated control operations remain server-side.
 
 ---
 
@@ -190,13 +146,16 @@ V10.2    Security & Permissions
 V10.3    Smart Automod
 V11.0    Nexus
 V11.1    Nexus Intelligence
+V11.2    Nexus Automation
 ```
-
----
 
 ## Tech stack
 
 Python 3.14 • discord.py • aiohttp • Discord Interactions • Discord OAuth2 • SQLite • HTML • CSS • JavaScript • GitHub Pages
+
+## Security
+
+Never expose Discord bot tokens, OAuth client secrets, Xenoxy API secrets, session secrets or private environment values. Public frontend code consumes only intentionally public telemetry.
 
 ## Contact
 
